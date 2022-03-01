@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Display-Bold.otf">
+            <string>SFProDisplay-Bold</string>
+        </array>
+        <array key="SF-Pro-Display-Regular.otf">
+            <string>SFProDisplay-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TextFieldView" customModule="CurrencyConverter" customModuleProvider="target">
+            <connections>
+                <outlet property="inputLimitScore" destination="e7A-8x-YUH" id="V5B-el-ttb"/>
+                <outlet property="txtField" destination="JcB-vD-sxn" id="49F-0m-00t"/>
+                <outlet property="txtFieldTitle" destination="loU-HL-9AZ" id="qj2-Te-LJg"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="411" height="104"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hFq-h0-bSu" userLabel="CustomTextFieldView">
+                    <rect key="frame" x="0.0" y="19" width="411" height="66"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JcB-vD-sxn" customClass="CustomTextField" customModule="CurrencyConverter" customModuleProvider="target">
+                            <rect key="frame" x="16" y="16" width="379" height="34"/>
+                            <color key="backgroundColor" name="converterView/backgroundColor"/>
+                            <color key="textColor" name="TextFieldsColors/tfTextColor"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="17"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="leftLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="loU-HL-9AZ">
+                            <rect key="frame" x="16" y="-8" width="47.5" height="16"/>
+                            <color key="backgroundColor" name="SetViewBackgroundColor"/>
+                            <color key="tintColor" name="TextColor"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="13"/>
+                            <color key="textColor" name="tfTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e7A-8x-YUH">
+                            <rect key="frame" x="367" y="35" width="19" height="20"/>
+                            <color key="backgroundColor" name="SetViewBackgroundColor"/>
+                            <color key="tintColor" name="TextColor"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="17"/>
+                            <color key="textColor" name="tfTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="converterView/backgroundColor"/>
+                    <color key="tintColor" name="TextColor"/>
+                    <constraints>
+                        <constraint firstItem="loU-HL-9AZ" firstAttribute="leading" secondItem="hFq-h0-bSu" secondAttribute="leading" constant="16" id="2n8-9D-ywa"/>
+                        <constraint firstItem="JcB-vD-sxn" firstAttribute="centerY" secondItem="hFq-h0-bSu" secondAttribute="centerY" id="7yX-lv-BwM"/>
+                        <constraint firstAttribute="trailing" secondItem="JcB-vD-sxn" secondAttribute="trailing" constant="16" id="B5P-BS-6HN"/>
+                        <constraint firstAttribute="bottom" secondItem="e7A-8x-YUH" secondAttribute="bottom" constant="11" id="Fi2-Z0-Uqa"/>
+                        <constraint firstItem="JcB-vD-sxn" firstAttribute="top" secondItem="loU-HL-9AZ" secondAttribute="bottom" constant="8" id="eyg-0h-i4Q"/>
+                        <constraint firstAttribute="height" priority="250" constant="66" id="o54-FQ-n1o"/>
+                        <constraint firstItem="JcB-vD-sxn" firstAttribute="leading" secondItem="hFq-h0-bSu" secondAttribute="leading" constant="16" id="pld-Nx-jwB"/>
+                        <constraint firstAttribute="trailing" secondItem="e7A-8x-YUH" secondAttribute="trailing" constant="25" id="rlw-th-D2z"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" name="converterView/backgroundColor"/>
+            <color key="tintColor" name="mainView/textColor"/>
+            <constraints>
+                <constraint firstItem="hFq-h0-bSu" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="3SJ-R1-bII"/>
+                <constraint firstItem="hFq-h0-bSu" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3mu-1v-3Sw"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="hFq-h0-bSu" secondAttribute="bottom" constant="19" id="c9z-To-Igt"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="hFq-h0-bSu" secondAttribute="trailing" id="kNg-Jx-7oD"/>
+                <constraint firstItem="hFq-h0-bSu" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="vc1-C0-8mR"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-38.405797101449281" y="-3.3482142857142856"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="SetViewBackgroundColor">
+            <color red="0.89803922179999995" green="0.90196073060000004" blue="0.89803922179999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="TextColor">
+            <color red="0.14900000393390656" green="0.10999999940395355" blue="0.17299999296665192" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TextFieldsColors/tfTextColor">
+            <color red="0.11400000005960464" green="0.12200000137090683" blue="0.125" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="converterView/backgroundColor">
+            <color red="0.98000001907348633" green="0.95300000905990601" blue="0.95300000905990601" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="mainView/textColor">
+            <color red="0.25099998712539673" green="0.25099998712539673" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="tfTextColor">
+            <color red="0.11400000005960464" green="0.12200000137090683" blue="0.125" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
+</document>

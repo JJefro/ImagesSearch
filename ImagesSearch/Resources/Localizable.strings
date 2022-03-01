@@ -1,0 +1,28 @@
+/* 
+  Localizable.strings
+  ImagesSearch
+
+  Created by Jevgenijs Jefrosinins on 01/03/2022.
+  
+*/
+
+"textFields_minOfCharactersRule"    = "Min length 8 characters.";
+"textFields_minOfDigitsRule"        = "Min 1 digit,";
+"textFields_minOfLowercaseCharRule" = "Min 1 lowercase,";
+"textFields_minOfUppercaseCharRule" = "Min 1 capital required.";
+
+"textFields_title_noDigits"        = "No Digits";
+"textFields_title_onlyLetters"     = "Only Letters";
+"textFields_title_onlyNumbers"     = "Only Numbers";
+"textFields_title_inputLimit"      = "Input limit";
+"textFields_title_onlyCharacters"  = "Only characters";
+"textFields_title_link"            = "Link";
+"textFields_title_validationRules" = "Validation rules";
+
+"textFields_placeholder_noDigits"        = "Type here";
+"textFields_placeholder_onlyLetters"     = "Type here";
+"textFields_placeholder_onlyNumbers"     = "Type here";
+"textFields_placeholder_inputLimit"      = "Type here";
+"textFields_placeholder_onlyCharacters"  = "wwwww-ddddd";
+"textFields_placeholder_link"            = "www.example.com";
+"textFields_placeholder_validationRules" = "Password";
