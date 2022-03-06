@@ -148,7 +148,7 @@ class CustomTextField: UITextField {
 
     // MARK: - Validation Labels Constraints
     private func makeValidationLabelsConstraints() {
-        let labelFont = R.font.sfProDisplayRegular(size: validationRulesTextSize)
+        let labelFont = R.font.openSansRegular(size: validationRulesTextSize)
         let leadingConstraints = 24
         let topConstraints = -21
 

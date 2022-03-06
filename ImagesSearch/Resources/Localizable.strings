@@ -26,3 +26,7 @@
 "textFields_placeholder_onlyCharacters"  = "wwwww-ddddd";
 "textFields_placeholder_link"            = "www.example.com";
 "textFields_placeholder_validationRules" = "Password";
+
+"welcomeContentView_titleLabel" = "Take your audience on a visual adventure";
+"welcomeContentView_bottomDescriptionLabel" = "Photo by Free-Photos";
+"welcomeContentView_searchButton_title" = "Search";

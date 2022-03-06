@@ -16,6 +16,7 @@ enum TextFieldsSettings {
     case onlyCharacters
     case link
     case validationRules
+    case searchField
 
     var title: String {
         switch self {
@@ -33,6 +34,8 @@ enum TextFieldsSettings {
             return R.string.localizable.textFields_title_link()
         case .validationRules:
             return R.string.localizable.textFields_title_validationRules()
+        case .searchField:
+            return "SearchField"
         }
     }
     
@@ -52,6 +55,8 @@ enum TextFieldsSettings {
             return R.string.localizable.textFields_placeholder_link()
         case .validationRules:
             return R.string.localizable.textFields_placeholder_validationRules()
+        case .searchField:
+            return "Search images, vectors and more"
         }
     }
 }

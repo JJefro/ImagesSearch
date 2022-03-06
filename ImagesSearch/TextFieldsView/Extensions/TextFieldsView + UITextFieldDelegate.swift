@@ -82,6 +82,7 @@ extension TextFieldView: UITextFieldDelegate {
 
             txtField.isMinOfUppercaseCharRuleDone =
             model.isContainsUppercase(text: currentText)
+        default: break
         }
         return true
     }
