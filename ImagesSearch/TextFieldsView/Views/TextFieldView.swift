@@ -42,7 +42,7 @@ class TextFieldView: UIView {
     private func commonInit() {
         txtField.delegate = self
         txtField.returnKeyType = .done
-        txtField.addTarget(self, action: #selector(TextFieldView.textFieldEditingChanged(_:)), for: UIControl.Event.editingChanged)
+        txtField.addTarget(self, action: #selector(TextFieldView.textFieldEditingChanged(_:)), for: .editingChanged)
     }
 
     private func loadViewFromNib() -> UIView? {
@@ -90,6 +90,10 @@ class TextFieldView: UIView {
             inputLimitScore.isHidden = true
             txtField.isSecureTextEntry = true
             txtField.hasValidationRules = true
+        case .searchField:
+            txtFieldTitle.isHidden = true
+            inputLimitScore.isHidden = true
+            txtField.placeholder = fieldSettings.placeholder
         }
     }
 
