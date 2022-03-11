@@ -9,10 +9,11 @@ import UIKit
 
 class WelcomeViewController: UIViewController {
 
-    private let contentView = WelcomeContentView()
+    private let contentView: WelcomeContentViewProtocol
     private var viewModel: WelcomeViewModelProtocol
     
-    init(viewModel: WelcomeViewModelProtocol) {
+    init(contentView: WelcomeContentViewProtocol, viewModel: WelcomeViewModelProtocol) {
+        self.contentView = contentView
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -39,28 +40,9 @@ class WelcomeViewController: UIViewController {
 
 private extension WelcomeViewController {
     func bind() {
-        contentView.pickerView.delegate = self
-        contentView.pickerView.dataSource = self
-    }
-}
-
-// MARK: - UIPickerView Delegate Methods
-extension WelcomeViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return viewModel.categoryList[row]
-    }
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        contentView.selectCategory(category: viewModel.categoryList[row])
-    }
-}
-
-// MARK: - UIPickerView DataSource Methods
-extension WelcomeViewController: UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return viewModel.categoryList.count
+        contentView.onSearchButtonTap = { (text, category) in
+            print(text!)
+            print(category!.rawValue)
+        }
     }
 }
