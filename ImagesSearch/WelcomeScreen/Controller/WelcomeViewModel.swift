@@ -2,13 +2,21 @@
 //  WelcomeViewModel.swift
 //  ImagesSearch
 //
-//  Created by Jevgenijs Jefrosinins on 06/03/2022.
+//  Created by j.jefrosinins on 01/03/2022.
 //
 
 import Foundation
 
-protocol WelcomeViewModelProtocol {}
+protocol WelcomeViewModelProtocol {
+    var categoryList: [String] { get }
+
+    func getFirstCategory() -> String?
+}
 
 class WelcomeViewModel: WelcomeViewModelProtocol {
+    private(set) var categoryList: [String] = ["Images", "Photos", "sdasdas", "dasdasd", "dasdasda"]
 
+    func getFirstCategory() -> String? {
+        return categoryList.first
+    }
 }

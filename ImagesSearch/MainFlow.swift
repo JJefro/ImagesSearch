@@ -2,22 +2,22 @@
 //  MainFlow.swift
 //  ImagesSearch
 //
-//  Created by Jevgenijs Jefrosinins on 06/03/2022.
+//  Created by Jevgenijs Jefrosinins on 03/03/2022.
 //
 
 import UIKit
 
 class MainFlow {
     private var window: UIWindow?
-
+    
     init(window: UIWindow?) {
         self.window = window
     }
-
+    
     func launch() {
         let welcomeViewController = configureWelcomeViewController()
         let navigationController = configureNavigationController(rootViewController: welcomeViewController)
-
+        
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }

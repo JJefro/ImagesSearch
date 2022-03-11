@@ -2,7 +2,7 @@
 //  UIViewController+Extensions.swift
 //  ImagesSearch
 //
-//  Created by Jevgenijs Jefrosinins on 06/03/2022.
+//  Created by j.jefrosinins on 03/03/2022.
 //
 
 import UIKit
@@ -12,7 +12,7 @@ extension UIViewController {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         appDelegate.orientationLock = orientation
     }
-
+    
     func addKeyboardHideOnTappedAroundRecognizer() {
         let endEditingTapRecognizer = UITapGestureRecognizer(
             target: view,

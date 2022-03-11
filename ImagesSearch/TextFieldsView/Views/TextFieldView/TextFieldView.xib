@@ -35,16 +35,16 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hFq-h0-bSu" userLabel="CustomTextFieldView">
                     <rect key="frame" x="0.0" y="19" width="411" height="66"/>
                     <subviews>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JcB-vD-sxn" customClass="CustomTextField" customModule="ImagesSearch" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="16" width="411" height="34"/>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JcB-vD-sxn" customClass="CustomTextField" customModule="ImagesSearch" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="14.5" width="411" height="37"/>
                             <color key="backgroundColor" name="textFieldsColors/tfBackgroundColor"/>
                             <color key="tintColor" name="textColor"/>
                             <color key="textColor" name="textFieldsColors/tfTextColor"/>
-                            <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="26"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="leftLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="loU-HL-9AZ">
-                            <rect key="frame" x="0.0" y="-8" width="50" height="16"/>
+                            <rect key="frame" x="0.0" y="-9.5" width="50" height="16"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="tintColor" name="TextColor"/>
                             <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="13"/>
@@ -52,7 +52,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e7A-8x-YUH">
-                            <rect key="frame" x="384" y="35" width="19" height="20"/>
+                            <rect key="frame" x="384" y="43" width="19" height="20"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="tintColor" name="TextColor"/>
                             <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="17"/>
@@ -66,7 +66,7 @@
                         <constraint firstItem="loU-HL-9AZ" firstAttribute="leading" secondItem="hFq-h0-bSu" secondAttribute="leading" id="2n8-9D-ywa"/>
                         <constraint firstItem="JcB-vD-sxn" firstAttribute="centerY" secondItem="hFq-h0-bSu" secondAttribute="centerY" id="7yX-lv-BwM"/>
                         <constraint firstAttribute="trailing" secondItem="JcB-vD-sxn" secondAttribute="trailing" id="B5P-BS-6HN"/>
-                        <constraint firstAttribute="bottom" secondItem="e7A-8x-YUH" secondAttribute="bottom" constant="11" id="Fi2-Z0-Uqa"/>
+                        <constraint firstAttribute="bottom" secondItem="e7A-8x-YUH" secondAttribute="bottom" constant="3" id="Fi2-Z0-Uqa"/>
                         <constraint firstItem="JcB-vD-sxn" firstAttribute="top" secondItem="loU-HL-9AZ" secondAttribute="bottom" constant="8" id="eyg-0h-i4Q"/>
                         <constraint firstAttribute="height" priority="250" constant="66" id="o54-FQ-n1o"/>
                         <constraint firstItem="JcB-vD-sxn" firstAttribute="leading" secondItem="hFq-h0-bSu" secondAttribute="leading" id="pld-Nx-jwB"/>
