@@ -4,9 +4,9 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>OpenSans-SemiBold.ttf</string>
-		<string>OpenSans-ExtraBold.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
+		<string>OpenSans-ExtraBold.ttf</string>
+		<string>OpenSans-SemiBold.ttf</string>
 	</array>
 </dict>
 </plist>

@@ -10,10 +10,10 @@ import XCTest
 
 class TextFieldsTests: XCTestCase {
 
-    var mut: TextFieldModel!
+    var mut: TextFieldViewModel!
 
     override func setUpWithError() throws {
-        mut = TextFieldModel()
+        mut = TextFieldViewModel()
     }
 
     override func tearDownWithError() throws {

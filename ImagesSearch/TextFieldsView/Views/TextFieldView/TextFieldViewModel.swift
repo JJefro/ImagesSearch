@@ -1,5 +1,5 @@
 //
-//  TextFieldsModel.swift
+//  TextFieldsViewModel.swift
 //  textFields!
 //
 //  Created by Jevgenijs Jefrosinins on 22/09/2021.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TextFieldModel {
+class TextFieldViewModel {
 
     // MARK: - noDigitsField
     func ignoreDigits(replacementString string: String) -> Bool {
@@ -39,13 +39,11 @@ class TextFieldModel {
             currentText.removeAll(where: { $0.isPunctuation })
             currentText.append(".")
         }
-
-        let startIndex = currentText.startIndex
         if currentText.first == "." {
-            currentText.insert("0", at: startIndex)
+            currentText.insert("0", at: currentText.startIndex)
         }
         if currentText.first == "0", !currentText.contains("."), !replacementString.isEmpty {
-            currentText.insert(".", at: currentText.index(after: startIndex))
+            currentText.insert(".", at: currentText.index(after: currentText.startIndex))
         }
         return currentText
     }
@@ -53,9 +51,9 @@ class TextFieldModel {
     // MARK: - inputLimitField
     var inputLimit = 10
 
-    func updateLimitInput(length: Int) -> Int {
+    func updateLimitInput(length: Int) -> String {
         inputLimit = 10 - length
-        return inputLimit
+        return String(inputLimit)
     }
 
     func changeTextColor(text: String) -> NSMutableAttributedString {
@@ -95,7 +93,7 @@ class TextFieldModel {
         if let detector = dataDetector {
             let matches = detector.matches(in: input, options: [], range: NSRange(location: 0, length: input.utf16.count))
             for match in matches {
-                guard let range = Range(match.range, in: input) else {continue}
+                guard let range = Range(match.range, in: input) else { continue }
                 url = String(input[range])
             }
             return url

@@ -8,24 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		4C91DE2136BE63E3E961943F /* Pods_ImagesSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4700FFFD84B194A88B183D93 /* Pods_ImagesSearch.framework */; };
-		97C731A127D4E75000CCC1E8 /* WelcomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C731A027D4E75000CCC1E8 /* WelcomeContentView.swift */; };
-		97C731AC27D4E79500CCC1E8 /* TextFieldsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C731A427D4E79500CCC1E8 /* TextFieldsModel.swift */; };
-		97C731AD27D4E79500CCC1E8 /* TextFieldsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C731A527D4E79500CCC1E8 /* TextFieldsSettings.swift */; };
-		97C731AE27D4E79500CCC1E8 /* TextFieldsView + UITextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C731A727D4E79500CCC1E8 /* TextFieldsView + UITextFieldDelegate.swift */; };
-		97C731AF27D4E79500CCC1E8 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C731A927D4E79500CCC1E8 /* TextFieldView.swift */; };
-		97C731B027D4E79500CCC1E8 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C731AA27D4E79500CCC1E8 /* CustomTextField.swift */; };
-		97C731B127D4E79500CCC1E8 /* TextFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97C731AB27D4E79500CCC1E8 /* TextFieldView.xib */; };
-		97C731B527D4E7E700CCC1E8 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97C731B227D4E7E700CCC1E8 /* OpenSans-SemiBold.ttf */; };
-		97C731B627D4E7E700CCC1E8 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97C731B327D4E7E700CCC1E8 /* OpenSans-Regular.ttf */; };
-		97C731B727D4E7E700CCC1E8 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97C731B427D4E7E700CCC1E8 /* OpenSans-ExtraBold.ttf */; };
-		97C731B927D4E88F00CCC1E8 /* MainFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C731B827D4E88F00CCC1E8 /* MainFlow.swift */; };
-		97C731BB27D4E8FB00CCC1E8 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C731BA27D4E8FB00CCC1E8 /* WelcomeViewModel.swift */; };
-		97C731BE27D4E93C00CCC1E8 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C731BD27D4E93C00CCC1E8 /* UIViewController+Extensions.swift */; };
+		8313BA7527D0BE02009DC80F /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313BA7427D0BE02009DC80F /* UIViewController+Extensions.swift */; };
+		8313BA7727D0C52C009DC80F /* MainFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313BA7627D0C52C009DC80F /* MainFlow.swift */; };
+		8339561227D73A4600937E60 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8339561127D73A4600937E60 /* Position.swift */; };
+		83ADB68427D5EB56005A2555 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ADB68327D5EB56005A2555 /* UIImage+Extensions.swift */; };
+		83CB733627D61B4A00A8869A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CB733527D61B4A00A8869A /* SearchView.swift */; };
+		83F4B91427CE1C4300B35F93 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83F4B91327CE1C4300B35F93 /* OpenSans-ExtraBold.ttf */; };
+		83F4B91627CE1C5500B35F93 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83F4B91527CE1C5500B35F93 /* OpenSans-Regular.ttf */; };
+		83F4B91827CE1C6E00B35F93 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83F4B91727CE1C6E00B35F93 /* OpenSans-SemiBold.ttf */; };
+		83F4B91B27CE1D9C00B35F93 /* WelcomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B91A27CE1D9C00B35F93 /* WelcomeContentView.swift */; };
+		83F4B91D27CE32CD00B35F93 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B91C27CE32CD00B35F93 /* WelcomeViewModel.swift */; };
 		97CCD4FC27CD15150061CBBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CCD4FB27CD15150061CBBB /* AppDelegate.swift */; };
 		97CCD50027CD15150061CBBB /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CCD4FF27CD15150061CBBB /* WelcomeViewController.swift */; };
 		97CCD50527CD15170061CBBB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97CCD50427CD15170061CBBB /* Assets.xcassets */; };
 		97CCD50827CD15170061CBBB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97CCD50627CD15170061CBBB /* LaunchScreen.storyboard */; };
 		97CCD51D27CD29A80061CBBB /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CCD51C27CD29A80061CBBB /* R.generated.swift */; };
+		97E9852427CDFF0F00AA249A /* TextFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9851C27CDFF0F00AA249A /* TextFieldViewModel.swift */; };
+		97E9852527CDFF0F00AA249A /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9851D27CDFF0F00AA249A /* TextFieldStyle.swift */; };
+		97E9852727CDFF0F00AA249A /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9852127CDFF0F00AA249A /* TextFieldView.swift */; };
+		97E9852827CDFF0F00AA249A /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9852227CDFF0F00AA249A /* CustomTextField.swift */; };
+		97E9852927CDFF0F00AA249A /* TextFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97E9852327CDFF0F00AA249A /* TextFieldView.xib */; };
 		97E9852B27CDFF5900AA249A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 97E9852A27CDFF5900AA249A /* Localizable.strings */; };
 		97E9853B27CE03B100AA249A /* TextFieldsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9853A27CE03B100AA249A /* TextFieldsTests.swift */; };
 /* End PBXBuildFile section */
@@ -42,20 +44,17 @@
 
 /* Begin PBXFileReference section */
 		4700FFFD84B194A88B183D93 /* Pods_ImagesSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImagesSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8313BA7427D0BE02009DC80F /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		8313BA7627D0C52C009DC80F /* MainFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFlow.swift; sourceTree = "<group>"; };
+		8339561127D73A4600937E60 /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
+		83ADB68327D5EB56005A2555 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		83CB733527D61B4A00A8869A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		83F4B91327CE1C4300B35F93 /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		83F4B91527CE1C5500B35F93 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		83F4B91727CE1C6E00B35F93 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		83F4B91A27CE1D9C00B35F93 /* WelcomeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeContentView.swift; sourceTree = "<group>"; };
+		83F4B91C27CE32CD00B35F93 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		8DA482AACAD3D7C6FDB60F5F /* Pods-ImagesSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagesSearch.debug.xcconfig"; path = "Target Support Files/Pods-ImagesSearch/Pods-ImagesSearch.debug.xcconfig"; sourceTree = "<group>"; };
-		97C731A027D4E75000CCC1E8 /* WelcomeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeContentView.swift; sourceTree = "<group>"; };
-		97C731A427D4E79500CCC1E8 /* TextFieldsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldsModel.swift; sourceTree = "<group>"; };
-		97C731A527D4E79500CCC1E8 /* TextFieldsSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldsSettings.swift; sourceTree = "<group>"; };
-		97C731A727D4E79500CCC1E8 /* TextFieldsView + UITextFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TextFieldsView + UITextFieldDelegate.swift"; sourceTree = "<group>"; };
-		97C731A927D4E79500CCC1E8 /* TextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
-		97C731AA27D4E79500CCC1E8 /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
-		97C731AB27D4E79500CCC1E8 /* TextFieldView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextFieldView.xib; sourceTree = "<group>"; };
-		97C731B227D4E7E700CCC1E8 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
-		97C731B327D4E7E700CCC1E8 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
-		97C731B427D4E7E700CCC1E8 /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
-		97C731B827D4E88F00CCC1E8 /* MainFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFlow.swift; sourceTree = "<group>"; };
-		97C731BA27D4E8FB00CCC1E8 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
-		97C731BD27D4E93C00CCC1E8 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		97CCD4F827CD15150061CBBB /* ImagesSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImagesSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97CCD4FB27CD15150061CBBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97CCD4FF27CD15150061CBBB /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +62,11 @@
 		97CCD50727CD15170061CBBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97CCD50927CD15170061CBBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97CCD51C27CD29A80061CBBB /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
+		97E9851C27CDFF0F00AA249A /* TextFieldViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldViewModel.swift; sourceTree = "<group>"; };
+		97E9851D27CDFF0F00AA249A /* TextFieldStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
+		97E9852127CDFF0F00AA249A /* TextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
+		97E9852227CDFF0F00AA249A /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		97E9852327CDFF0F00AA249A /* TextFieldView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextFieldView.xib; sourceTree = "<group>"; };
 		97E9852A27CDFF5900AA249A /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		97E9853027CE039800AA249A /* ImagesSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImagesSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		97E9853A27CE03B100AA249A /* TextFieldsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldsTests.swift; sourceTree = "<group>"; };
@@ -88,57 +92,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		97C7319F27D4E73F00CCC1E8 /* Views */ = {
+		8313BA7327D0BDEB009DC80F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				97C731A027D4E75000CCC1E8 /* WelcomeContentView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		97C731A227D4E79500CCC1E8 /* TextFieldsView */ = {
-			isa = PBXGroup;
-			children = (
-				97C731A327D4E79500CCC1E8 /* Models */,
-				97C731A627D4E79500CCC1E8 /* Extensions */,
-				97C731A827D4E79500CCC1E8 /* Views */,
-			);
-			path = TextFieldsView;
-			sourceTree = "<group>";
-		};
-		97C731A327D4E79500CCC1E8 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				97C731A427D4E79500CCC1E8 /* TextFieldsModel.swift */,
-				97C731A527D4E79500CCC1E8 /* TextFieldsSettings.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		97C731A627D4E79500CCC1E8 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				97C731A727D4E79500CCC1E8 /* TextFieldsView + UITextFieldDelegate.swift */,
+				8313BA7427D0BE02009DC80F /* UIViewController+Extensions.swift */,
+				83ADB68327D5EB56005A2555 /* UIImage+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		97C731A827D4E79500CCC1E8 /* Views */ = {
+		83ADB68527D60E7B005A2555 /* TextFieldView */ = {
 			isa = PBXGroup;
 			children = (
-				97C731A927D4E79500CCC1E8 /* TextFieldView.swift */,
-				97C731AA27D4E79500CCC1E8 /* CustomTextField.swift */,
-				97C731AB27D4E79500CCC1E8 /* TextFieldView.xib */,
+				97E9852327CDFF0F00AA249A /* TextFieldView.xib */,
+				97E9852127CDFF0F00AA249A /* TextFieldView.swift */,
+				97E9851C27CDFF0F00AA249A /* TextFieldViewModel.swift */,
 			);
-			path = Views;
+			path = TextFieldView;
 			sourceTree = "<group>";
 		};
-		97C731BC27D4E92300CCC1E8 /* Extensions */ = {
+		83F4B91927CE1D6E00B35F93 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				97C731BD27D4E93C00CCC1E8 /* UIViewController+Extensions.swift */,
+				83F4B91A27CE1D9C00B35F93 /* WelcomeContentView.swift */,
+				83CB733527D61B4A00A8869A /* SearchView.swift */,
 			);
-			path = Extensions;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		97CCD4EF27CD15150061CBBB = {
@@ -165,8 +144,8 @@
 			isa = PBXGroup;
 			children = (
 				97CCD4FB27CD15150061CBBB /* AppDelegate.swift */,
-				97C731B827D4E88F00CCC1E8 /* MainFlow.swift */,
-				97C731A227D4E79500CCC1E8 /* TextFieldsView */,
+				8313BA7627D0C52C009DC80F /* MainFlow.swift */,
+				97E9851A27CDFF0F00AA249A /* TextFieldsView */,
 				97CCD51627CD276F0061CBBB /* WelcomeScreen */,
 				97CCD51527CD275D0061CBBB /* Resources */,
 				97CCD51427CD274D0061CBBB /* SupportingFiles */,
@@ -178,9 +157,9 @@
 		97CCD50F27CD27060061CBBB /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				97C731B427D4E7E700CCC1E8 /* OpenSans-ExtraBold.ttf */,
-				97C731B327D4E7E700CCC1E8 /* OpenSans-Regular.ttf */,
-				97C731B227D4E7E700CCC1E8 /* OpenSans-SemiBold.ttf */,
+				83F4B91327CE1C4300B35F93 /* OpenSans-ExtraBold.ttf */,
+				83F4B91727CE1C6E00B35F93 /* OpenSans-SemiBold.ttf */,
+				83F4B91527CE1C5500B35F93 /* OpenSans-Regular.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -188,7 +167,7 @@
 		97CCD51427CD274D0061CBBB /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				97C731BC27D4E92300CCC1E8 /* Extensions */,
+				8313BA7327D0BDEB009DC80F /* Extensions */,
 				97CCD50627CD15170061CBBB /* LaunchScreen.storyboard */,
 			);
 			path = SupportingFiles;
@@ -208,7 +187,7 @@
 		97CCD51627CD276F0061CBBB /* WelcomeScreen */ = {
 			isa = PBXGroup;
 			children = (
-				97C7319F27D4E73F00CCC1E8 /* Views */,
+				83F4B91927CE1D6E00B35F93 /* Views */,
 				97CCD51727CD277D0061CBBB /* Controller */,
 			);
 			path = WelcomeScreen;
@@ -218,9 +197,36 @@
 			isa = PBXGroup;
 			children = (
 				97CCD4FF27CD15150061CBBB /* WelcomeViewController.swift */,
-				97C731BA27D4E8FB00CCC1E8 /* WelcomeViewModel.swift */,
+				83F4B91C27CE32CD00B35F93 /* WelcomeViewModel.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		97E9851A27CDFF0F00AA249A /* TextFieldsView */ = {
+			isa = PBXGroup;
+			children = (
+				97E9851B27CDFF0F00AA249A /* Models */,
+				97E9852027CDFF0F00AA249A /* Views */,
+			);
+			path = TextFieldsView;
+			sourceTree = "<group>";
+		};
+		97E9851B27CDFF0F00AA249A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				97E9851D27CDFF0F00AA249A /* TextFieldStyle.swift */,
+				8339561127D73A4600937E60 /* Position.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		97E9852027CDFF0F00AA249A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				83ADB68527D60E7B005A2555 /* TextFieldView */,
+				97E9852227CDFF0F00AA249A /* CustomTextField.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		97E9853127CE039800AA249A /* ImagesSearchTests */ = {
@@ -265,7 +271,7 @@
 			buildPhases = (
 				B53BB764AB6CCDB34013DDF9 /* [CP] Check Pods Manifest.lock */,
 				97CCD51827CD27F90061CBBB /* R.swift */,
-				97CCD51927CD286B0061CBBB /* SwiftLint */,
+				83FD5DD427CE0D2B0013B7B3 /* SwiftLint */,
 				97CCD4F427CD15150061CBBB /* Sources */,
 				97CCD4F527CD15150061CBBB /* Frameworks */,
 				97CCD4F627CD15150061CBBB /* Resources */,
@@ -341,13 +347,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97C731B127D4E79500CCC1E8 /* TextFieldView.xib in Resources */,
+				97E9852927CDFF0F00AA249A /* TextFieldView.xib in Resources */,
+				83F4B91827CE1C6E00B35F93 /* OpenSans-SemiBold.ttf in Resources */,
 				97E9852B27CDFF5900AA249A /* Localizable.strings in Resources */,
-				97C731B727D4E7E700CCC1E8 /* OpenSans-ExtraBold.ttf in Resources */,
-				97C731B527D4E7E700CCC1E8 /* OpenSans-SemiBold.ttf in Resources */,
+				83F4B91427CE1C4300B35F93 /* OpenSans-ExtraBold.ttf in Resources */,
 				97CCD50827CD15170061CBBB /* LaunchScreen.storyboard in Resources */,
-				97C731B627D4E7E700CCC1E8 /* OpenSans-Regular.ttf in Resources */,
 				97CCD50527CD15170061CBBB /* Assets.xcassets in Resources */,
+				83F4B91627CE1C5500B35F93 /* OpenSans-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,6 +367,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		83FD5DD427CE0D2B0013B7B3 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		97CCD51827CD27F90061CBBB /* R.swift */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -381,24 +405,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/ImagesSearch/Resources/R.generated.swift\"\n";
-		};
-		97CCD51927CD286B0061CBBB /* SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftLint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		B53BB764AB6CCDB34013DDF9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -447,17 +453,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				97CCD50027CD15150061CBBB /* WelcomeViewController.swift in Sources */,
-				97C731AC27D4E79500CCC1E8 /* TextFieldsModel.swift in Sources */,
-				97C731B927D4E88F00CCC1E8 /* MainFlow.swift in Sources */,
-				97C731AF27D4E79500CCC1E8 /* TextFieldView.swift in Sources */,
-				97C731BE27D4E93C00CCC1E8 /* UIViewController+Extensions.swift in Sources */,
-				97C731AD27D4E79500CCC1E8 /* TextFieldsSettings.swift in Sources */,
+				83F4B91D27CE32CD00B35F93 /* WelcomeViewModel.swift in Sources */,
+				8313BA7727D0C52C009DC80F /* MainFlow.swift in Sources */,
+				97E9852727CDFF0F00AA249A /* TextFieldView.swift in Sources */,
+				8339561227D73A4600937E60 /* Position.swift in Sources */,
+				83ADB68427D5EB56005A2555 /* UIImage+Extensions.swift in Sources */,
+				97E9852427CDFF0F00AA249A /* TextFieldViewModel.swift in Sources */,
+				97E9852827CDFF0F00AA249A /* CustomTextField.swift in Sources */,
+				8313BA7527D0BE02009DC80F /* UIViewController+Extensions.swift in Sources */,
+				83CB733627D61B4A00A8869A /* SearchView.swift in Sources */,
 				97CCD4FC27CD15150061CBBB /* AppDelegate.swift in Sources */,
-				97C731BB27D4E8FB00CCC1E8 /* WelcomeViewModel.swift in Sources */,
-				97C731A127D4E75000CCC1E8 /* WelcomeContentView.swift in Sources */,
+				97E9852527CDFF0F00AA249A /* TextFieldStyle.swift in Sources */,
+				83F4B91B27CE1D9C00B35F93 /* WelcomeContentView.swift in Sources */,
 				97CCD51D27CD29A80061CBBB /* R.generated.swift in Sources */,
-				97C731AE27D4E79500CCC1E8 /* TextFieldsView + UITextFieldDelegate.swift in Sources */,
-				97C731B027D4E79500CCC1E8 /* CustomTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
