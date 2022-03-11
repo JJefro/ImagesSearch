@@ -9,27 +9,30 @@ import UIKit
 import SnapKit
 
 protocol WelcomeContentViewProtocol: UIView {
-    var onSearchButtonTap: (() -> Void)? { get set }
+    var onSearchButtonTap: ((String?, MediaCategory?) -> Void)? { get set }
+    
+    func selectCategory(category: MediaCategory?)
 }
 
 class WelcomeContentView: UIView, WelcomeContentViewProtocol {
-    var onSearchButtonTap: (() -> Void)?
+    var onSearchButtonTap: ((String?, MediaCategory?) -> Void)?
     
     private let titleLabel = UILabel()
     private let verticalStack = UIStackView()
     private let searchView = SearchView()
     private let searchButton = UIButton()
     private let bottomDescriptionLabel = UILabel()
-    let pickerView = UIPickerView()
+    private var mediaPickerView: SearchMediaPickerView?
     
-    private var selectedCategory: String? {
+    private var selectedCategory: MediaCategory? {
         didSet {
-            searchView.categoryLabel.text = selectedCategory
+            searchView.categoryLabel.text = selectedCategory?.rawValue
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(mediaCategories: [MediaCategory]) {
+        super.init(frame: .zero)
+        self.mediaPickerView = SearchMediaPickerView(mediaCategories: mediaCategories)
         addViews()
         bind()
     }
@@ -48,20 +51,20 @@ class WelcomeContentView: UIView, WelcomeContentViewProtocol {
         let touch = touches.first
         guard let location = touch?.location(in: self) else { return }
         if !searchView.categoryLabel.frame.contains(location), !searchView.chevronDownImageView.frame.contains(location) {
-            pickerView.isHidden = true
+            mediaPickerView?.isHidden = true
         }
     }
     
-    func selectCategory(category: String?) {
+    func selectCategory(category: MediaCategory?) {
         selectedCategory = category
     }
     
     @objc func categoryFieldTapped(_ sender: UITapGestureRecognizer) {
-        pickerView.isHidden.toggle()
+        mediaPickerView?.isHidden.toggle()
     }
     
     @objc func searchButtonTapped(_ sender: UIButton) {
-        onSearchButtonTap?()
+        onSearchButtonTap?(searchView.searchField.txtField.text, selectedCategory)
     }
     
     private func addTapGesture(view: UIView) {
@@ -73,12 +76,12 @@ class WelcomeContentView: UIView, WelcomeContentViewProtocol {
     @objc func adjustForKeyboard(notification: Notification) {
         if notification.name == UIResponder.keyboardWillShowNotification {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
-                self?.pickerView.isHidden = true
+                self?.mediaPickerView?.isHidden = true
             }
         }
     }
     
-    func addObserverToNotificationCenter() {
+    private func addObserverToNotificationCenter() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(adjustForKeyboard(notification:)),
@@ -105,7 +108,9 @@ private extension WelcomeContentView {
         addTapGesture(view: searchView.chevronDownImageView)
         searchButton.addTarget(self, action: #selector(searchButtonTapped(_:)), for: .touchUpInside)
         addObserverToNotificationCenter()
-        pickerView.isHidden = true
+        mediaPickerView?.onValueChanged = { [weak self] value in
+            self?.selectedCategory = value
+        }
     }
     
     func addBackgroundImageView() {
@@ -191,10 +196,11 @@ private extension WelcomeContentView {
     }
     
     func addPickerView() {
-        pickerView.backgroundColor = searchView.backgroundColor
+        guard let mediaPickerView = mediaPickerView else { return }
+        mediaPickerView.backgroundColor = searchView.backgroundColor
         
-        addSubview(pickerView)
-        pickerView.snp.makeConstraints {
+        addSubview(mediaPickerView)
+        mediaPickerView.snp.makeConstraints {
             $0.top.equalTo(searchView.snp.bottom).offset(5)
             $0.trailing.leading.equalTo(verticalStack)
             $0.height.equalTo(100)
@@ -210,7 +216,7 @@ import SwiftUI
 @available(iOS 13, *)
 struct WelcomeContentViewRepresentation: UIViewRepresentable {
     func makeUIView(context: Context) -> WelcomeContentView {
-        let view = WelcomeContentView()
+        let view = WelcomeContentView(mediaCategories: [MediaCategory(rawValue: "Images")])
         return view
     }
     

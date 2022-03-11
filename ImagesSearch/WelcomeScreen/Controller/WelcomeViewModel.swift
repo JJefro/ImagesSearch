@@ -8,15 +8,15 @@
 import Foundation
 
 protocol WelcomeViewModelProtocol {
-    var categoryList: [String] { get }
+    var categoryList: [MediaCategory] { get }
 
-    func getFirstCategory() -> String?
+    func getFirstCategory() -> MediaCategory?
 }
 
 class WelcomeViewModel: WelcomeViewModelProtocol {
-    private(set) var categoryList: [String] = ["Images", "Photos", "sdasdas", "dasdasd", "dasdasda"]
+    private(set) var categoryList: [MediaCategory] = [MediaCategory(rawValue: "Images"), MediaCategory(rawValue: "Photos")]
 
-    func getFirstCategory() -> String? {
+    func getFirstCategory() -> MediaCategory? {
         return categoryList.first
     }
 }

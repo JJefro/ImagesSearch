@@ -9,7 +9,7 @@ import UIKit
 
 extension UIImage {
     /// Method for changing the image size
-    /// - Parameter size: Set the necessary size
+    /// - Parameter size: Set the necessary image size
     /// - Returns: Resized image
     func resize(to size: CGSize) -> UIImage {
         return UIGraphicsImageRenderer(size: size).image { _ in

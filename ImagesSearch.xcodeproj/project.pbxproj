@@ -18,6 +18,8 @@
 		83F4B91827CE1C6E00B35F93 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83F4B91727CE1C6E00B35F93 /* OpenSans-SemiBold.ttf */; };
 		83F4B91B27CE1D9C00B35F93 /* WelcomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B91A27CE1D9C00B35F93 /* WelcomeContentView.swift */; };
 		83F4B91D27CE32CD00B35F93 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B91C27CE32CD00B35F93 /* WelcomeViewModel.swift */; };
+		975745EB27DB6A1600A57BF6 /* SearchMediaPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975745EA27DB6A1600A57BF6 /* SearchMediaPickerView.swift */; };
+		975745EE27DB6A2000A57BF6 /* MediaCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975745ED27DB6A2000A57BF6 /* MediaCategory.swift */; };
 		97CCD4FC27CD15150061CBBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CCD4FB27CD15150061CBBB /* AppDelegate.swift */; };
 		97CCD50027CD15150061CBBB /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CCD4FF27CD15150061CBBB /* WelcomeViewController.swift */; };
 		97CCD50527CD15170061CBBB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97CCD50427CD15170061CBBB /* Assets.xcassets */; };
@@ -55,6 +57,8 @@
 		83F4B91A27CE1D9C00B35F93 /* WelcomeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeContentView.swift; sourceTree = "<group>"; };
 		83F4B91C27CE32CD00B35F93 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		8DA482AACAD3D7C6FDB60F5F /* Pods-ImagesSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagesSearch.debug.xcconfig"; path = "Target Support Files/Pods-ImagesSearch/Pods-ImagesSearch.debug.xcconfig"; sourceTree = "<group>"; };
+		975745EA27DB6A1600A57BF6 /* SearchMediaPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMediaPickerView.swift; sourceTree = "<group>"; };
+		975745ED27DB6A2000A57BF6 /* MediaCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaCategory.swift; sourceTree = "<group>"; };
 		97CCD4F827CD15150061CBBB /* ImagesSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImagesSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97CCD4FB27CD15150061CBBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97CCD4FF27CD15150061CBBB /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -115,9 +119,18 @@
 			isa = PBXGroup;
 			children = (
 				83F4B91A27CE1D9C00B35F93 /* WelcomeContentView.swift */,
+				975745EA27DB6A1600A57BF6 /* SearchMediaPickerView.swift */,
 				83CB733527D61B4A00A8869A /* SearchView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		975745EC27DB6A2000A57BF6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				975745ED27DB6A2000A57BF6 /* MediaCategory.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		97CCD4EF27CD15150061CBBB = {
@@ -187,6 +200,7 @@
 		97CCD51627CD276F0061CBBB /* WelcomeScreen */ = {
 			isa = PBXGroup;
 			children = (
+				975745EC27DB6A2000A57BF6 /* Models */,
 				83F4B91927CE1D6E00B35F93 /* Views */,
 				97CCD51727CD277D0061CBBB /* Controller */,
 			);
@@ -464,8 +478,10 @@
 				83CB733627D61B4A00A8869A /* SearchView.swift in Sources */,
 				97CCD4FC27CD15150061CBBB /* AppDelegate.swift in Sources */,
 				97E9852527CDFF0F00AA249A /* TextFieldStyle.swift in Sources */,
+				975745EE27DB6A2000A57BF6 /* MediaCategory.swift in Sources */,
 				83F4B91B27CE1D9C00B35F93 /* WelcomeContentView.swift in Sources */,
 				97CCD51D27CD29A80061CBBB /* R.generated.swift in Sources */,
+				975745EB27DB6A1600A57BF6 /* SearchMediaPickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

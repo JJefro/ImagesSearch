@@ -2,7 +2,7 @@
 //  MainFlow.swift
 //  ImagesSearch
 //
-//  Created by Jevgenijs Jefrosinins on 03/03/2022.
+//  Created by j.jefrosinins on 03/03/2022.
 //
 
 import UIKit
@@ -27,7 +27,8 @@ class MainFlow {
 private extension MainFlow {
     func configureWelcomeViewController() -> UIViewController {
         let viewModel = WelcomeViewModel()
-        let viewController = WelcomeViewController(viewModel: viewModel)
+        let contentView = WelcomeContentView(mediaCategories: viewModel.categoryList)
+        let viewController = WelcomeViewController(contentView: contentView, viewModel: viewModel)
         viewController.setInterfaceOrientationMask(orientation: .portrait)
         viewController.addKeyboardHideOnTappedAroundRecognizer()
         return viewController

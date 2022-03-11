@@ -8,9 +8,10 @@
 import UIKit
 
 class SearchView: UIView {
-    private let searchField = TextFieldView(style: .searchField)
+    
     private let horizontalStack = UIStackView()
     
+    let searchField = TextFieldView(style: .searchField)
     let categoryLabel = UILabel()
     let chevronDownImageView = UIImageView()
     
