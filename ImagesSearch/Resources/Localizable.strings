@@ -29,6 +29,16 @@
 "textFields_placeholder_validationRules" = "Password";
 "textFields_placeholder_searchField" = "Search images, vectors and more";
 
+"networkError_unknownURL" = "Invalid URL";
+"networkError_unknownServerResponse" = "Check your internet connection";
+"networkError_unknownStatusCode" = "Can't get data from the server";
+"networkError_noDataReceived" = "No data was received from the server";
+
+"errorAlert_cancelAction_title" = "Cancel";
+"errorAlert_title" = "Error";
+
 "welcomeContentView_titleLabel" = "Take your audience on a visual adventure";
 "welcomeContentView_bottomDescriptionLabel" = "Photo by Free-Photos";
 "welcomeContentView_searchButton_title" = "Search";
+
+"searchMediaView_relatedLabel_text" = "Related";

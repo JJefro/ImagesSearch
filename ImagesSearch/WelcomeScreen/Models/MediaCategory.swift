@@ -8,5 +8,11 @@
 import Foundation
 
 struct MediaCategory: RawRepresentable {
-    var rawValue: String
+    var rawValue: String?
+}
+
+enum MediaContents: String, CaseIterable {
+    case images = "Images"
+    case videos = "Videos"
+    case music = "Music"
 }

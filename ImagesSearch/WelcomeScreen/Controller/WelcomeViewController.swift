@@ -28,21 +28,23 @@ class WelcomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        addKeyboardHideOnTappedAroundRecognizer()
         bind()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
+        setInterfaceOrientationMask(orientation: .portrait)
         contentView.selectCategory(category: viewModel.getFirstCategory())
     }
 }
 
 private extension WelcomeViewController {
     func bind() {
-        contentView.onSearchButtonTap = { (text, category) in
-            print(text!)
-            print(category!.rawValue)
+        addKeyboardHideOnTappedAroundRecognizer()
+        contentView.onSearchButtonTap = { [weak self] (text, category) in
+            guard let text = text, let category = category else { return }
+            self?.viewModel.onOpenSearchMediaView?(text, category)
         }
     }
 }

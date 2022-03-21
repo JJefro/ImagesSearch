@@ -9,7 +9,7 @@ import UIKit
 
 class SearchMediaPickerView: UIPickerView {
     
-    var onValueChanged: ((MediaCategory) -> Void)?
+    var onValueChanged: ((MediaContents?) -> Void)?
     
     private var mediaCategories: [MediaCategory]?
     
@@ -38,7 +38,7 @@ extension SearchMediaPickerView: UIPickerViewDelegate {
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         guard let mediaCategories = mediaCategories else { return }
-        onValueChanged?(mediaCategories[row])
+        onValueChanged?(MediaContents.allCases.first(where: { $0.rawValue == mediaCategories[row].rawValue }))
     }
 }
 

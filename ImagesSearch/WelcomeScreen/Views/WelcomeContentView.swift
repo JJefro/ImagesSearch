@@ -9,13 +9,13 @@ import UIKit
 import SnapKit
 
 protocol WelcomeContentViewProtocol: UIView {
-    var onSearchButtonTap: ((String?, MediaCategory?) -> Void)? { get set }
+    var onSearchButtonTap: ((String?, MediaContents?) -> Void)? { get set }
     
-    func selectCategory(category: MediaCategory?)
+    func selectCategory(category: MediaContents?)
 }
 
 class WelcomeContentView: UIView, WelcomeContentViewProtocol {
-    var onSearchButtonTap: ((String?, MediaCategory?) -> Void)?
+    var onSearchButtonTap: ((String?, MediaContents?) -> Void)?
     
     private let titleLabel = UILabel()
     private let verticalStack = UIStackView()
@@ -24,7 +24,7 @@ class WelcomeContentView: UIView, WelcomeContentViewProtocol {
     private let bottomDescriptionLabel = UILabel()
     private var mediaPickerView: SearchMediaPickerView?
     
-    private var selectedCategory: MediaCategory? {
+    private var selectedCategory: MediaContents? {
         didSet {
             searchView.categoryLabel.text = selectedCategory?.rawValue
         }
@@ -55,7 +55,7 @@ class WelcomeContentView: UIView, WelcomeContentViewProtocol {
         }
     }
     
-    func selectCategory(category: MediaCategory?) {
+    func selectCategory(category: MediaContents?) {
         selectedCategory = category
     }
     

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DeveloperToolsSupport
 
 class MainFlow {
     private var window: UIWindow?
@@ -15,9 +16,19 @@ class MainFlow {
     }
     
     func launch() {
-        let welcomeViewController = configureWelcomeViewController()
+        let welcomeViewModel = WelcomeViewModel()
+        let searchMediaViewModel = SearchMediaViewModel(networkManager: NetworkManager.shared)
+        
+        let welcomeViewController = configureWelcomeViewController(viewModel: welcomeViewModel)
+        let searchMediaViewController = configureSearchMediaViewController(viewModel: searchMediaViewModel)
+        
         let navigationController = configureNavigationController(rootViewController: welcomeViewController)
         
+        welcomeViewModel.onOpenSearchMediaView = { (text, category) in
+            searchMediaViewModel.mediaData = (text, category)
+            navigationController.pushViewController(searchMediaViewController, animated: true)
+        }
+
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
@@ -25,12 +36,15 @@ class MainFlow {
 
 // MARK: - UIViewControllers Configurtions
 private extension MainFlow {
-    func configureWelcomeViewController() -> UIViewController {
-        let viewModel = WelcomeViewModel()
+    func configureWelcomeViewController(viewModel: WelcomeViewModelProtocol) -> UIViewController {
         let contentView = WelcomeContentView(mediaCategories: viewModel.categoryList)
         let viewController = WelcomeViewController(contentView: contentView, viewModel: viewModel)
-        viewController.setInterfaceOrientationMask(orientation: .portrait)
-        viewController.addKeyboardHideOnTappedAroundRecognizer()
+        return viewController
+    }
+    
+    func configureSearchMediaViewController(viewModel: SearchMediaViewModelProtocol) -> UIViewController {
+        let contentView = SearchMediaView()
+        let viewController = SearchMediaViewController(contentView: contentView, viewModel: viewModel)
         return viewController
     }
 }
@@ -48,6 +62,7 @@ private extension MainFlow {
             let barAppearance = UINavigationBar.appearance()
             barAppearance.titleTextAttributes = [NSAttributedString.Key.font: R.font.openSansRegular(size: 15)!]
         }
+        navigationController.setNavigationBarHidden(true, animated: true)
         return navigationController
     }
 }
