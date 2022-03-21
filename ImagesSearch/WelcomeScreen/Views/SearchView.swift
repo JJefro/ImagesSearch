@@ -10,6 +10,9 @@ import UIKit
 class SearchView: UIView {
     
     private let horizontalStack = UIStackView()
+    private let separatorView = UIView()
+    private let backgroundSeparatorView = UIView()
+    private let backgroundChevronDownView = UIView()
     
     let searchField = TextFieldView(style: .searchField)
     let categoryLabel = UILabel()
@@ -23,6 +26,14 @@ class SearchView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func hideCategoryField(isHidden: Bool) {
+        separatorView.isHidden = isHidden
+        backgroundSeparatorView.isHidden = isHidden
+        categoryLabel.isHidden = isHidden
+        chevronDownImageView.isHidden = isHidden
+        backgroundChevronDownView.isHidden = isHidden
     }
 }
 
@@ -40,6 +51,8 @@ private extension SearchView {
         backgroundColor = R.color.searchViewBackgroundColor()
         clipsToBounds = true
         layer.cornerRadius = 5
+        layer.borderWidth = 1
+        layer.borderColor = R.color.searchViewBorderColor()?.cgColor
         
         searchField.configure(
             textFieldBackgroundColor: backgroundColor,
@@ -51,7 +64,7 @@ private extension SearchView {
     func addHorizontalStackView() {
         horizontalStack.axis = .horizontal
         horizontalStack.distribution = .fill
-        horizontalStack.spacing = 5
+        horizontalStack.spacing = 2
         
         addSubview(horizontalStack)
         horizontalStack.snp.makeConstraints {
@@ -60,8 +73,6 @@ private extension SearchView {
     }
     
     func addSeparatorView() {
-        let separatorView = UIView()
-        let backgroundSeparatorView = UIView()
         separatorView.backgroundColor = .lightGray.withAlphaComponent(0.5)
         separatorView.layer.cornerRadius = 10
         
@@ -89,21 +100,20 @@ private extension SearchView {
     }
     
     func addChevronDownImageView() {
-        let bgChevronDownView = UIView()
         let image = R.image.chevronDown()?.withRenderingMode(.alwaysTemplate)
         chevronDownImageView.image = image
         chevronDownImageView.tintColor = R.color.textColor()
         
-        horizontalStack.addArrangedSubview(bgChevronDownView)
-        bgChevronDownView.snp.makeConstraints {
+        horizontalStack.addArrangedSubview(backgroundChevronDownView)
+        backgroundChevronDownView.snp.makeConstraints {
             $0.width.equalTo(30)
         }
-        bgChevronDownView.addSubview(chevronDownImageView)
+        backgroundChevronDownView.addSubview(chevronDownImageView)
         chevronDownImageView.snp.makeConstraints {
             $0.width.equalTo(15)
             $0.height.equalTo(7)
-            $0.centerY.equalTo(bgChevronDownView.snp.centerY)
-            $0.trailing.equalTo(bgChevronDownView.snp.trailing).inset(15)
+            $0.centerY.equalTo(backgroundChevronDownView.snp.centerY)
+            $0.trailing.equalTo(backgroundChevronDownView.snp.trailing).inset(15)
         }
     }
 }

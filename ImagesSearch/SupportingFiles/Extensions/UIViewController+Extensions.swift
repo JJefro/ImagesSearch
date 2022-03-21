@@ -20,4 +20,18 @@ extension UIViewController {
         )
         view.addGestureRecognizer(endEditingTapRecognizer)
     }
+    
+    func showErrorAlert(title: String?, message: String?) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let cancelAction = UIAlertAction(
+            title: R.string.localizable.errorAlert_cancelAction_title(),
+            style: .cancel
+        )
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true)
+    }
 }
