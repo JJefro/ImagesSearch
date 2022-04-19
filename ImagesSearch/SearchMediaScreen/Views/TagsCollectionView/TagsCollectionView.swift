@@ -8,15 +8,21 @@
 import UIKit
 
 class TagsCollectionView: UICollectionView {
+
+    var onTagTap: ((Tag) -> Void)?
+
+    private var tags: [Tag] = [] {
+        didSet {
+            reloadData()
+        }
+    }
     
-    private var tags: [Tag]?
-    
-    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+    init() {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumLineSpacing = 8
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        super.init(frame: frame, collectionViewLayout: flowLayout)
+        super.init(frame: UIScreen.main.bounds, collectionViewLayout: flowLayout)
         configure()
         bind()
     }
@@ -25,9 +31,8 @@ class TagsCollectionView: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupTags(tags: [Tag]?) {
+    func setupTags(tags: [Tag]) {
         self.tags = tags
-        reloadData()
     }
 }
 
@@ -50,14 +55,18 @@ extension TagsCollectionView: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension TagsCollectionView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        onTagTap?(tags[indexPath.item])
+    }
+}
+
 extension TagsCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let tags = tags else { return 0 }
         return tags.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let tags = tags else { return .init() }
         let cell: TagsCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
         let tag = tags[indexPath.row]
         cell.setupCell(data: tag)

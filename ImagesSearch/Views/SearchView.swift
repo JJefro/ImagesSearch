@@ -8,20 +8,22 @@
 import UIKit
 
 class SearchView: UIView {
+
+    var onGetSearchFieldValue: ((String?) -> Void)?
     
     private let horizontalStack = UIStackView()
     private let separatorView = UIView()
     private let backgroundSeparatorView = UIView()
-    private let backgroundChevronDownView = UIView()
     
     let searchField = TextFieldView(style: .searchField)
     let categoryLabel = UILabel()
-    let chevronDownImageView = UIImageView()
+    let chevronDownIconView = ChevronDownIconView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         addViews()
         configure()
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -32,8 +34,12 @@ class SearchView: UIView {
         separatorView.isHidden = isHidden
         backgroundSeparatorView.isHidden = isHidden
         categoryLabel.isHidden = isHidden
-        chevronDownImageView.isHidden = isHidden
-        backgroundChevronDownView.isHidden = isHidden
+        chevronDownIconView.isHidden = isHidden
+        chevronDownIconView.isHidden = isHidden
+    }
+
+    func hideSearchTextField(isHidden: Bool) {
+        searchField.isHidden = isHidden
     }
 }
 
@@ -44,11 +50,11 @@ private extension SearchView {
         horizontalStack.addArrangedSubview(searchField)
         addSeparatorView()
         addCategoryLabel()
-        addChevronDownImageView()
+        horizontalStack.addArrangedSubview(chevronDownIconView)
     }
     
     func configure() {
-        backgroundColor = R.color.searchViewBackgroundColor()
+        backgroundColor = R.color.searchViewBG()
         clipsToBounds = true
         layer.cornerRadius = 5
         layer.borderWidth = 1
@@ -60,7 +66,13 @@ private extension SearchView {
             font: R.font.openSansRegular(size: 14)
         )
     }
-    
+
+    func bind() {
+        searchField.onTextFieldReturnKeyTap = { [weak self] text in
+            self?.onGetSearchFieldValue?(text)
+        }
+    }
+
     func addHorizontalStackView() {
         horizontalStack.axis = .horizontal
         horizontalStack.distribution = .fill
@@ -95,25 +107,7 @@ private extension SearchView {
         
         horizontalStack.addArrangedSubview(categoryLabel)
         categoryLabel.snp.makeConstraints {
-            $0.width.equalTo(60)
-        }
-    }
-    
-    func addChevronDownImageView() {
-        let image = R.image.chevronDown()?.withRenderingMode(.alwaysTemplate)
-        chevronDownImageView.image = image
-        chevronDownImageView.tintColor = R.color.textColor()
-        
-        horizontalStack.addArrangedSubview(backgroundChevronDownView)
-        backgroundChevronDownView.snp.makeConstraints {
-            $0.width.equalTo(30)
-        }
-        backgroundChevronDownView.addSubview(chevronDownImageView)
-        chevronDownImageView.snp.makeConstraints {
-            $0.width.equalTo(15)
-            $0.height.equalTo(7)
-            $0.centerY.equalTo(backgroundChevronDownView.snp.centerY)
-            $0.trailing.equalTo(backgroundChevronDownView.snp.trailing).inset(15)
+            $0.width.equalTo(75)
         }
     }
 }

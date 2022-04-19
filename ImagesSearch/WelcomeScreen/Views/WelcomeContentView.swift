@@ -9,22 +9,22 @@ import UIKit
 import SnapKit
 
 protocol WelcomeContentViewProtocol: UIView {
-    var onSearchButtonTap: ((String?, MediaContents?) -> Void)? { get set }
+    var onSearchButtonTap: ((String?, MediaCategory?) -> Void)? { get set }
     
-    func selectCategory(category: MediaContents?)
+    func selectCategory(category: MediaCategory?)
 }
 
 class WelcomeContentView: UIView, WelcomeContentViewProtocol {
-    var onSearchButtonTap: ((String?, MediaContents?) -> Void)?
+    var onSearchButtonTap: ((String?, MediaCategory?) -> Void)?
     
     private let titleLabel = UILabel()
     private let verticalStack = UIStackView()
     private let searchView = SearchView()
     private let searchButton = UIButton()
     private let bottomDescriptionLabel = UILabel()
-    private var mediaPickerView: SearchMediaPickerView?
+    private var mediaPickerView = PickerView()
     
-    private var selectedCategory: MediaContents? {
+    private var selectedCategory: MediaCategory? {
         didSet {
             searchView.categoryLabel.text = selectedCategory?.rawValue
         }
@@ -32,7 +32,8 @@ class WelcomeContentView: UIView, WelcomeContentViewProtocol {
     
     init(mediaCategories: [MediaCategory]) {
         super.init(frame: .zero)
-        self.mediaPickerView = SearchMediaPickerView(mediaCategories: mediaCategories)
+        mediaPickerView.setupCategories(
+            data: mediaCategories.map { $0.rawValue })
         addViews()
         bind()
     }
@@ -50,17 +51,19 @@ class WelcomeContentView: UIView, WelcomeContentViewProtocol {
         super.touchesBegan(touches, with: event)
         let touch = touches.first
         guard let location = touch?.location(in: self) else { return }
-        if !searchView.categoryLabel.frame.contains(location), !searchView.chevronDownImageView.frame.contains(location) {
-            mediaPickerView?.isHidden = true
+        if !searchView.categoryLabel.frame.contains(location), !searchView.chevronDownIconView.frame.contains(location) {
+            mediaPickerView.isHidden = true
+            searchView.chevronDownIconView.update(isClosed: true)
         }
     }
     
-    func selectCategory(category: MediaContents?) {
+    func selectCategory(category: MediaCategory?) {
         selectedCategory = category
     }
     
     @objc func categoryFieldTapped(_ sender: UITapGestureRecognizer) {
-        mediaPickerView?.isHidden.toggle()
+        mediaPickerView.isHidden = false
+        searchView.chevronDownIconView.update(isClosed: false)
     }
     
     @objc func searchButtonTapped(_ sender: UIButton) {
@@ -76,7 +79,8 @@ class WelcomeContentView: UIView, WelcomeContentViewProtocol {
     @objc func adjustForKeyboard(notification: Notification) {
         if notification.name == UIResponder.keyboardWillShowNotification {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
-                self?.mediaPickerView?.isHidden = true
+                self?.mediaPickerView.isHidden = true
+                self?.searchView.chevronDownIconView.update(isClosed: true)
             }
         }
     }
@@ -105,17 +109,21 @@ private extension WelcomeContentView {
     
     func bind() {
         addTapGesture(view: searchView.categoryLabel)
-        addTapGesture(view: searchView.chevronDownImageView)
+        addTapGesture(view: searchView.chevronDownIconView)
         searchButton.addTarget(self, action: #selector(searchButtonTapped(_:)), for: .touchUpInside)
         addObserverToNotificationCenter()
-        mediaPickerView?.onValueChanged = { [weak self] value in
-            self?.selectedCategory = value
+        mediaPickerView.onValueChanged = { [weak self] value in
+            self?.selectedCategory = MediaCategory(rawValue: value)
+        }
+
+        searchView.onGetSearchFieldValue = { [weak self] text in
+            self?.onSearchButtonTap?(text, self?.selectedCategory)
         }
     }
     
     func addBackgroundImageView() {
         let backgroundImageView = UIImageView()
-        backgroundImageView.image = R.image.welcomeBackgroundImage()
+        backgroundImageView.image = R.image.welcomeBGImage()
         backgroundImageView.alpha = 0.4
         backgroundImageView.contentMode = .scaleToFill
         
@@ -158,7 +166,7 @@ private extension WelcomeContentView {
         searchButton.setAttributedTitle(buttonTitle, for: .normal)
         searchButton.setTitleColor(.white, for: .normal)
         searchButton.layer.cornerRadius = 5
-        searchButton.backgroundColor = R.color.searchButtonBackgroundColor()
+        searchButton.backgroundColor = R.color.searchButtonBG()
         
         verticalStack.addArrangedSubview(searchButton)
         searchButton.snp.makeConstraints {
@@ -196,7 +204,6 @@ private extension WelcomeContentView {
     }
     
     func addPickerView() {
-        guard let mediaPickerView = mediaPickerView else { return }
         mediaPickerView.backgroundColor = searchView.backgroundColor
         
         addSubview(mediaPickerView)

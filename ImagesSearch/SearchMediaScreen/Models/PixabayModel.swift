@@ -16,6 +16,7 @@ struct PixabayModel: Codable {
         let identifier: Int
         let type: String
         let tags: String
+        let previewURL: String
         let previewWidth, previewHeight: Int
         let webformatURL: String
         let webformatWidth, webformatHeight: Int
@@ -25,7 +26,7 @@ struct PixabayModel: Codable {
         
         enum CodingKeys: String, CodingKey {
             case identifier = "id"
-            case type, tags, previewWidth, previewHeight, webformatURL
+            case type, tags, previewURL, previewWidth, previewHeight, webformatURL
             case webformatWidth, webformatHeight, largeImageURL, imageWidth, imageHeight, imageSize
             case views, downloads, collections, likes, comments
         }

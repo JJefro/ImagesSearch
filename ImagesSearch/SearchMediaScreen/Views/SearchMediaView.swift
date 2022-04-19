@@ -8,57 +8,75 @@
 import UIKit
 
 protocol SearchMediaViewProtocol: UIView {
-    var onPixabayButtonTap: (() -> Void)? { get set }
-    var onSettingsButtonTap: (() -> Void)? { get set }
-    
+    var onStateChanges: ((SearchMediaView.State) -> Void)? { get set }
+    var settingsData: [SettingsModel] { get set }
+
+    func viewWillTransition()
     func setTotalMediaContentLabel(text: String?)
     func setLoadingView(isLoading: Bool)
-    func setupTagsCollectionView(tags: [Tag]?)
-    func setupMediaCollectionsView(mediaContents: [ImageContentModel])
+    func setupTagsCollectionView(tags: [Tag])
+    func setupMediaCollectionsView(mediaContents: [MediaContentModel])
     func setupSearchTextfieldText(text: String?)
+    func updateMediaQuality(quality: MediaQuality)
 }
 
 class SearchMediaView: UIView, SearchMediaViewProtocol {
-    var onPixabayButtonTap: (() -> Void)?
-    var onSettingsButtonTap: (() -> Void)?
+
+    enum State {
+        case onPixabayButtonTap
+        case onGetSearchFieldValue(String?)
+        case onShareButtonTap(UIImage?)
+        case onTagTap(Tag)
+        case onUpdateSettingsValue(MediaCategory?, MediaQuality?)
+    }
+
+    var onStateChanges: ((State) -> Void)?
     
     private let topNavigationView = TopNavigationView()
+    private var settingsView = SettingsView()
     private let totalMediaLabel = UILabel()
     private let relatedLabel = UILabel()
     private let tagsCollectionView = TagsCollectionView()
     private let mediaCollectionView = MediaCollectionsView()
     private let loadingView = LoadingView()
+
+    var settingsData: [SettingsModel] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
         addViews()
+        configure()
         bind()
-        loadingView.isHidden = true
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    @objc private func pixabayButtonTapped(_ sender: UIButton) {
-        onPixabayButtonTap?()
+
+    func viewWillTransition() {
+        mediaCollectionView.viewWillTransition()
     }
     
-    @objc private func settingsButttonTapped(_ sender: UIButton) {
-        onSettingsButtonTap?()
+    @objc private func pixabayButtonTapped(_ sender: UIButton) {
+        scrollToInitialValue()
+        onStateChanges?(.onPixabayButtonTap)
+    }
+    
+    @objc private func settingsButtonTapped(_ sender: UIButton) {
+        settingsView.isShowSettingsView.toggle()
+        settingsView.setupSettings(data: settingsData)
     }
     
     func setTotalMediaContentLabel(text: String?) {
         totalMediaLabel.text = text
     }
     
-    func setupTagsCollectionView(tags: [Tag]?) {
+    func setupTagsCollectionView(tags: [Tag]) {
         tagsCollectionView.setupTags(tags: tags)
     }
 
-    func setupMediaCollectionsView(mediaContents: [ImageContentModel]) {
-        mediaCollectionView.setupMedia(contents: mediaContents)
+    func setupMediaCollectionsView(mediaContents: [MediaContentModel]) {
+        mediaCollectionView.mediaContents = mediaContents
     }
 
     func setupSearchTextfieldText(text: String?) {
@@ -67,6 +85,18 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
     
     func setLoadingView(isLoading: Bool) {
         loadingView.isHidden = !isLoading
+    }
+
+    func updateMediaQuality(quality: MediaQuality) {
+        mediaCollectionView.mediaQuality = quality
+    }
+
+    private func scrollToInitialValue() {
+        if !mediaCollectionView.mediaContents.isEmpty {
+            let initialIndexPath: IndexPath = IndexPath(item: 0, section: 0)
+            mediaCollectionView.scrollToItem(at: initialIndexPath, at: .top, animated: true)
+            tagsCollectionView.scrollToItem(at: initialIndexPath, at: .left, animated: true)
+        }
     }
 }
 
@@ -77,7 +107,12 @@ private extension SearchMediaView {
         addRelatedLabel()
         addTagsCollectionView()
         addMediaCollectionsView()
+        addSettingsView()
         addLoadingView()
+    }
+
+    func configure() {
+        backgroundColor = R.color.searchMediaViewBG()
     }
     
     func bind() {
@@ -88,9 +123,26 @@ private extension SearchMediaView {
         )
         topNavigationView.settingsButton.addTarget(
             self,
-            action: #selector(settingsButttonTapped(_:)),
+            action: #selector(settingsButtonTapped(_:)),
             for: .touchUpInside
         )
+
+        topNavigationView.searchView.onGetSearchFieldValue = { [weak self] text in
+            self?.onStateChanges?(.onGetSearchFieldValue(text))
+        }
+
+        mediaCollectionView.onShareButtonTap = { [weak self] image in
+            self?.onStateChanges?(.onShareButtonTap(image))
+        }
+
+        tagsCollectionView.onTagTap = { [weak self] tag in
+            self?.onStateChanges?(.onTagTap(tag))
+        }
+
+        settingsView.onUpdateSettingsValue = { [weak self] (category, quality) in
+            self?.onStateChanges?(.onUpdateSettingsValue(category, quality))
+            self?.scrollToInitialValue()
+        }
     }
     
     func addTopNavigationView() {
@@ -110,7 +162,8 @@ private extension SearchMediaView {
         addSubview(totalMediaLabel)
         totalMediaLabel.snp.makeConstraints {
             $0.top.equalTo(topNavigationView.snp.bottom)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.leading.equalTo(safeAreaLayoutGuide.snp.leading).inset(6)
+            $0.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).inset(6)
         }
     }
 
@@ -142,11 +195,22 @@ private extension SearchMediaView {
         addSubview(mediaCollectionView)
         mediaCollectionView.snp.makeConstraints {
             $0.top.equalTo(tagsCollectionView.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.leading.equalTo(safeAreaLayoutGuide.snp.leading).inset(16)
+            $0.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).inset(16)
             $0.bottom.equalToSuperview()
         }
     }
-     
+
+    func addSettingsView() {
+        addSubview(settingsView)
+        settingsView.snp.makeConstraints {
+            $0.top.equalTo(topNavigationView.snp.bottom)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
+
     func addLoadingView() {
         addSubview(loadingView)
         loadingView.snp.makeConstraints {
@@ -175,7 +239,7 @@ struct SearchMediaViewRepresentablePreview: PreviewProvider {
         Group {
             SearchMediaViewRepresentation()
         }
-        .preferredColorScheme(.light)
+        .preferredColorScheme(.dark)
     }
 }
 #endif

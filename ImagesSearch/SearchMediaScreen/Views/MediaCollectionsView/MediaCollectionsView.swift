@@ -9,13 +9,30 @@ import UIKit
 
 class MediaCollectionsView: UICollectionView {
 
-    private var mediaContents: [ImageContentModel]?
+    var onShareButtonTap: ((UIImage?) -> Void)?
 
-    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
-        let flowLayout = UICollectionViewFlowLayout()
+    private let cellsPerScreen: CGFloat = 3                                                    /// Cells count per screen in Portrait orientation.
+    private let cellsCountInRow: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 3 : 2 /// Cells count in row on iPad : iPhone in Landscape orientation.
+    private let flowLayout: UICollectionViewFlowLayout
+
+    var mediaQuality: MediaQuality = .normal {
+        didSet {
+            reloadData()
+        }
+    }
+    
+    var mediaContents: [MediaContentModel] = [] {
+        didSet {
+            reloadData()
+        }
+    }
+
+    init() {
+        flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 16
-        super.init(frame: frame, collectionViewLayout: flowLayout)
+        flowLayout.minimumInteritemSpacing = flowLayout.minimumLineSpacing
+        super.init(frame: UIScreen.main.bounds, collectionViewLayout: flowLayout)
         configure()
         bind()
     }
@@ -24,9 +41,8 @@ class MediaCollectionsView: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupMedia(contents: [ImageContentModel]) {
-        self.mediaContents = contents
-        reloadData()
+    func viewWillTransition() {
+        flowLayout.invalidateLayout()
     }
 }
 
@@ -35,6 +51,7 @@ private extension MediaCollectionsView {
         register(MediaCollectionsViewCell.self, forCellWithReuseIdentifier: MediaCollectionsViewCell.identifier)
         backgroundColor = .clear
         showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
     }
 
     func bind() {
@@ -45,21 +62,41 @@ private extension MediaCollectionsView {
 
 extension MediaCollectionsView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: bounds.width, height: 217)
+
+        var size = CGSize()
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            size = CGSize(
+                width: (bounds.width - (flowLayout.minimumLineSpacing * (cellsCountInRow - 1))) / cellsCountInRow,
+                height: (bounds.height - flowLayout.minimumLineSpacing) / cellsPerScreen
+            )
+        } else {
+            switch UIDevice.current.orientation {
+            case .landscapeLeft, .landscapeRight:
+                size = CGSize(
+                    width: (bounds.width - flowLayout.minimumLineSpacing) / cellsCountInRow,
+                    height: bounds.height - flowLayout.minimumLineSpacing * cellsCountInRow
+                )
+            default:
+                size = CGSize(
+                    width: bounds.width,
+                    height: bounds.height / cellsPerScreen
+                )
+            }
+        }
+        return size
     }
 }
 
 extension MediaCollectionsView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let mediaContents = mediaContents else { return 0 }
         return mediaContents.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let mediaContents = mediaContents else { return .init() }
         let cell: MediaCollectionsViewCell = collectionView.dequeueReusableCell(for: indexPath)
         let content = mediaContents[indexPath.row]
-        cell.setupCell(data: content)
+        cell.setupCell(data: content, quality: mediaQuality)
+        cell.onShareButtonTap = onShareButtonTap
         return cell
     }
 }
