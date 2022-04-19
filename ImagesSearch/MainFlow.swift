@@ -21,11 +21,12 @@ class MainFlow {
         
         let welcomeViewController = configureWelcomeViewController(viewModel: welcomeViewModel)
         let searchMediaViewController = configureSearchMediaViewController(viewModel: searchMediaViewModel)
-        
+
         let navigationController = configureNavigationController(rootViewController: welcomeViewController)
         
-        welcomeViewModel.onOpenSearchMediaView = { (text, category) in
-            searchMediaViewModel.mediaData = (text, category)
+        welcomeViewModel.onOpenSearchMediaView = { (text, selectedCategory, categoryList) in
+            searchMediaViewModel.mediaData = (text, selectedCategory)
+            searchMediaViewModel.setupCategoryList(list: categoryList)
             navigationController.pushViewController(searchMediaViewController, animated: true)
         }
 

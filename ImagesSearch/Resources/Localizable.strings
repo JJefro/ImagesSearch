@@ -42,3 +42,7 @@
 "welcomeContentView_searchButton_title" = "Search";
 
 "searchMediaView_relatedLabel_text" = "Related";
+
+"settingsView_title" = "Settings";
+"settingsView_mediaCategoryTitle" = "Media category";
+"settingsView_mediaSizeTitle" = "Media size";

@@ -13,18 +13,11 @@ class LoadingView: UIView {
     private var activityIndicator = NVActivityIndicatorView(
         frame: .zero,
         type: .ballClipRotateMultiple,
-        color: UIScreen.main.traitCollection.userInterfaceStyle == .dark ? .white : .darkGray,
+        color: R.color.activityIndicatorTintColor(),
         padding: 0
     )
 
-    private let blurView: UIVisualEffectView = {
-        var blur = UIBlurEffect()
-        let lightBlur = UIBlurEffect(style: .extraLight)
-        let darkBlur = UIBlurEffect(style: .dark)
-        blur = UIScreen.main.traitCollection.userInterfaceStyle == .dark ? darkBlur : lightBlur
-        let blurView = UIVisualEffectView(effect: blur)
-        return blurView
-    }()
+    private let blurView = BlurView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -8,7 +8,6 @@
 import UIKit
 
 class TagsCollectionViewCell: UICollectionViewCell {
-    
     private let tagLabel = UILabel()
     
     override init(frame: CGRect) {
@@ -44,7 +43,7 @@ private extension TagsCollectionViewCell {
     }
     
     func configure() {
-        backgroundColor = R.color.tagsBackgroundColor()
+        backgroundColor = R.color.tagsBG()
         clipsToBounds = true
         layer.cornerRadius = 5
     }

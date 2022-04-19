@@ -8,12 +8,20 @@
 import UIKit
 
 class TopNavigationView: UIView {
-    
+
     private let horizontalStack = UIStackView()
     private let bottomBorder = UIView()
     let pixabayButton = UIButton()
     let searchView = SearchView()
-    let settingsButton = UIButton()
+    let settingsButton = UIButton().apply {
+        let settingsButtonImage = R.image.settings()?.withRenderingMode(.alwaysTemplate)
+        $0.setImage(settingsButtonImage, for: .normal)
+        $0.tintColor = R.color.settingsButtonTintColor()
+        $0.backgroundColor = R.color.settingsButtonBG()
+        $0.layer.cornerRadius = 5
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = R.color.searchViewBorderColor()?.cgColor
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,9 +36,9 @@ class TopNavigationView: UIView {
 private extension TopNavigationView {
     func addViews() {
         addHorizontalStackView()
-        addLeftBarButton()
+        addPixabayButton()
         addSearchView()
-        addRightBarButton()
+        addSettingsButton()
         addBottomBorder()
     }
 
@@ -46,11 +54,11 @@ private extension TopNavigationView {
         }
     }
 
-    func addLeftBarButton() {
-        let leftButtonImage = R.image.pixabayLogo()?.withRenderingMode(.alwaysTemplate)
-        pixabayButton.setImage(leftButtonImage, for: .normal)
+    func addPixabayButton() {
+        let pixabayButtonImage = R.image.pixabayLogo()?.withRenderingMode(.alwaysTemplate)
+        pixabayButton.setImage(pixabayButtonImage, for: .normal)
         pixabayButton.tintColor = .white
-        pixabayButton.backgroundColor = R.color.searchButtonBackgroundColor()
+        pixabayButton.backgroundColor = R.color.searchButtonBG()
         pixabayButton.layer.cornerRadius = 5
         
         horizontalStack.addArrangedSubview(pixabayButton)
@@ -64,15 +72,7 @@ private extension TopNavigationView {
         horizontalStack.addArrangedSubview(searchView)
     }
 
-    func addRightBarButton() {
-        let rightButtonImage = R.image.settings()?.withRenderingMode(.alwaysTemplate)
-        settingsButton.setImage(rightButtonImage, for: .normal)
-        settingsButton.tintColor = .darkGray
-        settingsButton.backgroundColor = .white
-        settingsButton.layer.cornerRadius = 5
-        settingsButton.layer.borderWidth = 1
-        settingsButton.layer.borderColor = R.color.searchViewBorderColor()?.cgColor
-        
+    func addSettingsButton() {
         horizontalStack.addArrangedSubview(settingsButton)
         settingsButton.snp.makeConstraints {
             $0.width.equalTo(52)

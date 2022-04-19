@@ -18,6 +18,8 @@ class TextFieldView: UIView {
     private let nibName = "TextFieldView"
     private var viewModel = TextFieldViewModel()
     private var textFieldStyle: TextFieldStyle?
+
+    var onTextFieldReturnKeyTap: ((String?) -> Void)?
     
     init(style: TextFieldStyle) {
         super.init(frame: .zero)
@@ -46,7 +48,7 @@ class TextFieldView: UIView {
     private func commonInit() {
         txtField.delegate = self
         txtField.returnKeyType = .done
-        txtField.addTarget(self, action: #selector(TextFieldView.textFieldEditingChanged(_:)), for: .editingChanged)
+        txtField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
     }
     
     private func loadViewFromNib() -> UIView? {
@@ -58,6 +60,7 @@ class TextFieldView: UIView {
 
 // MARK: - CustomTextField Settings
 private extension TextFieldView {
+
     func makeFieldSettings() {
         guard let fieldStyle = textFieldStyle else { return }
         txtFieldTitle.text = fieldStyle.title
@@ -85,6 +88,7 @@ private extension TextFieldView {
         case .searchField:
             txtFieldTitle.isHidden = true
             txtField.borderStyle = .none
+            txtField.returnKeyType = .search
             txtField.setupImage(image: R.image.magnifyingglass(),
                                 position: .left,
                                 size: CGSize(width: 20,
@@ -125,6 +129,7 @@ extension TextFieldView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         textField.isSelected = false
+        onTextFieldReturnKeyTap?(textField.text)
         return true
     }
     

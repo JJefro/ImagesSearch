@@ -7,8 +7,10 @@
 
 import Foundation
 
-struct ImageContentModel {
-    let imageURL: URL?
+struct MediaContentModel {
+    let smallImageURL: URL?
+    let normalImageURL: URL?
     let largeImageURL: URL?
     let likes: Int
+    let tags: [Tag]
 }

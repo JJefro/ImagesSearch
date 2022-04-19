@@ -7,32 +7,28 @@
 
 import Foundation
 
-protocol ContentEntityProtocol {
-    var tags: [Tag]? { get set }
-    var mediaContents: [ImageContentModel] { get set }
-    var totalMediaString: String? { get }
-}
-
-struct PixabayImagesEntity: ContentEntityProtocol {
+struct PixabayEntity {
     
     let totalMedia: Int
     let mediaCategory: MediaCategory
-    var tags: [Tag]?
-    var mediaContents: [ImageContentModel]
+    var tags: [Tag] = []
+    var mediaContents: [MediaContentModel]
     
     var totalMediaString: String? {
-        guard let mediaCategory = mediaCategory.rawValue else { return nil }
-        return [String(totalMedia), "Free", mediaCategory].joined(separator: " ")
+        return [totalMedia.formattedWithSeparator, "Free", mediaCategory.rawValue].joined(separator: " ")
     }
     
     init(data: PixabayModel) {
+        guard let hits = data.hits.first else { fatalError() }
         self.totalMedia = data.total
-        self.mediaCategory = MediaCategory(rawValue: data.hits.first?.type.capitalized)
+        self.mediaCategory = MediaCategory(rawValue: hits.type.capitalized)
         self.mediaContents = data.hits.map {
-            ImageContentModel(
-                imageURL: URL(string: $0.webformatURL),
+            MediaContentModel(
+                smallImageURL: URL(string: $0.previewURL),
+                normalImageURL: URL(string: $0.webformatURL),
                 largeImageURL: URL(string: $0.largeImageURL),
-                likes: $0.likes
+                likes: $0.likes,
+                tags: $0.tags.components(separatedBy: ", ").map { Tag(rawValue: $0) }
             )
         }
         self.tags = getUniqueTagsFrom(data)

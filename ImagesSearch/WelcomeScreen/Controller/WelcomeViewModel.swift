@@ -8,18 +8,18 @@
 import Foundation
 
 protocol WelcomeViewModelProtocol {
-    var onOpenSearchMediaView: ((String, MediaContents) -> Void)? { get set }
+    var onOpenSearchMediaView: ((String, MediaCategory, [MediaCategory]) -> Void)? { get set }
     var categoryList: [MediaCategory] { get }
 
-    func getFirstCategory() -> MediaContents?
+    func getFirstCategory() -> MediaCategory?
 }
 
 class WelcomeViewModel: WelcomeViewModelProtocol {
-    var onOpenSearchMediaView: ((String, MediaContents) -> Void)?
+    var onOpenSearchMediaView: ((String, MediaCategory, [MediaCategory]) -> Void)?
 
-    private(set) var categoryList: [MediaCategory] = MediaContents.allCases.map { MediaCategory(rawValue: $0.rawValue) }
+    private(set) var categoryList: [MediaCategory] = Media.allCases.map { MediaCategory(rawValue: $0.rawValue) }
 
-    func getFirstCategory() -> MediaContents? {
-        return MediaContents.allCases.first(where: { $0.rawValue == categoryList.first?.rawValue })
+    func getFirstCategory() -> MediaCategory? {
+        return categoryList.first
     }
 }

@@ -42,9 +42,12 @@ class WelcomeViewController: UIViewController {
 private extension WelcomeViewController {
     func bind() {
         addKeyboardHideOnTappedAroundRecognizer()
-        contentView.onSearchButtonTap = { [weak self] (text, category) in
-            guard let text = text, let category = category else { return }
-            self?.viewModel.onOpenSearchMediaView?(text, category)
+        contentView.onSearchButtonTap = { [weak self] (text, selectedCategory) in
+            guard
+                let text = text,
+                let selectedCategory = selectedCategory,
+                let categoryList = self?.viewModel.categoryList else { return }
+            self?.viewModel.onOpenSearchMediaView?(text, selectedCategory, categoryList)
         }
     }
 }

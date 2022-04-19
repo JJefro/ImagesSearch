@@ -6,16 +6,18 @@
 //
 
 import UIKit
+import SwiftUI
 
-class SearchMediaPickerView: UIPickerView {
+class PickerView: UIPickerView {
     
-    var onValueChanged: ((MediaContents?) -> Void)?
+    var onValueChanged: ((String) -> Void)?
     
-    private var mediaCategories: [MediaCategory]?
+    private var categories: [String] = []
     
-    init(mediaCategories: [MediaCategory]) {
+    init() {
         super.init(frame: .zero)
-        self.mediaCategories = mediaCategories
+        backgroundColor = R.color.searchViewBG()
+
         commonInit()
     }
     
@@ -28,28 +30,35 @@ class SearchMediaPickerView: UIPickerView {
         dataSource = self
         isHidden = true
     }
+
+    func setupCategories(data: [String]) {
+        categories = data
+    }
 }
 
 // MARK: - UIPickerView Delegate Methods
-extension SearchMediaPickerView: UIPickerViewDelegate {
+extension PickerView: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        return NSAttributedString(string: categories[row], attributes: [
+            NSAttributedString.Key.foregroundColor: R.color.searchMediaPickerText()!
+        ])
+    }
+
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        guard let mediaCategories = mediaCategories else { return nil }
-        return mediaCategories[row].rawValue
+        return categories[row]
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        guard let mediaCategories = mediaCategories else { return }
-        onValueChanged?(MediaContents.allCases.first(where: { $0.rawValue == mediaCategories[row].rawValue }))
+        onValueChanged?(categories[row])
     }
 }
 
 // MARK: - UIPickerView DataSource Methods
-extension SearchMediaPickerView: UIPickerViewDataSource {
+extension PickerView: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        guard let mediaCategories = mediaCategories else { return 0 }
-        return mediaCategories.count
+        return categories.count
     }
 }

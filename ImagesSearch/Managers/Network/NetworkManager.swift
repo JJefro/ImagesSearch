@@ -8,7 +8,7 @@
 import UIKit
 
 protocol NetworkManagerProtocol {
-    func searchMedia(by text: String, content: MediaContents, completion: @escaping (Result<ContentEntityProtocol, Error>) -> Void)
+    func searchMedia(by text: String, category: MediaCategory, completion: @escaping (Result<PixabayEntity, Error>) -> Void)
 }
 
 class NetworkManager: NetworkManagerProtocol {
@@ -28,25 +28,15 @@ class NetworkManager: NetworkManagerProtocol {
         return components
     }
     
-    func searchMedia(by text: String, content: MediaContents, completion: @escaping (Result<ContentEntityProtocol, Error>) -> Void) {
+    func searchMedia(by text: String, category: MediaCategory, completion: @escaping (Result<PixabayEntity, Error>) -> Void) {
         var components = pixabayURLComponents
         let textQueryItem = URLQueryItem(name: "q", value: text)
-
-        switch content {
-        case .images:
-            let categoryQueryItem = URLQueryItem(name: "image_type", value: content.rawValue)
-            components.queryItems?.append(contentsOf: [textQueryItem, categoryQueryItem])
-        case .videos:
-            components.path = "/api/videos"
-            components.queryItems?.append(textQueryItem)
-        case .music:
-            break
-        }
-
+        let categoryQueryItem = URLQueryItem(name: "image_type", value: category.rawValue.lowercased())
+        components.queryItems?.append(contentsOf: [textQueryItem, categoryQueryItem])
         performRequest(url: components.url, completion: completion)
     }
     
-    private func performRequest(url: URL?, completion: @escaping (Result<ContentEntityProtocol, Error>) -> Void) {
+    private func performRequest(url: URL?, completion: @escaping (Result<PixabayEntity, Error>) -> Void) {
         guard let url = url else {
             completion(.failure(NetworkError.unknownURL))
             return
@@ -75,11 +65,11 @@ class NetworkManager: NetworkManagerProtocol {
         task.resume()
     }
     
-    private func parseJSON(data: Data) -> Result<ContentEntityProtocol, Error> {
+    private func parseJSON(data: Data) -> Result<PixabayEntity, Error> {
         let decoder = JSONDecoder()
         do {
             let decoderData = try decoder.decode(PixabayModel.self, from: data)
-            return .success(PixabayImagesEntity(data: decoderData))
+            return .success(PixabayEntity(data: decoderData))
         } catch {
             return .failure(error)
         }

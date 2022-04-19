@@ -18,6 +18,7 @@ extension UIViewController {
             target: view,
             action: #selector(UIView.endEditing)
         )
+        endEditingTapRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(endEditingTapRecognizer)
     }
     
