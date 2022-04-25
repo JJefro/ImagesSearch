@@ -32,6 +32,7 @@ class SelectedMediaView: UIView {
     }
     
     private let zoomButton = UIButton().apply {
+        $0.isUserInteractionEnabled = true
         $0.setImage(R.image.plusMagnifyingglass()?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.tintColor = R.color.shareButtonTintColor()
         $0.backgroundColor = R.color.shareButtonBG()
@@ -227,14 +228,14 @@ private extension SelectedMediaView {
         contentView.addSubview(mediaImageView)
         mediaImageView.snp.makeConstraints {
             $0.leading.top.trailing.equalToSuperview()
-            $0.height.equalTo(mediaImageView.snp.width).dividedBy(1.7)
+            $0.height.equalTo(mediaImageView.snp.width).dividedBy(1.8)
         }
     }
 
     func addZoomButton() {
-        mediaImageView.addSubview(zoomButton)
+        contentView.addSubview(zoomButton)
         zoomButton.snp.makeConstraints {
-            $0.trailing.bottom.equalToSuperview().inset(16)
+            $0.trailing.bottom.equalTo(mediaImageView).inset(16)
             $0.size.equalTo(32)
         }
     }
