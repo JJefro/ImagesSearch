@@ -15,7 +15,7 @@ class SettingsView: UIView {
     private let settingsViewWidth: CGFloat = 250
     private let animationDuration: CGFloat = 1
 
-    private let blurView = BlurView()
+    // MARK: - Views Configurations
     private let settingsView = UIView().apply {
         $0.layer.cornerRadius = 5
         $0.backgroundColor = R.color.searchMediaViewBG()
@@ -30,7 +30,8 @@ class SettingsView: UIView {
     private let separatorView = UIView().apply {
         $0.backgroundColor = R.color.searchViewBorderColor()
     }
-
+    
+    private let blurView = BlurView()
     private let settingsTableView = SettingsTableView()
     private var viewModel: SettingsViewModelProtocol
 
@@ -39,7 +40,6 @@ class SettingsView: UIView {
             animateSettingsView()
             if !isShowSettingsView {
                 onUpdateSettingsValue?(viewModel.currentMediaCategory, viewModel.currentMediaQuality)
-                settingsTableView.deselectRow()
             }
         }
     }
@@ -56,7 +56,14 @@ class SettingsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func animateSettingsView() {
+    func setupSettings(data: [SettingsModel]) {
+        settingsTableView.settingsObjects = data
+    }
+}
+
+// MARK: - Private Methods
+private extension SettingsView {
+    func animateSettingsView() {
         UIView.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: []) { [weak self] in
             guard let self = self else { return }
             if self.isShowSettingsView {
@@ -78,11 +85,28 @@ class SettingsView: UIView {
         }
     }
 
-    func setupSettings(data: [SettingsModel]) {
-        settingsTableView.settingsObjects = data
+    @objc func handleSettingsViewRightSwipe(_ sender: UISwipeGestureRecognizer) {
+        isShowSettingsView = false
     }
 }
 
+// MARK: - Bind Elements
+private extension SettingsView {
+    func bind() {
+        settingsTableView.onUpdateSettingsValue = { [weak self] value in
+            self?.viewModel.updateWithSettings(value: value)
+        }
+        addRightSwipeGesture(view: settingsView)
+    }
+
+    func addRightSwipeGesture(view: UIView) {
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSettingsViewRightSwipe(_:)))
+        rightSwipe.direction = .right
+        view.addGestureRecognizer(rightSwipe)
+    }
+}
+
+// MARK: - Add Views and Configurations
 private extension SettingsView {
     func addViews() {
         addBlurView()
@@ -90,12 +114,6 @@ private extension SettingsView {
         addTitleLabel()
         addSeparatorView()
         addSettingsTableView()
-    }
-
-    func bind() {
-        settingsTableView.onUpdateSettingsValue = { [weak self] value in
-            self?.viewModel.updateWithSettings(value: value)
-        }
     }
 
     func addBlurView() {

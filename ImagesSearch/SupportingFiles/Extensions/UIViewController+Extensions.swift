@@ -22,7 +22,7 @@ extension UIViewController {
         view.addGestureRecognizer(endEditingTapRecognizer)
     }
     
-    func showErrorAlert(title: String?, message: String?) {
+    func showAlert(title: String?, message: String?) {
         let alert = UIAlertController(
             title: title,
             message: message,
@@ -34,5 +34,23 @@ extension UIViewController {
         )
         alert.addAction(cancelAction)
         self.present(alert, animated: true)
+    }
+
+    func saveImageToPhotoAlbum(image: UIImage) {
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveImage(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+
+    @objc private func saveImage(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            showAlert(
+                title: R.string.localizable.errorAlert_imageSavingFailed_title(),
+                message: error.localizedDescription
+            )
+        } else {
+            showAlert(
+                title: R.string.localizable.alert_imageSaved_title(),
+                message: R.string.localizable.alert_imageSaved_message()
+            )
+        }
     }
 }

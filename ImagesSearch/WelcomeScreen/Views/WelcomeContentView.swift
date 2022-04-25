@@ -16,14 +16,41 @@ protocol WelcomeContentViewProtocol: UIView {
 
 class WelcomeContentView: UIView, WelcomeContentViewProtocol {
     var onSearchButtonTap: ((String?, MediaCategory?) -> Void)?
-    
-    private let titleLabel = UILabel()
-    private let verticalStack = UIStackView()
+
+    private let backgroundImageView = UIImageView().apply {
+        $0.image = R.image.welcomeBGImage()
+        $0.alpha = 0.4
+        $0.contentMode = .scaleToFill
+    }
+
+    private let titleLabel = UILabel().apply {
+        $0.font = R.font.openSansExtraBold(size: 26)
+        $0.textColor = .white
+        $0.textAlignment = .center
+        $0.numberOfLines = 0
+        $0.text = R.string.localizable.welcomeContentView_titleLabel()
+    }
+
+    private let verticalStack = UIStackView().apply {
+        $0.axis = .vertical
+        $0.distribution = .equalSpacing
+        $0.spacing = 29
+    }
+
+    private let bottomDescriptionLabel = UILabel().apply {
+        $0.font = R.font.openSansRegular(size: 12)
+        $0.textColor = .white
+        $0.textAlignment = .center
+        $0.numberOfLines = 0
+        $0.text = R.string.localizable.welcomeContentView_bottomDescriptionLabel()
+    }
+
+    private var mediaPickerView = PickerView().apply {
+        $0.backgroundColor = R.color.searchViewBG()
+    }
+
     private let searchView = SearchView()
-    private let searchButton = UIButton()
-    private let bottomDescriptionLabel = UILabel()
-    private var mediaPickerView = PickerView()
-    
+    private let searchButton = ActionButton(type: .search)
     private var selectedCategory: MediaCategory? {
         didSet {
             searchView.categoryLabel.text = selectedCategory?.rawValue
@@ -47,30 +74,32 @@ class WelcomeContentView: UIView, WelcomeContentViewProtocol {
         addViews()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
         let touch = touches.first
         guard let location = touch?.location(in: self) else { return }
-        if !searchView.categoryLabel.frame.contains(location), !searchView.chevronDownIconView.frame.contains(location) {
-            mediaPickerView.isHidden = true
-            searchView.chevronDownIconView.update(isClosed: true)
+        if !isCategoryFieldContains(location: location) {
+            hideMediaPickerView(isHidden: true)
         }
     }
     
     func selectCategory(category: MediaCategory?) {
         selectedCategory = category
     }
-    
+}
+
+// MARK: - Private Methods
+private extension WelcomeContentView {
     @objc func categoryFieldTapped(_ sender: UITapGestureRecognizer) {
-        mediaPickerView.isHidden = false
-        searchView.chevronDownIconView.update(isClosed: false)
+        endEditing(true)
+        hideMediaPickerView(isHidden: false)
     }
     
     @objc func searchButtonTapped(_ sender: UIButton) {
         onSearchButtonTap?(searchView.searchField.txtField.text, selectedCategory)
     }
     
-    private func addTapGesture(view: UIView) {
+    func addTapGesture(view: UIView) {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.categoryFieldTapped(_:)))
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(tap)
@@ -79,13 +108,12 @@ class WelcomeContentView: UIView, WelcomeContentViewProtocol {
     @objc func adjustForKeyboard(notification: Notification) {
         if notification.name == UIResponder.keyboardWillShowNotification {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
-                self?.mediaPickerView.isHidden = true
-                self?.searchView.chevronDownIconView.update(isClosed: true)
+                self?.hideMediaPickerView(isHidden: true)
             }
         }
     }
     
-    private func addObserverToNotificationCenter() {
+    func addObserverToNotificationCenter() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(adjustForKeyboard(notification:)),
@@ -93,95 +121,71 @@ class WelcomeContentView: UIView, WelcomeContentViewProtocol {
             object: nil
         )
     }
+
+    func hideMediaPickerView(isHidden: Bool) {
+        mediaPickerView.isHidden = isHidden
+        searchView.chevronDownIconView.update(isClosed: isHidden)
+    }
+
+    func isCategoryFieldContains(location: CGPoint) -> Bool {
+        if searchView.categoryLabel.frame.contains(location), searchView.chevronDownIconView.frame.contains(location) {
+            return true
+        }
+        return false
+    }
+}
+
+// MARK: - Bind Elements
+private extension WelcomeContentView {
+    func bind() {
+        addTapGesture(view: searchView.categoryLabel)
+        addTapGesture(view: searchView.chevronDownIconView)
+        searchButton.addTarget(self, action: #selector(searchButtonTapped(_:)), for: .touchUpInside)
+        addObserverToNotificationCenter()
+        bindMediaPickerView()
+        bindSearchView()
+    }
+
+    func bindMediaPickerView() {
+        mediaPickerView.onValueChanged = { [weak self] value in
+            self?.selectedCategory = MediaCategory(rawValue: value)
+        }
+    }
+
+    func bindSearchView() {
+        searchView.onGetSearchFieldValue = { [weak self] text in
+            self?.onSearchButtonTap?(text, self?.selectedCategory)
+        }
+    }
 }
 
 // MARK: - WelcomeContentView Configurations
 private extension WelcomeContentView {
     func addViews() {
         addBackgroundImageView()
-        addVerticalStack()
-        addSearchView()
-        addSearchButton()
+        addSearchElements()
         addTitleLabel()
         addBottomDescriptionLabel()
         addPickerView()
     }
     
-    func bind() {
-        addTapGesture(view: searchView.categoryLabel)
-        addTapGesture(view: searchView.chevronDownIconView)
-        searchButton.addTarget(self, action: #selector(searchButtonTapped(_:)), for: .touchUpInside)
-        addObserverToNotificationCenter()
-        mediaPickerView.onValueChanged = { [weak self] value in
-            self?.selectedCategory = MediaCategory(rawValue: value)
-        }
-
-        searchView.onGetSearchFieldValue = { [weak self] text in
-            self?.onSearchButtonTap?(text, self?.selectedCategory)
-        }
-    }
-    
     func addBackgroundImageView() {
-        let backgroundImageView = UIImageView()
-        backgroundImageView.image = R.image.welcomeBGImage()
-        backgroundImageView.alpha = 0.4
-        backgroundImageView.contentMode = .scaleToFill
-        
         insertSubview(backgroundImageView, at: 0)
-        backgroundImageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+        backgroundImageView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
-    func addVerticalStack() {
-        verticalStack.axis = .vertical
-        verticalStack.distribution = .equalSpacing
-        verticalStack.spacing = 29
-        
+    func addSearchElements() {
         addSubview(verticalStack)
         verticalStack.snp.makeConstraints {
             $0.top.equalTo(snp.centerY).offset(-50)
             $0.trailing.leading.equalToSuperview().inset(20)
         }
-    }
-    
-    func addSearchView() {
-        verticalStack.addArrangedSubview(searchView)
-        searchView.snp.makeConstraints {
-            $0.height.equalTo(52)
-        }
-    }
-    
-    func addSearchButton() {
-        let imageAttachment = NSTextAttachment()
-        imageAttachment.image = R.image.magnifyingglass()
-        imageAttachment.bounds = CGRect(x: 0, y: -2, width: 22, height: 22)
-        
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        let buttonTitle = NSMutableAttributedString(attributedString: imageString)
-        buttonTitle.append(NSMutableAttributedString(
-            string: "  " + R.string.localizable.welcomeContentView_searchButton_title(),
-            attributes: [NSAttributedString.Key.font: R.font.openSansSemiBold(size: 22)!]))
-        
-        searchButton.setAttributedTitle(buttonTitle, for: .normal)
-        searchButton.setTitleColor(.white, for: .normal)
-        searchButton.layer.cornerRadius = 5
-        searchButton.backgroundColor = R.color.searchButtonBG()
-        
-        verticalStack.addArrangedSubview(searchButton)
-        searchButton.snp.makeConstraints {
-            $0.trailing.leading.equalToSuperview()
-            $0.height.equalTo(searchView.snp.height)
-        }
+        verticalStack.addArrangedSubviews(searchView, searchButton)
+        searchView.snp.makeConstraints { $0.height.equalTo(52) }
+        searchButton.snp.makeConstraints { $0.height.equalTo(52) }
     }
     
     func addTitleLabel() {
-        titleLabel.font = R.font.openSansExtraBold(size: 26)
-        titleLabel.textColor = .white
-        titleLabel.textAlignment = .center
-        titleLabel.numberOfLines = 0
-        titleLabel.text = R.string.localizable.welcomeContentView_titleLabel()
-        
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.bottom.equalTo(verticalStack.snp.top).offset(-63)
@@ -190,12 +194,6 @@ private extension WelcomeContentView {
     }
     
     func addBottomDescriptionLabel() {
-        bottomDescriptionLabel.font = R.font.openSansRegular(size: 12)
-        bottomDescriptionLabel.textColor = .white
-        bottomDescriptionLabel.textAlignment = .center
-        bottomDescriptionLabel.numberOfLines = 0
-        bottomDescriptionLabel.text = R.string.localizable.welcomeContentView_bottomDescriptionLabel()
-        
         addSubview(bottomDescriptionLabel)
         bottomDescriptionLabel.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
@@ -204,13 +202,11 @@ private extension WelcomeContentView {
     }
     
     func addPickerView() {
-        mediaPickerView.backgroundColor = searchView.backgroundColor
-        
         addSubview(mediaPickerView)
         mediaPickerView.snp.makeConstraints {
-            $0.top.equalTo(searchView.snp.bottom).offset(5)
+            $0.top.equalTo(searchView.snp.bottom)
             $0.trailing.leading.equalTo(verticalStack)
-            $0.height.equalTo(100)
+            $0.height.equalTo(85)
         }
     }
 }

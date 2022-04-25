@@ -8,7 +8,12 @@
 import UIKit
 
 class TagsCollectionViewCell: UICollectionViewCell {
-    private let tagLabel = UILabel()
+    
+    private let tagLabel = UILabel().apply {
+        $0.textColor = R.color.textColor()
+        $0.font = R.font.openSansRegular(size: 14)
+        $0.textAlignment = .center
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,10 +36,6 @@ class TagsCollectionViewCell: UICollectionViewCell {
 
 private extension TagsCollectionViewCell {
     func addTagLabel() {
-        tagLabel.textColor = R.color.textColor()
-        tagLabel.font = R.font.openSansRegular(size: 14)
-        tagLabel.textAlignment = .center
-        
         contentView.addSubview(tagLabel)
         tagLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(10)

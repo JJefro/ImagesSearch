@@ -9,13 +9,26 @@ import UIKit
 
 class TopNavigationView: UIView {
 
-    private let horizontalStack = UIStackView()
-    private let bottomBorder = UIView()
-    let pixabayButton = UIButton()
-    let searchView = SearchView()
+    // MARK: - Views Configurations
+    private let horizontalStack = UIStackView().apply {
+        $0.axis = .horizontal
+        $0.distribution = .equalSpacing
+        $0.spacing = 5
+    }
+
+    let pixabayButton = UIButton().apply {
+        $0.setImage(R.image.pixabayLogo()?.withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.tintColor = .white
+        $0.backgroundColor = R.color.searchButtonBG()
+        $0.layer.cornerRadius = 5
+    }
+
+    let searchView = SearchView().apply {
+        $0.hideCategoryField(isHidden: true)
+    }
+
     let settingsButton = UIButton().apply {
-        let settingsButtonImage = R.image.settings()?.withRenderingMode(.alwaysTemplate)
-        $0.setImage(settingsButtonImage, for: .normal)
+        $0.setImage(R.image.settings()?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.tintColor = R.color.settingsButtonTintColor()
         $0.backgroundColor = R.color.settingsButtonBG()
         $0.layer.cornerRadius = 5
@@ -23,9 +36,14 @@ class TopNavigationView: UIView {
         $0.layer.borderColor = R.color.searchViewBorderColor()?.cgColor
     }
 
+    private let bottomBorder = UIView().apply {
+        $0.backgroundColor = R.color.searchViewBorderColor()
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addViews()
+        configure()
     }
     
     required init?(coder: NSCoder) {
@@ -33,60 +51,33 @@ class TopNavigationView: UIView {
     }
 }
 
+// MARK: - Add Views and Configurations
 private extension TopNavigationView {
     func addViews() {
-        addHorizontalStackView()
-        addPixabayButton()
-        addSearchView()
-        addSettingsButton()
+        addNavigationElements()
         addBottomBorder()
     }
 
-    func addHorizontalStackView() {
-        horizontalStack.axis = .horizontal
-        horizontalStack.distribution = .equalSpacing
-        horizontalStack.spacing = 5
-        
+    func configure() {
+        backgroundColor = R.color.topNavigationViewBG()
+    }
+
+    func addNavigationElements() {
         addSubview(horizontalStack)
         horizontalStack.snp.makeConstraints {
             $0.height.equalTo(52)
-            $0.edges.equalToSuperview().inset(16)
+            $0.edges.equalTo(safeAreaLayoutGuide).inset(16)
         }
-    }
-
-    func addPixabayButton() {
-        let pixabayButtonImage = R.image.pixabayLogo()?.withRenderingMode(.alwaysTemplate)
-        pixabayButton.setImage(pixabayButtonImage, for: .normal)
-        pixabayButton.tintColor = .white
-        pixabayButton.backgroundColor = R.color.searchButtonBG()
-        pixabayButton.layer.cornerRadius = 5
-        
-        horizontalStack.addArrangedSubview(pixabayButton)
-        pixabayButton.snp.makeConstraints {
-            $0.width.equalTo(52)
-        }
-    }
-
-    func addSearchView() {
-        searchView.hideCategoryField(isHidden: true)
-        horizontalStack.addArrangedSubview(searchView)
-    }
-
-    func addSettingsButton() {
-        horizontalStack.addArrangedSubview(settingsButton)
-        settingsButton.snp.makeConstraints {
-            $0.width.equalTo(52)
-        }
+        horizontalStack.addArrangedSubviews(pixabayButton, searchView, settingsButton)
+        pixabayButton.snp.makeConstraints { $0.size.equalTo(52) }
+        settingsButton.snp.makeConstraints { $0.size.equalTo(52) }
     }
     
     func addBottomBorder() {
-        bottomBorder.backgroundColor = R.color.searchViewBorderColor()
-        
         addSubview(bottomBorder)
         bottomBorder.snp.makeConstraints {
             $0.height.equalTo(1)
-            $0.trailing.leading.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.trailing.leading.bottom.equalToSuperview()
         }
     }
 }

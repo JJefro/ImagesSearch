@@ -10,11 +10,7 @@ import UIKit
 class SettingsTableView: UITableView {
 
     var onUpdateSettingsValue: ((String) -> Void)?
-    var settingsObjects: [SettingsModel] = [] {
-        didSet {
-            reloadData()
-        }
-    }
+    var settingsObjects: [SettingsModel] = []
 
     private var selectedCellIndexPath: IndexPath?
     private var isCellInOpenState: Bool = false
@@ -29,12 +25,6 @@ class SettingsTableView: UITableView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    func deselectRow() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-            self.isCellInOpenState = false
-        }
     }
 }
 

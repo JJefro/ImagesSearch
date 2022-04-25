@@ -15,6 +15,8 @@ protocol SearchMediaViewModelProtocol {
     func filterMediaBy(tag: Tag)
     func showCurrentPixabayEntity()
     func updateMediaQuality(quality: MediaQuality)
+    func updateMediaSettings()
+    func getLicenseURL() -> URL?
 }
 
 class SearchMediaViewModel: SearchMediaViewModelProtocol {
@@ -29,7 +31,11 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     }
     
     var onStateChanges: ((State) -> Void)?
-    var mediaData: (text: String, selectedCategory: MediaCategory)?
+    var mediaData: (text: String, selectedCategory: MediaCategory)? {
+        didSet {
+            searchMedia()
+        }
+    }
 
     private(set) var categoryList: [MediaCategory] = []
     private var pixabayEntity: PixabayEntity? {
@@ -41,7 +47,6 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
 
     private var currentMediaQuality: MediaQuality = .normal {
         didSet {
-            updateMediaSettings()
             onStateChanges?(.onUpdateMediaQuality(currentMediaQuality))
         }
     }
@@ -50,6 +55,10 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     
     init(networkManager: NetworkManagerProtocol) {
         self.networkManager = networkManager
+    }
+
+    func getLicenseURL() -> URL? {
+        return networkManager.getPixabayLicenseURL()
     }
 
     func setupCategoryList(list: [MediaCategory]) {
@@ -99,7 +108,6 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
             selectedItem: currentMediaQuality.rawValue,
             pickerValues: MediaQuality.allCases.map { $0.rawValue }
         )
-        
         onStateChanges?(.onUpdateCurrentSettings([mediaCategorySettings, mediaQualitySettings]))
     }
 }

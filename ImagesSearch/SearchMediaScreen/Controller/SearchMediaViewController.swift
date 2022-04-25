@@ -44,10 +44,15 @@ class SearchMediaViewController: UIViewController {
     }
     
     private func shareImage(image: UIImage?) {
-        guard let image = image else { return }
+        guard let image = image?.jpegData(compressionQuality: 1) else { return }
         let activityController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         activityController.popoverPresentationController?.sourceView = view
         self.present(activityController, animated: true, completion: nil)
+    }
+
+    private func showPixabayLicense() {
+        guard let pixabayLicenseURL = viewModel.getLicenseURL() else { return }
+        UIApplication.shared.open(pixabayLicenseURL)
     }
 }
 
@@ -73,7 +78,7 @@ private extension SearchMediaViewController {
                 self.contentView.setupMediaCollectionsView(mediaContents: mediaContents)
                 
             case .onErrorOccured(let error):
-                self.showErrorAlert(
+                self.showAlert(
                     title: R.string.localizable.errorAlert_title(),
                     message: error.localizedDescription
                 )
@@ -84,7 +89,7 @@ private extension SearchMediaViewController {
             case .onUpdateMediaQuality(let mediaQuality):
                 self.contentView.updateMediaQuality(quality: mediaQuality)
             case .onUpdateCurrentSettings(let settingsData):
-                self.contentView.settingsData = settingsData
+                self.contentView.setupSettings(settings: settingsData)
             }
         }
     }
@@ -106,15 +111,19 @@ private extension SearchMediaViewController {
             case .onGetSearchFieldValue(let text):
                 guard let text = text else { return }
                 self.viewModel.mediaData?.text = text
-                self.viewModel.searchMedia()
             case .onUpdateSettingsValue(let category, let quality):
                 if let category = category {
                     self.viewModel.mediaData?.selectedCategory = category
-                    self.viewModel.searchMedia()
                 }
                 if let quality = quality {
                     self.viewModel.updateMediaQuality(quality: quality)
                 }
+            case .onDownloadButtonTap(let image):
+                guard let image = image else { return }
+                self.saveImageToPhotoAlbum(image: image)
+                
+            case .onLicenseButtonTap:
+                self.showPixabayLicense()
             }
         }
     }
