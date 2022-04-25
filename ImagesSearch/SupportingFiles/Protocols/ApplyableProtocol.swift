@@ -8,9 +8,9 @@
 import UIKit
 
 /// Protocol for adding useful functions in a simple way.
-public protocol ApplyableProtocol {}
+protocol ApplyableProtocol {}
 
-public extension ApplyableProtocol where Self: AnyObject {
+extension ApplyableProtocol where Self: AnyObject {
     /// Calls the specified closure with Self value as its receiver and returns Self value.
     ///
     /// - Parameter item: Closure to apply.

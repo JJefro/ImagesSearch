@@ -13,9 +13,16 @@ class MediaCollectionsViewCell: UICollectionViewCell {
     var onShareButtonTap: ((UIImage?) -> Void)?
 
     private let loadingView = LoadingView()
-    private let imageView = UIImageView()
-    private let shareButton = UIButton()
     private var placeHolderImage = UIImage()
+    private let shareButton = UIButton().apply {
+        $0.setImage(R.image.share()?.withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.tintColor = R.color.shareButtonTintColor()
+        $0.backgroundColor = R.color.shareButtonBG()
+        $0.layer.cornerRadius = 3
+    }
+    private let mediaImageView = UIImageView().apply {
+        $0.contentMode = .scaleAspectFill
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,8 +35,25 @@ class MediaCollectionsViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupCell(data: MediaContentModel, quality: MediaQuality) {
+    func setupCell(data: MediaContentModel, quality: MediaQuality, isHiddenShareButton: Bool) {
         loadingView.isHidden = false
+        shareButton.isHidden = isHiddenShareButton
+        mediaImageView.sd_setImage(
+            with: getRequiredImageURL(data: data, quality: quality),
+            placeholderImage: placeHolderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
+            guard let self = self else { return }
+            if let image = image {
+                self.mediaImageView.image = image
+                self.loadingView.isHidden = true
+            }
+        }
+    }
+
+    @objc func shareButtonTapped(_ sender: UIButton) {
+        onShareButtonTap?(mediaImageView.image)
+    }
+
+    private func getRequiredImageURL(data: MediaContentModel, quality: MediaQuality) -> URL? {
         let imageURL: URL?
         switch quality {
         case .small:
@@ -39,19 +63,7 @@ class MediaCollectionsViewCell: UICollectionViewCell {
         case .large:
             imageURL = data.largeImageURL
         }
-        imageView.sd_setImage(
-            with: imageURL,
-            placeholderImage: placeHolderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
-            guard let self = self else { return }
-            if let image = image {
-                self.imageView.image = image
-                self.loadingView.isHidden = true
-            }
-        }
-    }
-
-    @objc func shareButtonTapped(_ sender: UIButton) {
-        onShareButtonTap?(imageView.image)
+        return imageURL
     }
 }
 
@@ -59,8 +71,8 @@ private extension MediaCollectionsViewCell {
     func addViews() {
         addImageView()
         addShareButton()
-        addLoadingView()
         setPlaceholderImage()
+        addLoadingView()
     }
 
     func configure() {
@@ -73,25 +85,16 @@ private extension MediaCollectionsViewCell {
     }
 
     func addImageView() {
-        imageView.contentMode = .scaleAspectFill
-
-        contentView.addSubview(imageView)
-        imageView.snp.makeConstraints {
+        contentView.addSubview(mediaImageView)
+        mediaImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
 
     func addShareButton() {
-        let shareButtonImage = R.image.share()?.withRenderingMode(.alwaysTemplate)
-        shareButton.setImage(shareButtonImage, for: .normal)
-        shareButton.tintColor = R.color.shareButtonTintColor()
-        shareButton.backgroundColor = R.color.shareButtonBG()
-        shareButton.layer.cornerRadius = 3
-
         contentView.addSubview(shareButton)
         shareButton.snp.makeConstraints {
-            $0.trailing.equalTo(imageView).inset(8)
-            $0.top.equalTo(imageView).inset(8)
+            $0.trailing.top.equalTo(mediaImageView).inset(16)
             $0.size.equalTo(32)
         }
     }

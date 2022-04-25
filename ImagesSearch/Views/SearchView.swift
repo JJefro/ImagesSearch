@@ -10,14 +10,27 @@ import UIKit
 class SearchView: UIView {
 
     var onGetSearchFieldValue: ((String?) -> Void)?
-    
-    private let horizontalStack = UIStackView()
-    private let separatorView = UIView()
+
     private let backgroundSeparatorView = UIView()
-    
     let searchField = TextFieldView(style: .searchField)
-    let categoryLabel = UILabel()
     let chevronDownIconView = ChevronDownIconView()
+    
+    private let horizontalStack = UIStackView().apply {
+        $0.axis = .horizontal
+        $0.distribution = .fill
+        $0.spacing = 2
+    }
+
+    private let separatorView = UIView().apply {
+        $0.backgroundColor = .lightGray.withAlphaComponent(0.5)
+        $0.layer.cornerRadius = 10
+    }
+
+    let categoryLabel = UILabel().apply {
+        $0.textColor = R.color.textColor()
+        $0.font = R.font.openSansRegular(size: 14)
+        $0.textAlignment = .center
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -74,10 +87,6 @@ private extension SearchView {
     }
 
     func addHorizontalStackView() {
-        horizontalStack.axis = .horizontal
-        horizontalStack.distribution = .fill
-        horizontalStack.spacing = 2
-        
         addSubview(horizontalStack)
         horizontalStack.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -85,9 +94,6 @@ private extension SearchView {
     }
     
     func addSeparatorView() {
-        separatorView.backgroundColor = .lightGray.withAlphaComponent(0.5)
-        separatorView.layer.cornerRadius = 10
-        
         horizontalStack.addArrangedSubview(backgroundSeparatorView)
         backgroundSeparatorView.snp.makeConstraints {
             $0.width.equalTo(2)
@@ -101,10 +107,6 @@ private extension SearchView {
     }
     
     func addCategoryLabel() {
-        categoryLabel.textColor = R.color.textColor()
-        categoryLabel.font = R.font.openSansRegular(size: 14)
-        categoryLabel.textAlignment = .center
-        
         horizontalStack.addArrangedSubview(categoryLabel)
         categoryLabel.snp.makeConstraints {
             $0.width.equalTo(75)

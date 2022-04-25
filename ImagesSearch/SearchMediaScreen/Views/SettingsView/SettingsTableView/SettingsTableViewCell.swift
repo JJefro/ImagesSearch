@@ -15,20 +15,24 @@ class SettingsTableViewCell: UITableViewCell {
         $0.axis = .horizontal
         $0.distribution = .fill
     }
+    
     private let labelsVerticalStack = UIStackView().apply {
         $0.axis = .vertical
         $0.distribution = .fillEqually
     }
+
     private let titleLabel = UILabel().apply {
         $0.font = R.font.openSansRegular(size: 13)
         $0.textColor = R.color.grayTextColor()
         $0.textAlignment = .left
     }
+
     private let selectedItemLabel = UILabel().apply {
         $0.font = R.font.openSansRegular(size: 13)
         $0.textColor = R.color.textColor()
         $0.textAlignment = .left
     }
+
     private let chevronDownIconView = ChevronDownIconView()
     private let settingsPickerView = PickerView().apply {
         $0.isHidden = false

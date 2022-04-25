@@ -36,13 +36,24 @@
 
 "errorAlert_cancelAction_title" = "Cancel";
 "errorAlert_title" = "Error";
+"errorAlert_imageSavingFailed_title" = "Image saving failed";
+
+"alert_imageSaved_title" = "Saved";
+"alert_imageSaved_message" = "The image has been successfully saved to your photo album";
 
 "welcomeContentView_titleLabel" = "Take your audience on a visual adventure";
 "welcomeContentView_bottomDescriptionLabel" = "Photo by Free-Photos";
-"welcomeContentView_searchButton_title" = "Search";
+
+"actionButton_search_title" = "Search";
+"actionButton_dowload_title" = "Download";
+"actionButton_share_title" = "Share";
 
 "searchMediaView_relatedLabel_text" = "Related";
 
 "settingsView_title" = "Settings";
 "settingsView_mediaCategoryTitle" = "Media category";
 "settingsView_mediaSizeTitle" = "Media size";
+
+"selectedMediaView_license_label" = "APP License";
+"selectedMediaView_license_description" = "Free for commercial use No attribution required";
+"selectedMediaView_share_description" = "Photo in .JPG format";
