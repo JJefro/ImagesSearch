@@ -67,6 +67,9 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
     private let detailsView = DetailsView().apply {
         $0.isHidden = true
     }
+    private let fullscreenView = FullscreenView().apply {
+        $0.isHidden = true
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -84,6 +87,7 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
 extension SearchMediaView {
     func viewWillTransition() {
         mediaCollectionView.viewWillTransition()
+        //        detailsView.viewWillTransition()
     }
 
     func setTotalMediaContentLabel(text: String?) {
@@ -210,8 +214,7 @@ private extension SearchMediaView {
             case .onLicenseButtonTap:
                 self.onStateChanges?(.onLicenseButtonTap)
             case .onZoomButtonTap(let image):
-                print(image!.size)
-                // TODO: - Show fullscreen image
+                self.fullscreenView.setupImage(image: image)
             }
         }
     }
@@ -228,6 +231,7 @@ private extension SearchMediaView {
         addDetailsView()
         addLoadingView()
         addSettingsView()
+        addZoomableImageView()
     }
 
     func configure() {
@@ -298,6 +302,13 @@ private extension SearchMediaView {
     func addLoadingView() {
         addSubview(loadingView)
         loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+
+    func addZoomableImageView() {
+        addSubview(fullscreenView)
+        fullscreenView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }

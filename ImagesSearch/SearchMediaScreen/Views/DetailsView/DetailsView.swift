@@ -163,12 +163,13 @@ private extension DetailsView {
             mediaCollectionView.snp.remakeConstraints {
                 $0.top.equalTo(relatedLabel.snp.bottom)
                 $0.leading.equalTo(selectedMediaView.snp.trailing).inset(-16)
-                $0.trailing.bottom.equalToSuperview()
+                $0.trailing.equalTo(safeAreaLayoutGuide)
+                $0.bottom.equalToSuperview()
             }
         default:
             mediaCollectionView.snp.remakeConstraints {
                 $0.top.equalTo(relatedLabel.snp.bottom)
-                $0.leading.trailing.equalToSuperview().inset(16)
+                $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
                 $0.bottom.equalToSuperview()
             }
         }
