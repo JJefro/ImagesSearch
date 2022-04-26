@@ -19,7 +19,7 @@ struct PixabayEntity {
     }
     
     init(data: PixabayModel) {
-        guard let hits = data.hits.first else { fatalError() }
+        guard let hits = data.hits.first else { fatalError("No data received") }
         self.totalMedia = data.total
         self.mediaCategory = MediaCategory(rawValue: hits.type.capitalized)
         self.mediaContents = data.hits.map {
