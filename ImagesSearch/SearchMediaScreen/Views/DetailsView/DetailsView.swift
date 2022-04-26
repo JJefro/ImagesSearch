@@ -131,7 +131,7 @@ private extension DetailsView {
         default:
             selectedMediaView.snp.remakeConstraints {
                 $0.top.leading.trailing.equalToSuperview()
-                $0.height.equalToSuperview().dividedBy(1.6)
+                $0.height.equalToSuperview().dividedBy(1.8)
             }
         }
     }
