@@ -82,6 +82,9 @@ class NetworkManager: NetworkManagerProtocol {
         let decoder = JSONDecoder()
         do {
             let decoderData = try decoder.decode(PixabayModel.self, from: data)
+            if decoderData.hits.isEmpty {
+                return .failure(NetworkError.noDataReceived)
+            }
             return .success(PixabayEntity(data: decoderData))
         } catch {
             return .failure(error)
