@@ -35,6 +35,7 @@ private extension SettingsTableView {
         separatorStyle = .none
         backgroundColor = .clear
         showsVerticalScrollIndicator = false
+        insetsContentViewsToSafeArea = false
     }
 
     func bind() {

@@ -29,7 +29,7 @@ extension UIViewController {
             preferredStyle: .alert
         )
         let cancelAction = UIAlertAction(
-            title: R.string.localizable.errorAlert_cancelAction_title(),
+            title: R.string.localizable.errorAlert_action_title(),
             style: .cancel
         )
         alert.addAction(cancelAction)

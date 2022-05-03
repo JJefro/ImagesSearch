@@ -63,7 +63,7 @@ private extension MainFlow {
             let barAppearance = UINavigationBar.appearance()
             barAppearance.titleTextAttributes = [NSAttributedString.Key.font: R.font.openSansRegular(size: 15)!]
         }
-        navigationController.setNavigationBarHidden(true, animated: true)
+        navigationController.setNavigationBarHidden(true, animated: false)
         return navigationController
     }
 }

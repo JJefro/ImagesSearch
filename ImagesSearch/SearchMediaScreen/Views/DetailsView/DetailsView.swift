@@ -14,6 +14,7 @@ class DetailsView: UIView {
     // MARK: - Views Configurations
     private let viewModel = DetailsViewModel()
     private let selectedMediaView = SelectedMediaView()
+    
     private let relatedLabel = UILabel().apply {
         $0.font = R.font.openSansSemiBold(size: 18)
         $0.textAlignment = .left
@@ -21,21 +22,8 @@ class DetailsView: UIView {
         $0.text = R.string.localizable.searchMediaView_relatedLabel_text()
     }
 
-    private let mediaCollectionView = MediaCollectionsView().apply {
+    private let mediaCollectionView = MediaCollectionsView(builder: DetailsMediaContentCellSizeBuilder()).apply {
         $0.isHiddenShareButton = true
-        $0.setupCellsCount(
-            onIphone: CellSettings(
-                landscapeOrientation: CellSettings.CellsCount(
-                    countPerScreen: 3, countInRow: 2),
-                portraitOrientation: CellSettings.CellsCount(
-                    countPerScreen: 2, countInRow: 2)),
-
-            onIpad: CellSettings(
-                landscapeOrientation: CellSettings.CellsCount(
-                    countPerScreen: 4, countInRow: 3),
-                portraitOrientation: CellSettings.CellsCount(
-                    countPerScreen: 2, countInRow: 3))
-        )
     }
 
     init() {
@@ -51,7 +39,12 @@ class DetailsView: UIView {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        addViews()
+        setupConstraints()
+    }
+
+    override func updateConstraints() {
+        super.updateConstraints()
+        setupConstraints()
     }
 
     func setupMediaContents(mediaContents: [MediaContentModel], selected: MediaContentModel, quality: MediaQuality) {
@@ -109,19 +102,23 @@ private extension DetailsView {
 // MARK: - Add Views and Configurations
 private extension DetailsView {
     func addViews() {
-        addSelectedMediaView()
-        addRelatedLabel()
-        addMediaCollectionsView()
+        addSubview(selectedMediaView)
+        addSubview(relatedLabel)
+        addSubview(mediaCollectionView)
+        setupConstraints()
+    }
+
+    func setupConstraints() {
+        setSelectedMediaViewConstraints()
+        setRelatedLabelConstraints()
+        setMediaCollectionsViewConstraints()
     }
 
     func configure() {
         backgroundColor = R.color.searchMediaViewBG()
     }
 
-    func addSelectedMediaView() {
-        if !subviews.contains(selectedMediaView) {
-            addSubview(selectedMediaView)
-        }
+    func setSelectedMediaViewConstraints() {
         switch UIDevice.current.orientation {
         case .landscapeRight, .landscapeLeft:
             selectedMediaView.snp.remakeConstraints {
@@ -131,17 +128,14 @@ private extension DetailsView {
         default:
             selectedMediaView.snp.remakeConstraints {
                 $0.top.leading.trailing.equalToSuperview()
-                $0.height.equalToSuperview().dividedBy(1.8)
+                $0.height.equalToSuperview().dividedBy(1.7)
             }
         }
     }
 
-    func addRelatedLabel() {
-        if !subviews.contains(relatedLabel) {
-            addSubview(relatedLabel)
-        }
+    func setRelatedLabelConstraints() {
         switch UIDevice.current.orientation {
-        case .landscapeRight, .landscapeLeft:
+        case .landscapeLeft, .landscapeRight:
             relatedLabel.snp.remakeConstraints {
                 $0.top.equalToSuperview()
                 $0.leading.equalTo(selectedMediaView.snp.trailing).inset(-16)
@@ -154,12 +148,9 @@ private extension DetailsView {
         }
     }
 
-    func addMediaCollectionsView() {
-        if !subviews.contains(mediaCollectionView) {
-            addSubview(mediaCollectionView)
-        }
+    func setMediaCollectionsViewConstraints() {
         switch UIDevice.current.orientation {
-        case .landscapeRight, .landscapeLeft:
+        case .landscapeLeft, .landscapeRight:
             mediaCollectionView.snp.remakeConstraints {
                 $0.top.equalTo(relatedLabel.snp.bottom)
                 $0.leading.equalTo(selectedMediaView.snp.trailing).inset(-16)

@@ -23,7 +23,7 @@ extension ApplyableProtocol where Self: AnyObject {
 
     /// Calls the specified closure with Self value as its argument and returns closure result.
     ///
-    /// - Parameter f: Closure to apply.
+    /// - Parameter item: Closure to apply.
     /// - Returns: Closure result.
     func `let`<R>(_ item: (Self) throws -> R) rethrows -> R {
         try item(self)

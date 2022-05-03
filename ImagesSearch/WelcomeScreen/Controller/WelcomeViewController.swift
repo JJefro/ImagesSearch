@@ -16,6 +16,7 @@ class WelcomeViewController: UIViewController {
         self.contentView = contentView
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        setInterfaceOrientationMask(orientation: .portrait)
     }
     
     required init?(coder: NSCoder) {
@@ -34,7 +35,6 @@ class WelcomeViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setInterfaceOrientationMask(orientation: .portrait)
         contentView.selectCategory(category: viewModel.getFirstCategory())
     }
 }
