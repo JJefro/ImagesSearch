@@ -15,7 +15,7 @@ class SettingsTableViewCell: UITableViewCell {
         $0.axis = .horizontal
         $0.distribution = .fill
     }
-    
+
     private let labelsVerticalStack = UIStackView().apply {
         $0.axis = .vertical
         $0.distribution = .fillEqually
@@ -96,7 +96,7 @@ private extension SettingsTableViewCell {
     func addTopElements() {
         contentView.addSubview(topHorizontalStack)
         topHorizontalStack.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview().inset(5)
+            $0.top.leading.trailing.equalTo(self).inset(5)
             $0.height.equalTo(30)
         }
         labelsVerticalStack.addArrangedSubviews(titleLabel, selectedItemLabel)
@@ -107,7 +107,7 @@ private extension SettingsTableViewCell {
         contentView.addSubview(settingsPickerView)
         settingsPickerView.snp.makeConstraints {
             $0.top.equalTo(topHorizontalStack.snp.bottom).inset(-10)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalTo(self)
             $0.height.equalTo(80)
         }
     }

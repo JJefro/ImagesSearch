@@ -10,7 +10,6 @@ import UIKit
 protocol SearchMediaViewProtocol: UIView {
     var onStateChanges: ((SearchMediaView.State) -> Void)? { get set }
 
-    func viewWillTransition()
     func setTotalMediaContentLabel(text: String?)
     func setLoadingView(isLoading: Bool)
     func setupTagsCollectionView(tags: [Tag])
@@ -18,6 +17,7 @@ protocol SearchMediaViewProtocol: UIView {
     func setupSearchTextfieldText(text: String?)
     func updateMediaQuality(quality: MediaQuality)
     func setupSettings(settings: [SettingsModel])
+    func viewWillTransition()
 }
 
 class SearchMediaView: UIView, SearchMediaViewProtocol {
@@ -48,20 +48,9 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
     }
 
     private let tagsCollectionView = TagsCollectionView()
-    private let mediaCollectionView = MediaCollectionsView().apply {
-        $0.setupCellsCount(
-            onIphone: CellSettings(
-                landscapeOrientation: CellSettings.CellsCount(
-                    countPerScreen: 1, countInRow: 2),
-                portraitOrientation: CellSettings.CellsCount(
-                    countPerScreen: 3, countInRow: 1)),
-            onIpad: CellSettings(
-                landscapeOrientation: CellSettings.CellsCount(
-                    countPerScreen: 3, countInRow: 3),
-                portraitOrientation: CellSettings.CellsCount(
-                    countPerScreen: 3, countInRow: 3))
-        )
-    }
+    private let mediaCollectionView = MediaCollectionsView(
+        builder: SearchMediaContentCellSizeBuilder()
+    )
     private var settingsView = SettingsView()
     private let loadingView = LoadingView()
     private let detailsView = DetailsView().apply {
@@ -81,15 +70,14 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func viewWillTransition() {
+        detailsView.setNeedsUpdateConstraints()
+    }
 }
 
 // MARK: - Methods
 extension SearchMediaView {
-    func viewWillTransition() {
-        mediaCollectionView.viewWillTransition()
-        //        detailsView.viewWillTransition()
-    }
-
     func setTotalMediaContentLabel(text: String?) {
         totalMediaLabel.text = text
     }
@@ -277,7 +265,7 @@ private extension SearchMediaView {
         addSubview(mediaCollectionView)
         mediaCollectionView.snp.makeConstraints {
             $0.top.equalTo(tagsCollectionView.snp.bottom).offset(16)
-            $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(8)
+            $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
             $0.bottom.equalToSuperview()
         }
     }

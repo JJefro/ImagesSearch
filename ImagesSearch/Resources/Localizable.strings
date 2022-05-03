@@ -34,7 +34,7 @@
 "networkError_unknownStatusCode" = "Can't get data from the server";
 "networkError_noDataReceived" = "No data was received from the server";
 
-"errorAlert_cancelAction_title" = "Cancel";
+"errorAlert_action_title" = "OK";
 "errorAlert_title" = "Error";
 "errorAlert_imageSavingFailed_title" = "Image saving failed";
 

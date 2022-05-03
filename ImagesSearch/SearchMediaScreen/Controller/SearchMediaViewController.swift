@@ -17,7 +17,7 @@ class SearchMediaViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -34,15 +34,17 @@ class SearchMediaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setInterfaceOrientationMask(orientation: .all)
         viewModel.searchMedia()
+        setInterfaceOrientationMask(orientation: .all)
     }
-    
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        contentView.viewWillTransition()
+        if DeviceOrientation(traitCollection: traitCollection) == .pad {
+            contentView.viewWillTransition()
+        }
     }
-    
+
     private func shareImage(image: UIImage?) {
         guard let image = image?.jpegData(compressionQuality: 1) else { return }
         let activityController = UIActivityViewController(activityItems: [image], applicationActivities: nil)

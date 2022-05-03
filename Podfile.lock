@@ -9,12 +9,14 @@ PODS:
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
   - SnapKit (5.0.1)
+  - TOCropViewController (2.6.1)
 
 DEPENDENCIES:
   - NVActivityIndicatorView
   - R.swift
   - SDWebImage (~> 5.0)
   - SnapKit (~> 5.0.0)
+  - TOCropViewController (~> 2.6)
 
 SPEC REPOS:
   trunk:
@@ -23,6 +25,7 @@ SPEC REPOS:
     - R.swift.Library
     - SDWebImage
     - SnapKit
+    - TOCropViewController
 
 SPEC CHECKSUMS:
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
@@ -30,7 +33,8 @@ SPEC CHECKSUMS:
   R.swift.Library: 0fc583cb55a99e28901299cc451614cad1161962
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
 
-PODFILE CHECKSUM: d4297413c20c94d9c6c50a31e5e10b390a358718
+PODFILE CHECKSUM: 9fe6fcfbf4743767b1aecad185bcef53d4083945
 
 COCOAPODS: 1.11.2

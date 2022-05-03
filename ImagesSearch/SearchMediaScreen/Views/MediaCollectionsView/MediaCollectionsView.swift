@@ -12,8 +12,8 @@ class MediaCollectionsView: UICollectionView {
     var onShareButtonTap: ((UIImage?) -> Void)?
     var onCellTap: (([MediaContentModel], MediaContentModel, MediaQuality) -> Void)?
 
-    private var cellSizeOnIphone: CellSettings?
-    private var cellSizeOnIpad: CellSettings?
+    private let cellSizeBuilder: CellSizeBuilderProtocol
+
     private let flowLayout: UICollectionViewFlowLayout
 
     var isHiddenShareButton: Bool = false {
@@ -34,7 +34,8 @@ class MediaCollectionsView: UICollectionView {
         }
     }
 
-    init() {
+    init(builder: CellSizeBuilderProtocol) {
+        self.cellSizeBuilder = CachingCellSizeBuilder(builder: builder)
         flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 16
@@ -46,21 +47,6 @@ class MediaCollectionsView: UICollectionView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        flowLayout.invalidateLayout()
-    }
-
-    func setupCellsCount(onIphone: CellSettings, onIpad: CellSettings) {
-        self.cellSizeOnIphone = onIphone
-        self.cellSizeOnIpad = onIpad
-    }
-
-    /// Need to change layout on iPad
-    func viewWillTransition() {
-        flowLayout.invalidateLayout()
     }
 }
 
@@ -75,62 +61,27 @@ private extension MediaCollectionsView {
     func bind() {
         delegate = self
         dataSource = self
+        addObserverToNotificationCenter()
     }
 
-    func getFlowLayoutSizeForIpad() -> CGSize {
-        var size = CGSize()
-        guard let cellsCount = cellSizeOnIpad else { return size }
-        switch UIDevice.current.orientation {
-        case .landscapeLeft, .landscapeRight:
-            let cellsCountInRow = cellsCount.landscapeOrientation.countInRow
-            let cellsPerScreen = cellsCount.landscapeOrientation.countPerScreen
-            size = CGSize(
-                width: (bounds.width - (flowLayout.minimumLineSpacing * (cellsCountInRow - 1))) / cellsCountInRow,
-                height: (bounds.height - (flowLayout.minimumLineSpacing * (cellsPerScreen - 1))) / cellsPerScreen
-            )
-        default:
-            let cellsCountInRow = cellsCount.portraitOrientation.countInRow
-            let cellsPerScreen = cellsCount.portraitOrientation.countPerScreen
-            size = CGSize(
-                width: (bounds.width - (flowLayout.minimumLineSpacing * (cellsCountInRow - 1))) / cellsCountInRow,
-                height: (bounds.height - (flowLayout.minimumLineSpacing * (cellsPerScreen - 1))) / cellsPerScreen
-            )
-        }
-        return size
+    func addObserverToNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleOrientationChanges(notification:)),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil)
     }
 
-    func getFlowLayoutSizeForIphone() -> CGSize {
-        var size = CGSize()
-        guard let cellsCount = cellSizeOnIphone else { return size }
-        switch UIDevice.current.orientation {
-        case .landscapeLeft, .landscapeRight:
-            let cellsCountInRow = cellsCount.landscapeOrientation.countInRow
-            let cellsPerScreen = cellsCount.landscapeOrientation.countPerScreen
-            size = CGSize(
-                width: (bounds.width - flowLayout.minimumLineSpacing) / cellsCountInRow,
-                height: (bounds.height - flowLayout.minimumLineSpacing) / cellsPerScreen
-            )
-        default:
-            let cellsCountInRow = cellsCount.portraitOrientation.countInRow
-            let cellsPerScreen = cellsCount.portraitOrientation.countPerScreen
-            size = CGSize(
-                width: (bounds.width - flowLayout.minimumLineSpacing) / cellsCountInRow,
-                height: (bounds.height - flowLayout.minimumLineSpacing) / cellsPerScreen
-            )
+    @objc func handleOrientationChanges(notification: Notification) {
+        if notification.name == UIDevice.orientationDidChangeNotification {
+            flowLayout.invalidateLayout()
         }
-        return size
     }
 }
 
 extension MediaCollectionsView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var size = CGSize()
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            size = getFlowLayoutSizeForIpad()
-        } else {
-            size = getFlowLayoutSizeForIphone()
-        }
-        return size
+        return cellSizeBuilder.calculateSize(for: self, traitCollection: traitCollection)
     }
 }
 

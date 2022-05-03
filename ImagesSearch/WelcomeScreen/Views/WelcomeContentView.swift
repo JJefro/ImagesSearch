@@ -178,7 +178,7 @@ private extension WelcomeContentView {
         addSubview(verticalStack)
         verticalStack.snp.makeConstraints {
             $0.top.equalTo(snp.centerY).offset(-50)
-            $0.trailing.leading.equalToSuperview().inset(20)
+            $0.trailing.leading.equalTo(safeAreaLayoutGuide).inset(20)
         }
         verticalStack.addArrangedSubviews(searchView, searchButton)
         searchView.snp.makeConstraints { $0.height.equalTo(52) }
