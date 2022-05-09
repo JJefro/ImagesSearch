@@ -53,4 +53,34 @@ extension UIViewController {
             )
         }
     }
+
+    func updateSizeClasses() -> UITraitCollection? {
+        var customTrait = UITraitCollection()
+        let widthCompact = UITraitCollection(horizontalSizeClass: .compact)
+        let widthRegular = UITraitCollection(horizontalSizeClass: .regular)
+        let heightRegular = UITraitCollection(verticalSizeClass: .regular)
+
+        if traitCollection.userInterfaceIdiom == .pad {
+            guard let orientation = getInterfaceOrientation() else { return nil }
+            if orientation.isPortrait {
+                customTrait = UITraitCollection(traitsFrom: [widthCompact, heightRegular])
+            } else {
+                if view.bounds.width < view.bounds.height {
+                    customTrait = UITraitCollection(traitsFrom: [widthCompact, heightRegular])
+                } else {
+                    customTrait = UITraitCollection(traitsFrom: [widthRegular, heightRegular])
+                }
+            }
+        }
+        return customTrait
+    }
+
+    private func getInterfaceOrientation() -> UIInterfaceOrientation? {
+        if #available(iOS 13, *) {
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil }
+            return appDelegate.window?.windowScene?.interfaceOrientation
+        } else {
+            return UIApplication.shared.statusBarOrientation
+        }
+    }
 }

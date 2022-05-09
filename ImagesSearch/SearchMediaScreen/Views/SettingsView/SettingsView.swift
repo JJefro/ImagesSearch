@@ -44,9 +44,9 @@ class SettingsView: UIView {
         }
     }
 
-    init() {
+    override init(frame: CGRect) {
         viewModel = SettingsViewModel()
-        super.init(frame: .zero)
+        super.init(frame: frame)
         addViews()
         animateSettingsView()
         bind()

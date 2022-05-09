@@ -1,4 +1,5 @@
 PODS:
+  - netfox (1.21.0)
   - NVActivityIndicatorView (5.1.1):
     - NVActivityIndicatorView/Base (= 5.1.1)
   - NVActivityIndicatorView/Base (5.1.1)
@@ -12,6 +13,7 @@ PODS:
   - TOCropViewController (2.6.1)
 
 DEPENDENCIES:
+  - netfox
   - NVActivityIndicatorView
   - R.swift
   - SDWebImage (~> 5.0)
@@ -20,6 +22,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - netfox
     - NVActivityIndicatorView
     - R.swift
     - R.swift.Library
@@ -28,6 +31,7 @@ SPEC REPOS:
     - TOCropViewController
 
 SPEC CHECKSUMS:
+  netfox: 9d5cc727fe7576c4c7688a2504618a156b7d44b7
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   R.swift: c533450b0f7dc494e0993f5f1a1db925d84c3006
   R.swift.Library: 0fc583cb55a99e28901299cc451614cad1161962
@@ -35,6 +39,6 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
 
-PODFILE CHECKSUM: 9fe6fcfbf4743767b1aecad185bcef53d4083945
+PODFILE CHECKSUM: a6c607faa2a58849cbf4e0413c41b6d43e09392b
 
 COCOAPODS: 1.11.2

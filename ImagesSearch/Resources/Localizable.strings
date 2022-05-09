@@ -36,7 +36,8 @@
 
 "errorAlert_action_title" = "OK";
 "errorAlert_title" = "Error";
-"errorAlert_imageSavingFailed_title" = "Image saving failed";
+"errorAlert_imageSavingFailed_title" = "Failed to save image";
+"errorAlert_imageSharingFailed" = "Failed to share image";
 
 "alert_imageSaved_title" = "Saved";
 "alert_imageSaved_message" = "The image has been successfully saved to your photo album";
@@ -57,3 +58,5 @@
 "selectedMediaView_license_label" = "APP License";
 "selectedMediaView_license_description" = "Free for commercial use No attribution required";
 "selectedMediaView_share_description" = "Photo in .JPG format";
+
+"fullscreenNavigationView_editButton_title" = "Edit";

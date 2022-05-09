@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import UIKit
 
 protocol SearchMediaViewModelProtocol {
     var mediaData: (text: String, selectedCategory: MediaCategory)? { get set }
     var onStateChanges: ((SearchMediaViewModel.State) -> Void)? { get set }
+    var onEditImageButtonTap: ((UIImage) -> Void)? { get set }
     
     func searchMedia()
     func filterMediaBy(tag: Tag)
@@ -31,6 +33,7 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     }
     
     var onStateChanges: ((State) -> Void)?
+    var onEditImageButtonTap: ((UIImage) -> Void)?
     var mediaData: (text: String, selectedCategory: MediaCategory)? {
         didSet {
             searchMedia()
@@ -58,7 +61,7 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     }
 
     func getLicenseURL() -> URL? {
-        return networkManager.getPixabayLicenseURL()
+        return Contstants.pixabayLicenseURLComponents.url
     }
 
     func setupCategoryList(list: [MediaCategory]) {

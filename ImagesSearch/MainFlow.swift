@@ -30,6 +30,11 @@ class MainFlow {
             navigationController.pushViewController(searchMediaViewController, animated: true)
         }
 
+        searchMediaViewModel.onEditImageButtonTap = { image in
+            let cropViewController = CropMediaViewController(croppingStyle: .default, image: image)
+            navigationController.pushViewController(cropViewController, animated: true)
+        }
+
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }

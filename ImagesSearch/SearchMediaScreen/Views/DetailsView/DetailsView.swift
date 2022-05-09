@@ -26,8 +26,8 @@ class DetailsView: UIView {
         $0.isHiddenShareButton = true
     }
 
-    init() {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         addViews()
         configure()
         bind()
@@ -54,12 +54,6 @@ class DetailsView: UIView {
     func updateMediaQuality(quality: MediaQuality) {
         mediaCollectionView.mediaQuality = quality
         selectedMediaView.updateMediaQuality(quality: quality)
-    }
-
-    func showDetailsView(isShown: Bool) {
-        UIView.transition(with: self, duration: 0.2, options: [.transitionCrossDissolve]) { [weak self] in
-            self?.isHidden = !isShown
-        }
     }
 }
 
