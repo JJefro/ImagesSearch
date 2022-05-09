@@ -46,7 +46,13 @@ class SearchMediaViewController: UIViewController {
     }
 
     private func shareImage(image: UIImage?) {
-        guard let image = image?.jpegData(compressionQuality: 1) else { return }
+        guard let image = image?.jpegData(compressionQuality: 1) else {
+            self.showAlert(
+                title: R.string.localizable.errorAlert_title(),
+                message: R.string.localizable.errorAlert_imageSharingFailed()
+            )
+            return
+        }
         let activityController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         activityController.popoverPresentationController?.sourceView = view
         self.present(activityController, animated: true, completion: nil)
@@ -121,11 +127,17 @@ private extension SearchMediaViewController {
                     self.viewModel.updateMediaQuality(quality: quality)
                 }
             case .onDownloadButtonTap(let image):
-                guard let image = image else { return }
+                guard let image = image else {
+                    self.showAlert(
+                        title: R.string.localizable.errorAlert_title(),
+                        message: R.string.localizable.errorAlert_imageSavingFailed_title())
+                    return
+                }
                 self.saveImageToPhotoAlbum(image: image)
-                
             case .onLicenseButtonTap:
                 self.showPixabayLicense()
+            case .onEditImageButtonTap(let image):
+                self.viewModel.onEditImageButtonTap?(image)
             }
         }
     }

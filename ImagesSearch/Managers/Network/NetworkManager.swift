@@ -9,7 +9,6 @@ import UIKit
 
 protocol NetworkManagerProtocol {
     func searchMedia(by text: String, category: MediaCategory, completion: @escaping (Result<PixabayEntity, Error>) -> Void)
-    func getPixabayLicenseURL() -> URL?
 }
 
 class NetworkManager: NetworkManagerProtocol {
@@ -27,18 +26,6 @@ class NetworkManager: NetworkManagerProtocol {
         let apiKeyQueryItem = URLQueryItem(name: "key", value: "26184943-7a248bddb4548b6a38c2cc80c")
         components.queryItems = [apiKeyQueryItem]
         return components
-    }
-
-    private var pixabayLicenseURLComponents: URLComponents {
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "pixabay.com"
-        components.path = "/service/license"
-        return components
-    }
-
-    func getPixabayLicenseURL() -> URL? {
-        return pixabayLicenseURLComponents.url
     }
     
     func searchMedia(by text: String, category: MediaCategory, completion: @escaping (Result<PixabayEntity, Error>) -> Void) {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import netfox
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,10 +19,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let mainFlow = MainFlow(window: window)
         mainFlow.launch()
+
+#if DEBUG
+        NFX.sharedInstance().start()
+#endif
         return true
     }
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return orientationLock
+    }
+
+    func applicationWillTerminate(_ application: UIApplication) {
+#if DEBUG
+        NFX.sharedInstance().stop()
+#endif
     }
 }

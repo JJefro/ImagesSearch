@@ -29,6 +29,7 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
         case onLicenseButtonTap
         case onTagTap(Tag)
         case onUpdateSettingsValue(MediaCategory?, MediaQuality?)
+        case onEditImageButtonTap(UIImage)
     }
 
     var onStateChanges: ((State) -> Void)?
@@ -129,9 +130,18 @@ private extension SearchMediaView {
     }
 
     func showDetailsView(isShown: Bool) {
-        detailsView.showDetailsView(isShown: isShown)
-        totalMediaLabel.isHidden = isShown
-        tagsCollectionView.isHidden = isShown
+        UIView.transition(with: self, duration: 0.2, options: [.transitionCrossDissolve]) { [weak self] in
+            guard let self = self else { return }
+            self.detailsView.isHidden = !isShown
+            self.totalMediaLabel.isHidden = isShown
+            self.tagsCollectionView.isHidden = isShown
+        }
+    }
+
+    func showFullscreenView(isShown: Bool) {
+        UIView.transition(with: self, duration: 0.2, options: [.transitionCrossDissolve]) {
+            self.fullscreenView.isHidden = !isShown
+        }
     }
 }
 
@@ -143,6 +153,7 @@ private extension SearchMediaView {
         bindTagsCollectionView()
         bindSettingsView()
         bindDetailsView()
+        bindFullscreenView()
     }
 
     func bindTopNavigationView() {
@@ -202,8 +213,18 @@ private extension SearchMediaView {
             case .onLicenseButtonTap:
                 self.onStateChanges?(.onLicenseButtonTap)
             case .onZoomButtonTap(let image):
+                self.showFullscreenView(isShown: true)
                 self.fullscreenView.setupImage(image: image)
             }
+        }
+    }
+
+    func bindFullscreenView() {
+        fullscreenView.onReturnButtonTap = { [weak self] in
+            self?.showFullscreenView(isShown: false)
+        }
+        fullscreenView.onEditButtonTap = { [weak self] image in
+            self?.onStateChanges?(.onEditImageButtonTap(image))
         }
     }
 }
