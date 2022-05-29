@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 extension UIViewController {
     func setInterfaceOrientationMask(orientation: UIInterfaceOrientationMask) {
@@ -22,7 +23,7 @@ extension UIViewController {
         view.addGestureRecognizer(endEditingTapRecognizer)
     }
     
-    func showAlert(title: String?, message: String?) {
+    func showAlert(title: String?, message: String) {
         let alert = UIAlertController(
             title: title,
             message: message,
@@ -37,44 +38,24 @@ extension UIViewController {
     }
 
     func saveImageToPhotoAlbum(image: UIImage) {
-        UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveImage(_:didFinishSavingWithError:contextInfo:)), nil)
-    }
-
-    @objc private func saveImage(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
-            showAlert(
-                title: R.string.localizable.errorAlert_imageSavingFailed_title(),
-                message: error.localizedDescription
-            )
-        } else {
-            showAlert(
-                title: R.string.localizable.alert_imageSaved_title(),
-                message: R.string.localizable.alert_imageSaved_message()
-            )
-        }
-    }
-
-    func updateSizeClasses() -> UITraitCollection? {
-        var customTrait = UITraitCollection()
-        let widthCompact = UITraitCollection(horizontalSizeClass: .compact)
-        let widthRegular = UITraitCollection(horizontalSizeClass: .regular)
-        let heightRegular = UITraitCollection(verticalSizeClass: .regular)
-
-        if traitCollection.userInterfaceIdiom == .pad {
-            guard let orientation = getInterfaceOrientation() else { return nil }
-            if orientation.isPortrait {
-                customTrait = UITraitCollection(traitsFrom: [widthCompact, heightRegular])
-            } else {
-                if view.bounds.width < view.bounds.height {
-                    customTrait = UITraitCollection(traitsFrom: [widthCompact, heightRegular])
+        guard let appName = Bundle.main.appName else { return }
+        let library = PHPhotoLibrary.shared()
+        library.save(image: image, albumName: appName) { [weak self] success, error in
+            DispatchQueue.main.async {
+                if success {
+                    self?.showAlert(
+                        title: R.string.localizable.alert_imageSaved_title(),
+                        message: R.string.localizable.alert_imageSaved_message())
                 } else {
-                    customTrait = UITraitCollection(traitsFrom: [widthRegular, heightRegular])
+                    self?.showAlert(
+                        title: R.string.localizable.errorAlert_title(),
+                        message: error?.localizedDescription ?? R.string.localizable.errorAlert_imageSavingFailed_title()
+                    )
                 }
             }
         }
-        return customTrait
     }
-
+    
     private func getInterfaceOrientation() -> UIInterfaceOrientation? {
         if #available(iOS 13, *) {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil }

@@ -30,7 +30,7 @@ class FullscreenView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .black
+        backgroundColor = R.color.fullscreenBG()
         addViews()
         bind()
     }

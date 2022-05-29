@@ -5,7 +5,8 @@
 //  Created by Jevgenijs Jefrosinins on 20/03/2022.
 //
 
-import Foundation
+import UIKit
+import Photos
 
 struct MediaContentModel: Equatable {
     static func == (lhs: MediaContentModel, rhs: MediaContentModel) -> Bool {
@@ -15,6 +16,7 @@ struct MediaContentModel: Equatable {
     let smallImageURL: URL?
     let normalImageURL: URL?
     let largeImageURL: URL?
-    let likes: Int
+    let image: UIImage?
+    let likes: Int?
     let tags: [Tag]
 }

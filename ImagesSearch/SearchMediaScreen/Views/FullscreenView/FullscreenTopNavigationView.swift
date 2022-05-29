@@ -21,12 +21,12 @@ class FullscreenTopNavigationView: UIView {
     private let returnButton = UIButton().apply {
         let image = R.image.chevronLeft()?.withRenderingMode(.alwaysTemplate)
         $0.setImage(image, for: .normal)
-        $0.tintColor = .white
+        $0.tintColor = R.color.textColor()
     }
 
     private let titleLabel = UILabel().apply {
         $0.font = R.font.openSansSemiBold(size: 14)
-        $0.textColor = .white
+        $0.textColor = R.color.textColor()
     }
 
     private let editButton = UIButton().apply {
@@ -34,7 +34,7 @@ class FullscreenTopNavigationView: UIView {
             R.string.localizable.fullscreenNavigationView_editButton_title(),
             for: .normal
         )
-        $0.setTitleColor(.white, for: .normal)
+        $0.setTitleColor(R.color.textColor(), for: .normal)
     }
 
     override init(frame: CGRect) {

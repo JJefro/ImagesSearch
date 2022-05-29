@@ -16,4 +16,9 @@ struct Contstants {
         components.path = "/service/license"
         return components
     }
+
+    struct Bundle {
+        static let displayName = "CFBundleDisplayName"
+        static let name = "CFBundleName"
+    }
 }

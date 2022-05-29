@@ -10,7 +10,7 @@ import UIKit
 extension UITableView {
     func dequeueReusableCell<T: UITableViewCell>(for indexPath: IndexPath) -> T {
         guard let cell = dequeueReusableCell(withIdentifier: T.identifier, for: indexPath) as? T else {
-            fatalError("Unable to dequeue reusable UICollectionViewCell")
+            fatalError("Unable to dequeue reusable UITableViewCell")
         }
         return cell
     }

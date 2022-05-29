@@ -28,7 +28,7 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
         case onDownloadButtonTap(UIImage?)
         case onLicenseButtonTap
         case onTagTap(Tag)
-        case onUpdateSettingsValue(MediaCategory?, MediaQuality?)
+        case onUpdateSettingsValue(MediaCategory?, MediaQuality?, MediaSource?)
         case onEditImageButtonTap(UIImage)
     }
 
@@ -196,8 +196,8 @@ private extension SearchMediaView {
     }
 
     func bindSettingsView() {
-        settingsView.onUpdateSettingsValue = { [weak self] (category, quality) in
-            self?.onStateChanges?(.onUpdateSettingsValue(category, quality))
+        settingsView.onUpdateSettingsValue = { [weak self] (category, quality, mediaSource) in
+            self?.onStateChanges?(.onUpdateSettingsValue(category, quality, mediaSource))
             self?.scrollToInitialValue()
         }
     }
@@ -206,13 +206,13 @@ private extension SearchMediaView {
         detailsView.onSelectedMediaViewStateChanges = { [weak self] state in
             guard let self = self else { return }
             switch state {
-            case .onShareButtonTap(let image):
+            case let .onShareButtonTap(image):
                 self.onStateChanges?(.onShareButtonTap(image))
-            case .onDownloadButtonTap(let image):
+            case let .onDownloadButtonTap(image):
                 self.onStateChanges?(.onDownloadButtonTap(image))
             case .onLicenseButtonTap:
                 self.onStateChanges?(.onLicenseButtonTap)
-            case .onZoomButtonTap(let image):
+            case let .onZoomButtonTap(image):
                 self.showFullscreenView(isShown: true)
                 self.fullscreenView.setupImage(image: image)
             }

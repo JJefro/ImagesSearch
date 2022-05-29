@@ -23,3 +23,8 @@ enum MediaQuality: String, CaseIterable {
     case normal = "Normal"
     case large = "Large"
 }
+
+enum MediaSource: String, CaseIterable {
+    case local = "Local"
+    case remote = "Remote"
+}

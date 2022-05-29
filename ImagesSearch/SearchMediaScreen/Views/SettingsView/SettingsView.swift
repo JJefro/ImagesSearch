@@ -10,7 +10,7 @@ import SnapKit
 
 class SettingsView: UIView {
 
-    var onUpdateSettingsValue: ((MediaCategory?, MediaQuality?) -> Void)?
+    var onUpdateSettingsValue: ((MediaCategory?, MediaQuality?, MediaSource?) -> Void)?
 
     private let settingsViewWidth: CGFloat = 250
     private let animationDuration: CGFloat = 1
@@ -39,7 +39,11 @@ class SettingsView: UIView {
         didSet {
             animateSettingsView()
             if !isShowSettingsView {
-                onUpdateSettingsValue?(viewModel.currentMediaCategory, viewModel.currentMediaQuality)
+                onUpdateSettingsValue?(
+                    viewModel.currentMediaCategory,
+                    viewModel.currentMediaQuality,
+                    viewModel.currentMediaSource
+                )
             }
         }
     }
