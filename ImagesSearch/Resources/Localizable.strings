@@ -54,6 +54,7 @@
 "settingsView_title" = "Settings";
 "settingsView_mediaCategoryTitle" = "Media category";
 "settingsView_mediaSizeTitle" = "Media size";
+"settingsView_mediaSourceTitle" = "Media source";
 
 "selectedMediaView_license_label" = "APP License";
 "selectedMediaView_license_description" = "Free for commercial use No attribution required";

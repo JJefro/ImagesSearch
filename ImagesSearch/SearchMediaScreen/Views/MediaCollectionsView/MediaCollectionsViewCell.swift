@@ -7,11 +7,12 @@
 
 import UIKit
 import SDWebImage
+import Photos
 
 class MediaCollectionsViewCell: UICollectionViewCell {
-
+    
     var onShareButtonTap: ((UIImage?) -> Void)?
-
+    
     private let loadingView = LoadingView()
     private var placeHolderImage = UIImage()
     private let shareButton = UIButton().apply {
@@ -23,36 +24,40 @@ class MediaCollectionsViewCell: UICollectionViewCell {
     private let mediaImageView = UIImageView().apply {
         $0.contentMode = .scaleAspectFill
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
         addViews()
         bind()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     func setupCell(data: MediaContentModel, quality: MediaQuality, isHiddenShareButton: Bool) {
-        loadingView.isHidden = false
         shareButton.isHidden = isHiddenShareButton
-        mediaImageView.sd_setImage(
-            with: getRequiredImageURL(data: data, quality: quality),
-            placeholderImage: placeHolderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
-            guard let self = self else { return }
-            if let image = image {
-                self.mediaImageView.image = image
-                self.loadingView.isHidden = true
-            }
+        if data.image == nil {
+            loadingView.isHidden = false
+            mediaImageView.sd_setImage(
+                with: getRequiredImageURL(data: data, quality: quality),
+                placeholderImage: placeHolderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
+                    guard let self = self else { return }
+                    self.mediaImageView.image = image
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.loadingView.isHidden = true
+                    }
+                }
+        } else {
+            mediaImageView.image = data.image
         }
     }
-
+    
     @objc func shareButtonTapped(_ sender: UIButton) {
         onShareButtonTap?(mediaImageView.image)
     }
-
+    
     private func getRequiredImageURL(data: MediaContentModel, quality: MediaQuality) -> URL? {
         let imageURL: URL?
         switch quality {
@@ -74,23 +79,23 @@ private extension MediaCollectionsViewCell {
         setPlaceholderImage()
         addLoadingView()
     }
-
+    
     func configure() {
         clipsToBounds = true
         layer.cornerRadius = 5
     }
-
+    
     func bind() {
         shareButton.addTarget(self, action: #selector(shareButtonTapped(_:)), for: .touchUpInside)
     }
-
+    
     func addImageView() {
         contentView.addSubview(mediaImageView)
         mediaImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
-
+    
     func addShareButton() {
         contentView.addSubview(shareButton)
         shareButton.snp.makeConstraints {
@@ -98,14 +103,14 @@ private extension MediaCollectionsViewCell {
             $0.size.equalTo(32)
         }
     }
-
+    
     func addLoadingView() {
         contentView.addSubview(loadingView)
         loadingView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
-
+    
     func setPlaceholderImage() {
         let image = R.image.pixabayLogo()?.withRenderingMode(.alwaysTemplate)
         guard var image = image else { return }

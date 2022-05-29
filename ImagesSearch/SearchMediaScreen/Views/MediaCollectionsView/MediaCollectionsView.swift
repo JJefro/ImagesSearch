@@ -34,6 +34,11 @@ class MediaCollectionsView: UICollectionView {
         }
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        flowLayout.invalidateLayout()
+    }
+
     init(builder: CellSizeBuilderProtocol) {
         self.cellSizeBuilder = CachingCellSizeBuilder(builder: builder)
         flowLayout = UICollectionViewFlowLayout()

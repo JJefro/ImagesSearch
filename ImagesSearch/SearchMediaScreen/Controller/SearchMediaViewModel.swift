@@ -5,8 +5,8 @@
 //  Created by j.jefrosinins on 14/03/2022.
 //
 
-import Foundation
 import UIKit
+import Photos
 
 protocol SearchMediaViewModelProtocol {
     var mediaData: (text: String, selectedCategory: MediaCategory)? { get set }
@@ -17,12 +17,13 @@ protocol SearchMediaViewModelProtocol {
     func filterMediaBy(tag: Tag)
     func showCurrentPixabayEntity()
     func updateMediaQuality(quality: MediaQuality)
+    func updateMediaSource(mediaSource: MediaSource)
     func updateMediaSettings()
     func getLicenseURL() -> URL?
 }
 
 class SearchMediaViewModel: SearchMediaViewModelProtocol {
-  
+    
     enum State {
         case onUpdateData(PixabayEntity)
         case onUpdateMediaContent([MediaContentModel])
@@ -39,7 +40,7 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
             searchMedia()
         }
     }
-
+    
     private(set) var categoryList: [MediaCategory] = []
     private var pixabayEntity: PixabayEntity? {
         didSet {
@@ -47,23 +48,39 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
             onStateChanges?(.onUpdateData(entity))
         }
     }
-
+    
     private var currentMediaQuality: MediaQuality = .normal {
         didSet {
             onStateChanges?(.onUpdateMediaQuality(currentMediaQuality))
         }
     }
+    
+    private var currentMediaSource: MediaSource = .remote {
+        didSet {
+            if currentMediaSource == .local {
+                fetchLocalPhotos()
+            } else {
+                searchMedia()
+            }
+        }
+    }
 
+    private var currentMediaContent: [MediaContentModel] = [] {
+        didSet {
+            onStateChanges?(.onUpdateMediaContent(currentMediaContent))
+        }
+    }
+    
     private var networkManager: NetworkManagerProtocol
     
     init(networkManager: NetworkManagerProtocol) {
         self.networkManager = networkManager
     }
-
+    
     func getLicenseURL() -> URL? {
         return Contstants.pixabayLicenseURLComponents.url
     }
-
+    
     func setupCategoryList(list: [MediaCategory]) {
         categoryList = list
     }
@@ -83,22 +100,33 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
             self.onStateChanges?(.onShowLoadingView(false))
         }
     }
+    
+    func fetchLocalPhotos() {
+        let library = PHPhotoLibrary.shared()
+        let assets = library.fetchAllPhotos()
+        pixabayEntity = PixabayEntity(assets: assets)
 
+    }
+    
     func filterMediaBy(tag: Tag) {
         guard let mediaContent = pixabayEntity?.mediaContents else { return }
         let filteredMedia = mediaContent.filter { $0.tags.contains(where: { $0 == tag }) }
         onStateChanges?(.onUpdateMediaContent(filteredMedia))
     }
-
+    
     func showCurrentPixabayEntity() {
         guard let entity = pixabayEntity else { return }
         onStateChanges?(.onUpdateData(entity))
     }
-
+    
     func updateMediaQuality(quality: MediaQuality) {
         self.currentMediaQuality = quality
     }
-
+    
+    func updateMediaSource(mediaSource: MediaSource) {
+        self.currentMediaSource = mediaSource
+    }
+    
     func updateMediaSettings() {
         guard let mediaData = mediaData else { return }
         let mediaCategorySettings = SettingsModel(
@@ -111,6 +139,12 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
             selectedItem: currentMediaQuality.rawValue,
             pickerValues: MediaQuality.allCases.map { $0.rawValue }
         )
-        onStateChanges?(.onUpdateCurrentSettings([mediaCategorySettings, mediaQualitySettings]))
+        
+        let mediaSource = SettingsModel(
+            title: R.string.localizable.settingsView_mediaSourceTitle(),
+            selectedItem: currentMediaSource.rawValue,
+            pickerValues: MediaSource.allCases.map { $0.rawValue }
+        )
+        onStateChanges?(.onUpdateCurrentSettings([mediaCategorySettings, mediaQualitySettings, mediaSource]))
     }
 }

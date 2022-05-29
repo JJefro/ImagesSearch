@@ -17,7 +17,6 @@ class ZoomableImageView: UIScrollView {
     private var doubleTapGesture = UITapGestureRecognizer()
 
     private let mediaImageView = UIImageView().apply {
-        $0.backgroundColor = .black
         $0.contentMode = .scaleAspectFit
     }
 
@@ -66,7 +65,7 @@ private extension ZoomableImageView {
     func addSingleTapRecognizer(view: UIView) {
         singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(_:)))
         singleTapGesture.numberOfTapsRequired = 1
-        singleTapGesture.delaysTouchesBegan = true
+        singleTapGesture.require(toFail: doubleTapGesture)
         addGestureRecognizer(singleTapGesture)
     }
 
@@ -79,6 +78,7 @@ private extension ZoomableImageView {
     func addDoubleTapRecognizer(view: UIView) {
         doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
+        doubleTapGesture.require(toFail: singleTapGesture)
         addGestureRecognizer(doubleTapGesture)
     }
 
@@ -109,16 +109,5 @@ extension ZoomableImageView: UIScrollViewDelegate {
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         onScrollViewDidZoom?(true)
-    }
-}
-
-// MARK: - UIGestureRecognizer Delegate Methods
-extension ZoomableImageView: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer == self.doubleTapGesture &&
-            otherGestureRecognizer == self.singleTapGesture {
-            return true
-        }
-        return false
     }
 }

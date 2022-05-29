@@ -107,26 +107,29 @@ private extension SearchMediaViewController {
             guard let self = self else { return }
             switch state {
                 
-            case .onShareButtonTap(let image):
+            case let .onShareButtonTap(image):
                 self.shareImage(image: image)
                 
-            case .onTagTap(let tag):
+            case let .onTagTap(tag):
                 self.viewModel.filterMediaBy(tag: tag)
                 
             case .onPixabayButtonTap:
                 self.viewModel.showCurrentPixabayEntity()
                 
-            case .onGetSearchFieldValue(let text):
+            case let .onGetSearchFieldValue(text):
                 guard let text = text else { return }
                 self.viewModel.mediaData?.text = text
-            case .onUpdateSettingsValue(let category, let quality):
+            case let .onUpdateSettingsValue(category, quality, mediaSource):
                 if let category = category {
                     self.viewModel.mediaData?.selectedCategory = category
                 }
                 if let quality = quality {
                     self.viewModel.updateMediaQuality(quality: quality)
                 }
-            case .onDownloadButtonTap(let image):
+                if let mediaSource = mediaSource {
+                    self.viewModel.updateMediaSource(mediaSource: mediaSource)
+                }
+            case let .onDownloadButtonTap(image):
                 guard let image = image else {
                     self.showAlert(
                         title: R.string.localizable.errorAlert_title(),
@@ -136,7 +139,7 @@ private extension SearchMediaViewController {
                 self.saveImageToPhotoAlbum(image: image)
             case .onLicenseButtonTap:
                 self.showPixabayLicense()
-            case .onEditImageButtonTap(let image):
+            case let .onEditImageButtonTap(image):
                 self.viewModel.onEditImageButtonTap?(image)
             }
         }

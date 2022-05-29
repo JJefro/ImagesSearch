@@ -75,7 +75,7 @@ private extension DetailsView {
         viewModel.onStateChanges = { [weak self] state in
             guard let self = self else { return }
             switch state {
-            case .onUpdateMediaContents(let mediaContents, let selectedMedia, let quality):
+            case let .onUpdateMediaContents(mediaContents, selectedMedia, quality):
                 self.mediaCollectionView.mediaContents = mediaContents
                 self.mediaCollectionView.mediaQuality = quality
                 self.selectedMediaView.setupMedia(content: selectedMedia, quality: quality)

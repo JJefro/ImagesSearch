@@ -16,12 +16,15 @@ class DetailsViewModel {
     var previousSelectedMedia: MediaContentModel?
 
     func setupMediaContents(contents: [MediaContentModel], selectedMedia: MediaContentModel, quality: MediaQuality) {
-        
         var mediaContents = contents
         if let previousMedia = previousSelectedMedia, let currentIndex = contents.firstIndex(of: selectedMedia) {
             mediaContents.insert(previousMedia, at: currentIndex)
         }
-        mediaContents.removeAll(where: { $0 == selectedMedia })
+        if selectedMedia.image != nil {
+            mediaContents.removeAll(where: { $0.image == selectedMedia.image })
+        } else {
+            mediaContents.removeAll(where: { $0 == selectedMedia })
+        }
         previousSelectedMedia = selectedMedia
         onStateChanges?(.onUpdateMediaContents(mediaContents, selectedMedia, quality))
     }

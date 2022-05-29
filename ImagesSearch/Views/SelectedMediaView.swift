@@ -139,21 +139,26 @@ private extension SelectedMediaView {
         onStateChanges?(.onZoomButtonTap(mediaImageView.image))
     }
 
-     func updateMedia() {
+    func updateMedia() {
         guard let mediaContent = mediaContent?.content else { return }
         loadingView.isHidden = false
-        mediaImageView.sd_setImage(
-            with: getRequiredImageURL(data: mediaContent),
-            placeholderImage: placeHolderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
-            guard let self = self else { return }
-            if let image = image {
-                self.mediaImageView.image = image
-                self.loadingView.isHidden = true
-            }
+        if mediaContent.image == nil {
+            mediaImageView.sd_setImage(
+                with: getRequiredImageURL(data: mediaContent),
+                placeholderImage: placeHolderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
+                    guard let self = self else { return }
+                    if let image = image {
+                        self.mediaImageView.image = image
+                        self.loadingView.isHidden = true
+                    }
+                }
+        } else {
+            mediaImageView.image = mediaContent.image
+            loadingView.isHidden = true
         }
     }
 
-     func getRequiredImageURL(data: MediaContentModel) -> URL? {
+    func getRequiredImageURL(data: MediaContentModel) -> URL? {
         let imageURL: URL?
         guard let mediaQuality = mediaContent?.quality else { return nil }
         switch mediaQuality {
