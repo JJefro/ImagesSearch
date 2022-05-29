@@ -14,7 +14,7 @@ class MediaCollectionsViewCell: UICollectionViewCell {
     var onShareButtonTap: ((UIImage?) -> Void)?
     
     private let loadingView = LoadingView()
-    private var placeHolderImage = UIImage()
+    private var placeholderImage = UIImage()
     private let shareButton = UIButton().apply {
         $0.setImage(R.image.share()?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.tintColor = R.color.shareButtonTintColor()
@@ -27,8 +27,8 @@ class MediaCollectionsViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
         addViews()
+        configure()
         bind()
     }
     
@@ -38,20 +38,16 @@ class MediaCollectionsViewCell: UICollectionViewCell {
     
     func setupCell(data: MediaContentModel, quality: MediaQuality, isHiddenShareButton: Bool) {
         shareButton.isHidden = isHiddenShareButton
-        if data.image == nil {
-            loadingView.isHidden = false
-            mediaImageView.sd_setImage(
-                with: getRequiredImageURL(data: data, quality: quality),
-                placeholderImage: placeHolderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
-                    guard let self = self else { return }
-                    self.mediaImageView.image = image
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.loadingView.isHidden = true
-                    }
+        loadingView.isHidden = false
+        mediaImageView.sd_setImage(
+            with: getRequiredImageURL(data: data, quality: quality),
+            placeholderImage: placeholderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
+                guard let self = self else { return }
+                self.mediaImageView.image = image
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.loadingView.isHidden = true
                 }
-        } else {
-            mediaImageView.image = data.image
-        }
+            }
     }
     
     @objc func shareButtonTapped(_ sender: UIButton) {
@@ -74,7 +70,7 @@ class MediaCollectionsViewCell: UICollectionViewCell {
 
 private extension MediaCollectionsViewCell {
     func addViews() {
-        addImageView()
+        addMediaImageView()
         addShareButton()
         setPlaceholderImage()
         addLoadingView()
@@ -89,7 +85,7 @@ private extension MediaCollectionsViewCell {
         shareButton.addTarget(self, action: #selector(shareButtonTapped(_:)), for: .touchUpInside)
     }
     
-    func addImageView() {
+    func addMediaImageView() {
         contentView.addSubview(mediaImageView)
         mediaImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -115,6 +111,6 @@ private extension MediaCollectionsViewCell {
         let image = R.image.pixabayLogo()?.withRenderingMode(.alwaysTemplate)
         guard var image = image else { return }
         image = image.resize(to: bounds.size)
-        placeHolderImage = image
+        placeholderImage = image
     }
 }

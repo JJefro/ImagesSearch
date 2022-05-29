@@ -20,11 +20,6 @@ class DetailsViewModel {
         if let previousMedia = previousSelectedMedia, let currentIndex = contents.firstIndex(of: selectedMedia) {
             mediaContents.insert(previousMedia, at: currentIndex)
         }
-        if selectedMedia.image != nil {
-            mediaContents.removeAll(where: { $0.image == selectedMedia.image })
-        } else {
-            mediaContents.removeAll(where: { $0 == selectedMedia })
-        }
         previousSelectedMedia = selectedMedia
         onStateChanges?(.onUpdateMediaContents(mediaContents, selectedMedia, quality))
     }

@@ -25,7 +25,8 @@ protocol SearchMediaViewModelProtocol {
 class SearchMediaViewModel: SearchMediaViewModelProtocol {
     
     enum State {
-        case onUpdateData(PixabayEntity)
+        case onUpdateMediaData(PixabayEntity)
+        case onUpdatePhotosData(PHFetchResult<PHAsset>)
         case onUpdateMediaContent([MediaContentModel])
         case onUpdateMediaQuality(MediaQuality)
         case onUpdateCurrentSettings([SettingsModel])
@@ -45,7 +46,7 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     private var pixabayEntity: PixabayEntity? {
         didSet {
             guard let entity = pixabayEntity else { return }
-            onStateChanges?(.onUpdateData(entity))
+            onStateChanges?(.onUpdateMediaData(entity))
         }
     }
     
@@ -103,9 +104,8 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     
     func fetchLocalPhotos() {
         let library = PHPhotoLibrary.shared()
-        let assets = library.fetchAllPhotos()
-        pixabayEntity = PixabayEntity(assets: assets)
-
+        let fetchResult = library.fetchAllPhotos()
+        onStateChanges?(.onUpdatePhotosData(fetchResult))
     }
     
     func filterMediaBy(tag: Tag) {
@@ -116,7 +116,7 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     
     func showCurrentPixabayEntity() {
         guard let entity = pixabayEntity else { return }
-        onStateChanges?(.onUpdateData(entity))
+        onStateChanges?(.onUpdateMediaData(entity))
     }
     
     func updateMediaQuality(quality: MediaQuality) {

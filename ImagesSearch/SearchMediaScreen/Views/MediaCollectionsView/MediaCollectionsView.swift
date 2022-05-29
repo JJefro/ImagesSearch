@@ -55,6 +55,7 @@ class MediaCollectionsView: UICollectionView {
     }
 }
 
+// MARK: - MediaCollectionView Configurations
 private extension MediaCollectionsView {
     func configure() {
         register(MediaCollectionsViewCell.self, forCellWithReuseIdentifier: MediaCollectionsViewCell.identifier)
@@ -66,22 +67,22 @@ private extension MediaCollectionsView {
     func bind() {
         delegate = self
         dataSource = self
-        addObserverToNotificationCenter()
+//        addObserverToNotificationCenter()
     }
 
-    func addObserverToNotificationCenter() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleOrientationChanges(notification:)),
-            name: UIDevice.orientationDidChangeNotification,
-            object: nil)
-    }
-
-    @objc func handleOrientationChanges(notification: Notification) {
-        if notification.name == UIDevice.orientationDidChangeNotification {
-            flowLayout.invalidateLayout()
-        }
-    }
+//    func addObserverToNotificationCenter() {
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(handleOrientationChanges(notification:)),
+//            name: UIDevice.orientationDidChangeNotification,
+//            object: nil)
+//    }
+//
+//    @objc func handleOrientationChanges(notification: Notification) {
+//        if notification.name == UIDevice.orientationDidChangeNotification {
+//            flowLayout.invalidateLayout()
+//        }
+//    }
 }
 
 extension MediaCollectionsView: UICollectionViewDelegateFlowLayout {

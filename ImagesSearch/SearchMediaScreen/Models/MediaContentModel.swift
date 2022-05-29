@@ -16,7 +16,6 @@ struct MediaContentModel: Equatable {
     let smallImageURL: URL?
     let normalImageURL: URL?
     let largeImageURL: URL?
-    let image: UIImage?
-    let likes: Int?
+    let likes: Int
     let tags: [Tag]
 }

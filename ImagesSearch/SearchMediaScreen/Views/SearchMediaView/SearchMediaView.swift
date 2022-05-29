@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 protocol SearchMediaViewProtocol: UIView {
     var onStateChanges: ((SearchMediaView.State) -> Void)? { get set }
@@ -14,6 +15,7 @@ protocol SearchMediaViewProtocol: UIView {
     func setLoadingView(isLoading: Bool)
     func setupTagsCollectionView(tags: [Tag])
     func setupMediaCollectionsView(mediaContents: [MediaContentModel])
+    func setupPhotosCollectionView(result: PHFetchResult<PHAsset>)
     func setupSearchTextfieldText(text: String?)
     func updateMediaQuality(quality: MediaQuality)
     func setupSettings(settings: [SettingsModel])
@@ -30,6 +32,10 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
         case onTagTap(Tag)
         case onUpdateSettingsValue(MediaCategory?, MediaQuality?, MediaSource?)
         case onEditImageButtonTap(UIImage)
+    }
+
+    enum CurrentCollection {
+        case photoCollectionView, mediaCollectionView
     }
 
     var onStateChanges: ((State) -> Void)?
@@ -52,6 +58,9 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
     private let mediaCollectionView = MediaCollectionsView(
         builder: SearchMediaContentCellSizeBuilder()
     )
+    private let photosCollectionView = PhotosCollectionView(builder: SearchMediaContentCellSizeBuilder()).apply {
+        $0.isHidden = true
+    }
     private var settingsView = SettingsView()
     private let loadingView = LoadingView()
     private let detailsView = DetailsView().apply {
@@ -59,6 +68,12 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
     }
     private let fullscreenView = FullscreenView().apply {
         $0.isHidden = true
+    }
+
+    private var currentCollectionView: CurrentCollection = .mediaCollectionView {
+        didSet {
+            changeCurrentCollectionView()
+        }
     }
 
     override init(frame: CGRect) {
@@ -89,6 +104,12 @@ extension SearchMediaView {
 
     func setupMediaCollectionsView(mediaContents: [MediaContentModel]) {
         mediaCollectionView.mediaContents = mediaContents
+        currentCollectionView = .mediaCollectionView
+    }
+
+    func setupPhotosCollectionView(result: PHFetchResult<PHAsset>) {
+        photosCollectionView.setupPhotos(result: result)
+        currentCollectionView = .photoCollectionView
     }
 
     func setupSearchTextfieldText(text: String?) {
@@ -143,6 +164,17 @@ private extension SearchMediaView {
             self.fullscreenView.isHidden = !isShown
         }
     }
+
+    func changeCurrentCollectionView() {
+        switch currentCollectionView {
+        case .mediaCollectionView:
+            mediaCollectionView.isHidden = false
+            photosCollectionView.isHidden = true
+        case .photoCollectionView:
+            mediaCollectionView.isHidden = true
+            photosCollectionView.isHidden = false
+        }
+    }
 }
 
 // MARK: - Bind Elements
@@ -150,6 +182,7 @@ private extension SearchMediaView {
     func bind() {
         bindTopNavigationView()
         bindMediaCollectionView()
+        bindPhotosCollectionView()
         bindTagsCollectionView()
         bindSettingsView()
         bindDetailsView()
@@ -186,6 +219,14 @@ private extension SearchMediaView {
                 selected: selectedMedia,
                 quality: quality)
             self.showDetailsView(isShown: true)
+        }
+    }
+
+    func bindPhotosCollectionView() {
+        photosCollectionView.onZoomButtonTap = { [weak self] image in
+            guard let self = self else { return }
+            self.showFullscreenView(isShown: true)
+            self.fullscreenView.setupImage(image: image)
         }
     }
 
@@ -237,6 +278,7 @@ private extension SearchMediaView {
         addRelatedLabel()
         addTagsCollectionView()
         addMediaCollectionsView()
+        addPhotosCollectionView()
         addDetailsView()
         addLoadingView()
         addSettingsView()
@@ -285,6 +327,15 @@ private extension SearchMediaView {
     func addMediaCollectionsView() {
         addSubview(mediaCollectionView)
         mediaCollectionView.snp.makeConstraints {
+            $0.top.equalTo(tagsCollectionView.snp.bottom).offset(16)
+            $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
+            $0.bottom.equalToSuperview()
+        }
+    }
+
+    func addPhotosCollectionView() {
+        addSubview(photosCollectionView)
+        photosCollectionView.snp.makeConstraints {
             $0.top.equalTo(tagsCollectionView.snp.bottom).offset(16)
             $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
             $0.bottom.equalToSuperview()
