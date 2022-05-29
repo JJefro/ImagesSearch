@@ -32,7 +32,6 @@ class SelectedMediaView: UIView {
     }
     
     private let zoomButton = UIButton().apply {
-        $0.isUserInteractionEnabled = true
         $0.setImage(R.image.plusMagnifyingglass()?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.tintColor = R.color.shareButtonTintColor()
         $0.backgroundColor = R.color.shareButtonBG()
@@ -142,20 +141,15 @@ private extension SelectedMediaView {
     func updateMedia() {
         guard let mediaContent = mediaContent?.content else { return }
         loadingView.isHidden = false
-        if mediaContent.image == nil {
-            mediaImageView.sd_setImage(
-                with: getRequiredImageURL(data: mediaContent),
-                placeholderImage: placeHolderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
-                    guard let self = self else { return }
-                    if let image = image {
-                        self.mediaImageView.image = image
-                        self.loadingView.isHidden = true
-                    }
+        mediaImageView.sd_setImage(
+            with: getRequiredImageURL(data: mediaContent),
+            placeholderImage: placeHolderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
+                guard let self = self else { return }
+                if let image = image {
+                    self.mediaImageView.image = image
+                    self.loadingView.isHidden = true
                 }
-        } else {
-            mediaImageView.image = mediaContent.image
-            loadingView.isHidden = true
-        }
+            }
     }
 
     func getRequiredImageURL(data: MediaContentModel) -> URL? {

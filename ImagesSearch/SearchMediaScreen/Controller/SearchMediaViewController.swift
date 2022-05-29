@@ -76,7 +76,7 @@ private extension SearchMediaViewController {
             guard let self = self else { return }
             switch state {
                 
-            case .onUpdateData(let data):
+            case .onUpdateMediaData(let data):
                 self.contentView.setupSearchTextfieldText(text: self.viewModel.mediaData?.text)
                 self.contentView.setTotalMediaContentLabel(text: data.totalMediaString)
                 self.contentView.setupTagsCollectionView(tags: data.tags)
@@ -98,6 +98,8 @@ private extension SearchMediaViewController {
                 self.contentView.updateMediaQuality(quality: mediaQuality)
             case .onUpdateCurrentSettings(let settingsData):
                 self.contentView.setupSettings(settings: settingsData)
+            case .onUpdatePhotosData(let fetchResult):
+                self.contentView.setupPhotosCollectionView(result: fetchResult)
             }
         }
     }
