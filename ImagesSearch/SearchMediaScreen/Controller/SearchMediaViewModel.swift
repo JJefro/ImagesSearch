@@ -38,7 +38,7 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     var onEditImageButtonTap: ((UIImage) -> Void)?
     var mediaData: (text: String, selectedCategory: MediaCategory)? {
         didSet {
-            searchMedia()
+            currentMediaSource = .remote
         }
     }
     
