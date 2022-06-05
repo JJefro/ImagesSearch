@@ -1,21 +1,21 @@
 //
-//  CellSize.swift
+//  PhotosCollectionContentCellSizeBuilder.swift
 //  ImagesSearch
 //
-//  Created by Jevgenijs Jefrosinins on 24/04/2022.
+//  Created by Jevgenijs Jefrosinins on 06/06/2022.
 //
 
 import UIKit
 
-class SearchMediaContentCellSizeBuilder: CellSizeBuilderProtocol {
+class PhotosCollectionContentCellSizeBuilder: CellSizeBuilderProtocol {
 
     let rows: [DeviceOrientation: CGFloat] = [
-        .phonePortrait: 3,
+        .phonePortrait: 4,
         .phoneLandscape: 1,
         .pad: 4
     ]
     let columns: [DeviceOrientation: CGFloat] = [
-        .phonePortrait: 1,
+        .phonePortrait: 2,
         .phoneLandscape: 2,
         .pad: 4
     ]

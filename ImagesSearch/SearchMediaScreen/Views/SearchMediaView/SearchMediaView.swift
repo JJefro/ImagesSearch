@@ -58,9 +58,9 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
 
     private let tagsCollectionView = TagsCollectionView()
     private let mediaCollectionView = MediaCollectionsView(
-        builder: SearchMediaContentCellSizeBuilder()
+        builder: MediaCollectionContentCellSizeBuilder()
     )
-    private let photosCollectionView = PhotosCollectionView(builder: SearchMediaContentCellSizeBuilder()).apply {
+    private let photosCollectionView = PhotosCollectionView(builder: PhotosCollectionContentCellSizeBuilder()).apply {
         $0.isHidden = true
     }
     private var settingsView = SettingsView()
@@ -171,10 +171,17 @@ private extension SearchMediaView {
         switch currentCollectionView {
         case .mediaCollectionView:
             mediaCollectionView.isHidden = false
+            tagsCollectionView.isHidden = false
+            relatedLabel.isHidden = false
+            totalMediaLabel.isHidden = false
             photosCollectionView.isHidden = true
         case .photoCollectionView:
             mediaCollectionView.isHidden = true
+            tagsCollectionView.isHidden = true
+            relatedLabel.isHidden = true
+            totalMediaLabel.isHidden = true
             photosCollectionView.isHidden = false
+            detailsView.isHidden = true
         }
     }
 }
@@ -342,7 +349,7 @@ private extension SearchMediaView {
     func addPhotosCollectionView() {
         addSubview(photosCollectionView)
         photosCollectionView.snp.makeConstraints {
-            $0.top.equalTo(tagsCollectionView.snp.bottom).offset(16)
+            $0.top.equalTo(topNavigationView.snp.bottom).offset(16)
             $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
             $0.bottom.equalToSuperview()
         }
