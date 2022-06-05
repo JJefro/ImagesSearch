@@ -32,6 +32,8 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
         case onTagTap(Tag)
         case onUpdateSettingsValue(MediaCategory?, MediaQuality?, MediaSource?)
         case onEditImageButtonTap(UIImage)
+        case onHideMediaFullscreenNavigationBar(Bool)
+        case onHideMediaFullscreenView
     }
 
     enum CurrentCollection {
@@ -66,7 +68,7 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
     private let detailsView = DetailsView().apply {
         $0.isHidden = true
     }
-    private let fullscreenView = FullscreenView().apply {
+    private let mediaFullscreenView = MediaFullscreenView().apply {
         $0.isHidden = true
     }
 
@@ -159,9 +161,9 @@ private extension SearchMediaView {
         }
     }
 
-    func showFullscreenView(isShown: Bool) {
+    func showMediaFullscreenView(isShown: Bool) {
         UIView.transition(with: self, duration: 0.2, options: [.transitionCrossDissolve]) {
-            self.fullscreenView.isHidden = !isShown
+            self.mediaFullscreenView.isHidden = !isShown
         }
     }
 
@@ -225,8 +227,8 @@ private extension SearchMediaView {
     func bindPhotosCollectionView() {
         photosCollectionView.onZoomButtonTap = { [weak self] image in
             guard let self = self else { return }
-            self.showFullscreenView(isShown: true)
-            self.fullscreenView.setupImage(image: image)
+            self.showMediaFullscreenView(isShown: true)
+            self.mediaFullscreenView.setupImage(image: image)
         }
     }
 
@@ -254,18 +256,22 @@ private extension SearchMediaView {
             case .onLicenseButtonTap:
                 self.onStateChanges?(.onLicenseButtonTap)
             case let .onZoomButtonTap(image):
-                self.showFullscreenView(isShown: true)
-                self.fullscreenView.setupImage(image: image)
+                self.showMediaFullscreenView(isShown: true)
+                self.mediaFullscreenView.setupImage(image: image)
             }
         }
     }
 
     func bindFullscreenView() {
-        fullscreenView.onReturnButtonTap = { [weak self] in
-            self?.showFullscreenView(isShown: false)
+        mediaFullscreenView.onReturnButtonTap = { [weak self] in
+            self?.onStateChanges?(.onHideMediaFullscreenView)
+            self?.showMediaFullscreenView(isShown: false)
         }
-        fullscreenView.onEditButtonTap = { [weak self] image in
+        mediaFullscreenView.onEditButtonTap = { [weak self] image in
             self?.onStateChanges?(.onEditImageButtonTap(image))
+        }
+        mediaFullscreenView.onHideNavigationBar = { [weak self] isHidden in
+            self?.onStateChanges?(.onHideMediaFullscreenNavigationBar(isHidden))
         }
     }
 }
@@ -367,8 +373,8 @@ private extension SearchMediaView {
     }
 
     func addZoomableImageView() {
-        addSubview(fullscreenView)
-        fullscreenView.snp.makeConstraints {
+        addSubview(mediaFullscreenView)
+        mediaFullscreenView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }

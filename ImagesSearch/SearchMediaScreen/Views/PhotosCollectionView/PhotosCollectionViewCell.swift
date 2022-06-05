@@ -24,6 +24,14 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     }
 
     private let imageManager = PHImageManager.default()
+    private let requestImageOption = PHImageRequestOptions().apply {
+        $0.deliveryMode = .highQualityFormat
+    }
+    private var currentImage: UIImage? {
+        didSet {
+            photoImageView.image = currentImage
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,14 +45,27 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     }
 
     func setupCell(asset: PHAsset) {
-        imageManager.requestImage(for: asset, targetSize: photoImageView.frame.size, contentMode: .aspectFill, options: nil) { [weak self] image, _  in
-            self?.photoImageView.image = image
-        }
+        getImageFromAsset(asset: asset)
+    }
+}
+
+// MARK: - Private Methods
+private extension PhotosCollectionViewCell {
+
+    @objc func zoomButtonTapped(_ sender: UIButton) {
+        guard let image = currentImage else { return }
+        onZoomButtonTap?(image)
     }
 
-    @objc private func zoomButtonTapped(_ sender: UIButton) {
-        guard let image = photoImageView.image else { return }
-        onZoomButtonTap?(image)
+    func getImageFromAsset(asset: PHAsset) {
+        imageManager.requestImage(
+            for: asset,
+            targetSize: PHImageManagerMaximumSize,
+            contentMode: .default,
+            options: requestImageOption
+        ) { [weak self] image, _  in
+            self?.currentImage = image
+        }
     }
 }
 

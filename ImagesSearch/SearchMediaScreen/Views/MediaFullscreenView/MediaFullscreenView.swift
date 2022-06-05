@@ -1,5 +1,5 @@
 //
-//  FullscreenView.swift
+//  MediaFullscreenView.swift
 //  ImagesSearch
 //
 //  Created by Jevgenijs Jefrosinins on 25/04/2022.
@@ -7,22 +7,22 @@
 
 import UIKit
 
-class FullscreenView: UIView {
+class MediaFullscreenView: UIView {
 
     private let zoomableImageView = ZoomableImageView()
-    private let topNavigationView = FullscreenTopNavigationView()
+    private let fullscreenNavigationView = FullscreenNavigationView()
 
     var onReturnButtonTap: (() -> Void)?
     var onEditButtonTap: ((UIImage) -> Void)?
-    var onHideTopNavigationBar: ((Bool) -> Void)?
+    var onHideNavigationBar: ((Bool) -> Void)?
 
     private var isHiddenTopNavigationBar = false {
         didSet {
-            UIView.transition(with: self, duration: 0.2, options: [.transitionCrossDissolve]) { [weak self] in
+            UIView.transition(with: self, duration: 0.1, options: [.transitionCrossDissolve]) { [weak self] in
                 guard let self = self else { return }
-                self.topNavigationView.isHidden = self.isHiddenTopNavigationBar
+                self.fullscreenNavigationView.isHidden = self.isHiddenTopNavigationBar
+                self.onHideNavigationBar?(self.isHiddenTopNavigationBar)
             }
-            onHideTopNavigationBar?(isHiddenTopNavigationBar)
         }
     }
 
@@ -42,11 +42,13 @@ class FullscreenView: UIView {
     func setupImage(image: UIImage?) {
         currentImage = image
         guard  let image = image  else { return }
+        fullscreenNavigationView.isHidden = false
         zoomableImageView.setupImage(image: image)
     }
 }
 
-private extension FullscreenView {
+// MARK: - Add Views
+private extension MediaFullscreenView {
 
     func addViews() {
         addZoomableImageView()
@@ -61,11 +63,15 @@ private extension FullscreenView {
     }
 
     func addTopNavigationView() {
-        addSubview(topNavigationView)
-        topNavigationView.snp.makeConstraints {
+        addSubview(fullscreenNavigationView)
+        fullscreenNavigationView.snp.makeConstraints {
             $0.top.trailing.leading.equalToSuperview()
         }
     }
+}
+
+// MARK: - Bind Elements
+private extension MediaFullscreenView {
     
     func bind() {
         zoomableImageView.onDownSwipe = { [weak self] in
@@ -80,11 +86,11 @@ private extension FullscreenView {
             self?.isHiddenTopNavigationBar = isZooming
         }
 
-        topNavigationView.onReturnButtonTap = { [weak self] in
+        fullscreenNavigationView.onReturnButtonTap = { [weak self] in
             self?.onReturnButtonTap?()
         }
 
-        topNavigationView.onEditButtonTap = { [weak self] in
+        fullscreenNavigationView.onEditButtonTap = { [weak self] in
             guard let self = self,
                   let image = self.currentImage else { return }
             self.onEditButtonTap?(image)

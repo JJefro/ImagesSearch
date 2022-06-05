@@ -53,8 +53,8 @@ private extension ZoomableImageView {
     }
 
     func bind() {
-        addSingleTapRecognizer(view: mediaImageView)
         addDoubleTapRecognizer(view: mediaImageView)
+        addSingleTapRecognizer(view: mediaImageView)
         addDownSwipeGesture(view: self)
         delegate = self
     }
@@ -78,7 +78,6 @@ private extension ZoomableImageView {
     func addDoubleTapRecognizer(view: UIView) {
         doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
-        doubleTapGesture.require(toFail: singleTapGesture)
         addGestureRecognizer(doubleTapGesture)
     }
 
