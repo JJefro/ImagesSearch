@@ -10,7 +10,11 @@ import UIKit
 class SettingsTableView: UITableView {
 
     var onUpdateSettingsValue: ((String) -> Void)?
-    var settingsObjects: [SettingsModel] = []
+    var settingsObjects: [SettingsModel] = [] {
+        didSet {
+            reloadData()
+        }
+    }
 
     private var selectedCellIndexPath: IndexPath?
     private var isCellInOpenState: Bool = false

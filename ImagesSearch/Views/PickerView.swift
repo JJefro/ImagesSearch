@@ -12,7 +12,11 @@ class PickerView: UIPickerView {
     
     var onValueChanged: ((String) -> Void)?
     
-    private var categories: [String] = []
+    private var categories: [String] = [] {
+        didSet {
+            reloadAllComponents()
+        }
+    }
     
     init() {
         super.init(frame: .zero)

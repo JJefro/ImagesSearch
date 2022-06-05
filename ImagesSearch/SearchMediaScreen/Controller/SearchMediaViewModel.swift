@@ -58,7 +58,6 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     
     private var currentMediaSource: MediaSource = .remote {
         didSet {
-            print(currentMediaSource)
             updateMediaSettings()
             if currentMediaSource == .local {
                 fetchLocalPhotos()
@@ -132,6 +131,9 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     
     func updateMediaSettings() {
         guard let mediaData = mediaData else { return }
+        var settings: [SettingsModel] = []
+
+        if currentMediaSource == .remote {
         let mediaCategorySettings = SettingsModel(
             title: R.string.localizable.settingsView_mediaCategoryTitle(),
             selectedItem: mediaData.selectedCategory.rawValue,
@@ -142,12 +144,14 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
             selectedItem: currentMediaQuality.rawValue,
             pickerValues: MediaQuality.allCases.map { $0.rawValue }
         )
-        
+            settings.append(contentsOf: [mediaCategorySettings, mediaQualitySettings])
+        }
         let mediaSource = SettingsModel(
             title: R.string.localizable.settingsView_mediaSourceTitle(),
             selectedItem: currentMediaSource.rawValue,
             pickerValues: MediaSource.allCases.map { $0.rawValue }
         )
-        onStateChanges?(.onUpdateCurrentSettings([mediaCategorySettings, mediaQualitySettings, mediaSource]))
+        settings.append(mediaSource)
+        onStateChanges?(.onUpdateCurrentSettings(settings))
     }
 }

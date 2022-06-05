@@ -12,6 +12,7 @@ protocol SettingsViewModelProtocol {
     var currentMediaCategory: MediaCategory? { get }
     var currentMediaSource: MediaSource? { get }
     func updateWithSettings(value: String)
+    func removeAllSettingsValues() 
 }
 
 class SettingsViewModel: SettingsViewModelProtocol {
@@ -28,5 +29,11 @@ class SettingsViewModel: SettingsViewModelProtocol {
         } else if let mediaSource = MediaSource(rawValue: value), MediaSource.allCases.contains(mediaSource) {
             currentMediaSource = mediaSource
         }
+    }
+
+    func removeAllSettingsValues() {
+        currentMediaSource = nil
+        currentMediaCategory = nil
+        currentMediaQuality = nil
     }
 }
