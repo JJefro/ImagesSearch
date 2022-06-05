@@ -58,6 +58,8 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     
     private var currentMediaSource: MediaSource = .remote {
         didSet {
+            print(currentMediaSource)
+            updateMediaSettings()
             if currentMediaSource == .local {
                 fetchLocalPhotos()
             } else {
@@ -116,6 +118,7 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     
     func showCurrentPixabayEntity() {
         guard let entity = pixabayEntity else { return }
+        currentMediaSource = .remote
         onStateChanges?(.onUpdateMediaData(entity))
     }
     

@@ -7,24 +7,22 @@
 
 import Foundation
 
-struct MediaCategory: RawRepresentable {
-    var rawValue: String
-}
+protocol SettingsProtocol {}
 
-enum Media: String, CaseIterable {
+enum MediaCategory: String, CaseIterable, SettingsProtocol {
     case all = "All"
     case photo = "Photo"
     case illustration = "Illustration"
     case vector = "Vector"
 }
 
-enum MediaQuality: String, CaseIterable {
+enum MediaQuality: String, CaseIterable, SettingsProtocol {
     case small = "Small"
     case normal = "Normal"
     case large = "Large"
 }
 
-enum MediaSource: String, CaseIterable {
+enum MediaSource: String, CaseIterable, SettingsProtocol {
     case local = "Local"
     case remote = "Remote"
 }

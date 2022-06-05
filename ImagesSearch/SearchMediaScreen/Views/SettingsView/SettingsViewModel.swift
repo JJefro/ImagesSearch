@@ -23,7 +23,7 @@ class SettingsViewModel: SettingsViewModelProtocol {
     func updateWithSettings(value: String) {
         if let mediaQuality = MediaQuality(rawValue: value), MediaQuality.allCases.contains(mediaQuality) {
             currentMediaQuality = mediaQuality
-        } else if let media = Media(rawValue: value), Media.allCases.contains(media) {
+        } else if let media = MediaCategory(rawValue: value), MediaCategory.allCases.contains(media) {
             currentMediaCategory = MediaCategory(rawValue: media.rawValue)
         } else if let mediaSource = MediaSource(rawValue: value), MediaSource.allCases.contains(mediaSource) {
             currentMediaSource = mediaSource

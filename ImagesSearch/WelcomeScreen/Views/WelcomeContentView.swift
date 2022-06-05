@@ -219,7 +219,7 @@ import SwiftUI
 @available(iOS 13, *)
 struct WelcomeContentViewRepresentation: UIViewRepresentable {
     func makeUIView(context: Context) -> WelcomeContentView {
-        let view = WelcomeContentView(mediaCategories: [MediaCategory(rawValue: "Images")])
+        let view = WelcomeContentView(mediaCategories: MediaCategory.allCases)
         return view
     }
     

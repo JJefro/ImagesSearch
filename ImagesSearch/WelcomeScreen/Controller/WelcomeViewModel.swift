@@ -17,7 +17,7 @@ protocol WelcomeViewModelProtocol {
 class WelcomeViewModel: WelcomeViewModelProtocol {
     var onOpenSearchMediaView: ((String, MediaCategory, [MediaCategory]) -> Void)?
 
-    private(set) var categoryList: [MediaCategory] = Media.allCases.map { MediaCategory(rawValue: $0.rawValue) }
+    private(set) var categoryList: [MediaCategory] = MediaCategory.allCases
 
     func getFirstCategory() -> MediaCategory? {
         return categoryList.first

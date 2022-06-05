@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FullscreenTopNavigationView: UIView {
+class FullscreenNavigationView: UIView {
 
     var onReturnButtonTap: (() -> Void)?
     var onEditButtonTap: (() -> Void)?
@@ -49,7 +49,7 @@ class FullscreenTopNavigationView: UIView {
 }
 
 // MARK: - Private Methods
-private extension FullscreenTopNavigationView {
+private extension FullscreenNavigationView {
     @objc func returnButtonTapped(_ sender: UIButton) {
         onReturnButtonTap?()
     }
@@ -59,7 +59,8 @@ private extension FullscreenTopNavigationView {
     }
 }
 
-private extension FullscreenTopNavigationView {
+// MARK: - Add Views
+private extension FullscreenNavigationView {
     func addElements() {
         addBlurView()
         addSubview(horizontalContentStack)
@@ -74,7 +75,11 @@ private extension FullscreenTopNavigationView {
         addSubview(blurView)
         blurView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
+}
 
+// MARK: - Bind Elements
+private extension FullscreenNavigationView {
+    
     func bind() {
         returnButton.addTarget(self, action: #selector(returnButtonTapped(_:)), for: .touchUpInside)
         editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
