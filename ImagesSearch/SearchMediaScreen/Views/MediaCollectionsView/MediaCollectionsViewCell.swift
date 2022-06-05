@@ -41,13 +41,15 @@ class MediaCollectionsViewCell: UICollectionViewCell {
         loadingView.isHidden = false
         mediaImageView.sd_setImage(
             with: getRequiredImageURL(data: data, quality: quality),
-            placeholderImage: placeholderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
+            placeholderImage: placeholderImage.sd_tintedImage(
+                with: R.color.textColor()!),
+            completed: { [weak self] (image, error, _, _) in
                 guard let self = self else { return }
-                self.mediaImageView.image = image
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if error == nil {
+                    self.mediaImageView.image = image
                     self.loadingView.isHidden = true
                 }
-            }
+            })
     }
     
     @objc func shareButtonTapped(_ sender: UIButton) {
