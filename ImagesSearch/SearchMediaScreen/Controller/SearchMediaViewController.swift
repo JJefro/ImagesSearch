@@ -11,6 +11,11 @@ class SearchMediaViewController: UIViewController {
     
     private var viewModel: SearchMediaViewModelProtocol
     private var contentView: SearchMediaViewProtocol
+    private var isHiddenStatusBar = false {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
     
     init(contentView: SearchMediaViewProtocol, viewModel: SearchMediaViewModelProtocol) {
         self.contentView = contentView
@@ -45,7 +50,14 @@ class SearchMediaViewController: UIViewController {
         }
     }
 
-    private func shareImage(image: UIImage?) {
+    override var prefersStatusBarHidden: Bool {
+        return isHiddenStatusBar
+    }
+}
+
+// MARK: - Private Methods
+private extension SearchMediaViewController {
+    func shareImage(image: UIImage?) {
         guard let image = image?.jpegData(compressionQuality: 1) else {
             self.showAlert(
                 title: R.string.localizable.errorAlert_title(),
@@ -58,7 +70,7 @@ class SearchMediaViewController: UIViewController {
         self.present(activityController, animated: true, completion: nil)
     }
 
-    private func showPixabayLicense() {
+    func showPixabayLicense() {
         guard let pixabayLicenseURL = viewModel.getLicenseURL() else { return }
         UIApplication.shared.open(pixabayLicenseURL)
     }
@@ -70,7 +82,8 @@ private extension SearchMediaViewController {
         bindViewModel()
         bindContentView()
     }
-    
+
+    // MARK: - Bind ViewModel
     func bindViewModel() {
         viewModel.onStateChanges = { [weak self] state in
             guard let self = self else { return }
@@ -103,7 +116,8 @@ private extension SearchMediaViewController {
             }
         }
     }
-    
+    // MARK: - Bind ContentView
+    // swiftlint:disable:next cyclomatic_complexity
     func bindContentView() {
         contentView.onStateChanges = { [weak self] state in
             guard let self = self else { return }
@@ -117,10 +131,11 @@ private extension SearchMediaViewController {
                 
             case .onPixabayButtonTap:
                 self.viewModel.showCurrentPixabayEntity()
-                
+
             case let .onGetSearchFieldValue(text):
                 guard let text = text else { return }
                 self.viewModel.mediaData?.text = text
+                
             case let .onUpdateSettingsValue(category, quality, mediaSource):
                 if let category = category {
                     self.viewModel.mediaData?.selectedCategory = category
@@ -143,6 +158,10 @@ private extension SearchMediaViewController {
                 self.showPixabayLicense()
             case let .onEditImageButtonTap(image):
                 self.viewModel.onEditImageButtonTap?(image)
+            case let .onHideMediaFullscreenNavigationBar(isHidden):
+                self.isHiddenStatusBar = isHidden
+            case .onHideMediaFullscreenView:
+                self.isHiddenStatusBar = false
             }
         }
     }
