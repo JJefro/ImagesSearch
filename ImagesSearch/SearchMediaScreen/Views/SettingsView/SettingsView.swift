@@ -44,6 +44,7 @@ class SettingsView: UIView {
                     viewModel.currentMediaQuality,
                     viewModel.currentMediaSource
                 )
+                viewModel.removeAllSettingsValues()
             }
         }
     }
