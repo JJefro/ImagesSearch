@@ -16,13 +16,6 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFill
     }
 
-    private let zoomButton = UIButton().apply {
-        $0.setImage(R.image.plusMagnifyingglass()?.withRenderingMode(.alwaysTemplate), for: .normal)
-        $0.tintColor = R.color.shareButtonTintColor()
-        $0.backgroundColor = R.color.shareButtonBG()
-        $0.layer.cornerRadius = 3
-    }
-
     private let imageManager = PHImageManager.default()
     private let requestImageOption = PHImageRequestOptions().apply {
         $0.deliveryMode = .highQualityFormat
@@ -52,9 +45,15 @@ class PhotosCollectionViewCell: UICollectionViewCell {
 // MARK: - Private Methods
 private extension PhotosCollectionViewCell {
 
-    @objc func zoomButtonTapped(_ sender: UIButton) {
+    @objc func cellTapped(_ sender: UITapGestureRecognizer) {
         guard let image = currentImage else { return }
         onZoomButtonTap?(image)
+    }
+
+    func addTapGestureRecognizer(view: UIView) {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped(_:)))
+        tap.numberOfTouchesRequired = 1
+        view.addGestureRecognizer(tap)
     }
 
     func getImageFromAsset(asset: PHAsset) {
@@ -78,11 +77,10 @@ private extension PhotosCollectionViewCell {
 
     func addViews() {
         addPhotoImageView()
-        addZoomButton()
     }
 
     func bind() {
-        zoomButton.addTarget(self, action: #selector(zoomButtonTapped(_:)), for: .touchUpInside)
+        addTapGestureRecognizer(view: self)
     }
 }
 
@@ -92,14 +90,6 @@ private extension PhotosCollectionViewCell {
         contentView.addSubview(photoImageView)
         photoImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-        }
-    }
-
-    func addZoomButton() {
-        contentView.addSubview(zoomButton)
-        zoomButton.snp.makeConstraints {
-            $0.trailing.top.equalTo(photoImageView).inset(16)
-            $0.size.equalTo(32)
         }
     }
 }
