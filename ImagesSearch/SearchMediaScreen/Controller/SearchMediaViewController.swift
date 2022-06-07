@@ -39,7 +39,7 @@ class SearchMediaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.searchMedia()
+        viewModel.updateMediaSource(mediaSource: .remote)
         setInterfaceOrientationMask(orientation: .all)
     }
 
