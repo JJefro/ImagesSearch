@@ -7,7 +7,6 @@
 
 import UIKit
 import SDWebImage
-import Photos
 
 class MediaCollectionsViewCell: UICollectionViewCell {
     
