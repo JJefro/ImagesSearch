@@ -144,7 +144,7 @@ private extension SearchMediaViewController {
                         message: R.string.localizable.errorAlert_imageSavingFailed_title())
                     return
                 }
-                self.saveImageToPhotoAlbum(image: image)
+                self.saveToPhotos(image: image)
             case .onLicenseButtonTap:
                 self.showPixabayLicense()
             case let .onEditImageButtonTap(image):

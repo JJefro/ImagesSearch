@@ -36,7 +36,7 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
         case onMediaFullscreenViewHiding
     }
 
-    enum CurrentCollection {
+    private enum CurrentCollection {
         case photoCollectionView, mediaCollectionView
     }
 

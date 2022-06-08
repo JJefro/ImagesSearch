@@ -32,7 +32,7 @@ private extension CropMediaViewController {
 
 extension CropMediaViewController: TOCropViewControllerDelegate {
     func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
-        saveImageToPhotoAlbum(image: image)
+        saveToPhotos(image: image)
         navigationController?.popViewController(animated: true)
     }
 }

@@ -37,7 +37,7 @@ extension UIViewController {
         self.present(alert, animated: true)
     }
 
-    func saveImageToPhotoAlbum(image: UIImage) {
+    func saveToPhotos(image: UIImage) {
         guard let appName = Bundle.main.appName else { return }
         let library = PHPhotoLibrary.shared()
         library.save(image: image, albumName: appName) { [weak self] success, error in
