@@ -32,8 +32,8 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
         case onTagTap(Tag)
         case onUpdateSettingsValue(MediaCategory?, MediaQuality?, MediaSource?)
         case onEditImageButtonTap(UIImage)
-        case onHideMediaFullscreenNavigationBar(Bool)
-        case onHideMediaFullscreenView
+        case onMediaFullscreenNavigationBarHiding(Bool)
+        case onMediaFullscreenViewHiding
     }
 
     enum CurrentCollection {
@@ -135,9 +135,13 @@ extension SearchMediaView {
 // MARK: - Private Methods
 private extension SearchMediaView {
     @objc func pixabayButtonTapped(_ sender: UIButton) {
-        showDetailsView(isShown: false)
+        if !detailsView.isHidden {
+            showDetailsView(isShown: false)
+        }
+        if currentCollectionView == .photoCollectionView {
+            onStateChanges?(.onPixabayButtonTap)
+        }
         scrollToInitialValue()
-        onStateChanges?(.onPixabayButtonTap)
     }
 
     @objc func settingsButtonTapped(_ sender: UIButton) {
@@ -271,14 +275,14 @@ private extension SearchMediaView {
 
     func bindFullscreenView() {
         mediaFullscreenView.onReturnButtonTap = { [weak self] in
-            self?.onStateChanges?(.onHideMediaFullscreenView)
+            self?.onStateChanges?(.onMediaFullscreenViewHiding)
             self?.showMediaFullscreenView(isShown: false)
         }
         mediaFullscreenView.onEditButtonTap = { [weak self] image in
             self?.onStateChanges?(.onEditImageButtonTap(image))
         }
         mediaFullscreenView.onHideNavigationBar = { [weak self] isHidden in
-            self?.onStateChanges?(.onHideMediaFullscreenNavigationBar(isHidden))
+            self?.onStateChanges?(.onMediaFullscreenNavigationBarHiding(isHidden))
         }
     }
 }

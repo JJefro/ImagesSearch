@@ -26,7 +26,7 @@ class MainFlow {
         
         welcomeViewModel.onOpenSearchMediaView = { (text, selectedCategory, categoryList) in
             searchMediaViewModel.mediaData = (text, selectedCategory)
-            searchMediaViewModel.setupCategoryList(list: categoryList)
+            searchMediaViewModel.setupMediaCategories(list: categoryList)
             navigationController.pushViewController(searchMediaViewController, animated: true)
         }
 

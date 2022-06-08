@@ -16,8 +16,8 @@ protocol SearchMediaViewModelProtocol {
     func searchMedia()
     func filterMediaBy(tag: Tag)
     func showCurrentPixabayEntity()
-    func updateMediaQuality(quality: MediaQuality)
-    func updateMediaSource(mediaSource: MediaSource)
+    func updateMedia(quality: MediaQuality)
+    func updateMedia(source: MediaSource)
     func updateMediaSettings()
     func getLicenseURL() -> URL?
 }
@@ -83,7 +83,7 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
         return Contstants.pixabayLicenseURLComponents.url
     }
     
-    func setupCategoryList(list: [MediaCategory]) {
+    func setupMediaCategories(list: [MediaCategory]) {
         categoryList = list
     }
     
@@ -121,12 +121,12 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
         onStateChanges?(.onUpdateMediaData(entity))
     }
     
-    func updateMediaQuality(quality: MediaQuality) {
+    func updateMedia(quality: MediaQuality) {
         self.currentMediaQuality = quality
     }
     
-    func updateMediaSource(mediaSource: MediaSource) {
-        self.currentMediaSource = mediaSource
+    func updateMedia(source: MediaSource) {
+        self.currentMediaSource = source
     }
     
     func updateMediaSettings() {

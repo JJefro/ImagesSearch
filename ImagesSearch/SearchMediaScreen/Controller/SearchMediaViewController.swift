@@ -11,10 +11,14 @@ class SearchMediaViewController: UIViewController {
     
     private var viewModel: SearchMediaViewModelProtocol
     private var contentView: SearchMediaViewProtocol
-    private var isHiddenStatusBar = false {
+    private var _prefersStatusBarHidden = false {
         didSet {
             setNeedsStatusBarAppearanceUpdate()
         }
+    }
+
+    override var prefersStatusBarHidden: Bool {
+        return _prefersStatusBarHidden
     }
     
     init(contentView: SearchMediaViewProtocol, viewModel: SearchMediaViewModelProtocol) {
@@ -39,7 +43,7 @@ class SearchMediaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.updateMediaSource(mediaSource: .remote)
+        viewModel.updateMedia(source: .remote)
         setInterfaceOrientationMask(orientation: .all)
     }
 
@@ -49,15 +53,11 @@ class SearchMediaViewController: UIViewController {
             contentView.viewWillTransition()
         }
     }
-
-    override var prefersStatusBarHidden: Bool {
-        return isHiddenStatusBar
-    }
 }
 
 // MARK: - Private Methods
 private extension SearchMediaViewController {
-    func shareImage(image: UIImage?) {
+    func share(image: UIImage?) {
         guard let image = image?.jpegData(compressionQuality: 1) else {
             self.showAlert(
                 title: R.string.localizable.errorAlert_title(),
@@ -88,25 +88,20 @@ private extension SearchMediaViewController {
         viewModel.onStateChanges = { [weak self] state in
             guard let self = self else { return }
             switch state {
-                
             case .onUpdateMediaData(let data):
                 self.contentView.setupSearchTextfieldText(text: self.viewModel.mediaData?.text)
                 self.contentView.setTotalMediaContentLabel(text: data.totalMediaString)
                 self.contentView.setupTagsCollectionView(tags: data.tags)
                 self.contentView.setupMediaCollectionsView(mediaContents: data.mediaContents)
-                
             case .onUpdateMediaContent(let mediaContents):
                 self.contentView.setupMediaCollectionsView(mediaContents: mediaContents)
-                
             case .onErrorOccured(let error):
                 self.showAlert(
                     title: R.string.localizable.errorAlert_title(),
                     message: error.localizedDescription
                 )
-                
             case .onShowLoadingView(let isLoading):
                 self.contentView.setLoadingView(isLoading: isLoading)
-                
             case .onUpdateMediaQuality(let mediaQuality):
                 self.contentView.updateMediaQuality(quality: mediaQuality)
             case .onUpdateCurrentSettings(let settingsData):
@@ -116,35 +111,31 @@ private extension SearchMediaViewController {
             }
         }
     }
+    
     // MARK: - Bind ContentView
     // swiftlint:disable:next cyclomatic_complexity
     func bindContentView() {
         contentView.onStateChanges = { [weak self] state in
             guard let self = self else { return }
             switch state {
-                
             case let .onShareButtonTap(image):
-                self.shareImage(image: image)
-                
+                self.share(image: image)
             case let .onTagTap(tag):
                 self.viewModel.filterMediaBy(tag: tag)
-                
             case .onPixabayButtonTap:
                 self.viewModel.showCurrentPixabayEntity()
-
             case let .onGetSearchFieldValue(text):
                 guard let text = text else { return }
                 self.viewModel.mediaData?.text = text
-                
             case let .onUpdateSettingsValue(category, quality, mediaSource):
                 if let category = category {
                     self.viewModel.mediaData?.selectedCategory = category
                 }
                 if let quality = quality {
-                    self.viewModel.updateMediaQuality(quality: quality)
+                    self.viewModel.updateMedia(quality: quality)
                 }
                 if let mediaSource = mediaSource {
-                    self.viewModel.updateMediaSource(mediaSource: mediaSource)
+                    self.viewModel.updateMedia(source: mediaSource)
                 }
             case let .onDownloadButtonTap(image):
                 guard let image = image else {
@@ -158,10 +149,10 @@ private extension SearchMediaViewController {
                 self.showPixabayLicense()
             case let .onEditImageButtonTap(image):
                 self.viewModel.onEditImageButtonTap?(image)
-            case let .onHideMediaFullscreenNavigationBar(isHidden):
-                self.isHiddenStatusBar = isHidden
-            case .onHideMediaFullscreenView:
-                self.isHiddenStatusBar = false
+            case let .onMediaFullscreenNavigationBarHiding(isHidden):
+                self._prefersStatusBarHidden = isHidden
+            case .onMediaFullscreenViewHiding:
+                self._prefersStatusBarHidden = false
             }
         }
     }

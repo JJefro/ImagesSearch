@@ -29,7 +29,7 @@ class PhotosCollectionView: UICollectionView {
         self.cellSizeBuilder = CachingCellSizeBuilder(builder: builder)
         flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.5
+        flowLayout.minimumLineSpacing = 1
         flowLayout.minimumInteritemSpacing = flowLayout.minimumLineSpacing
         super.init(frame: UIScreen.main.bounds, collectionViewLayout: flowLayout)
         configure()
