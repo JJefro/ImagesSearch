@@ -10,8 +10,13 @@ import TOCropViewController
 
 class CropMediaViewController: TOCropViewController {
 
-    override init(croppingStyle style: TOCropViewCroppingStyle, image: UIImage) {
-        super.init(croppingStyle: style, image: image)
+    init(croppingStyle style: TOCropViewCroppingStyle, image: UIImage) {
+        super.init(
+            croppingStyle: style,
+            image: image,
+            backgroundColor: R.color.searchMediaViewBG()!,
+            overlayViewLinesColor: R.color.gridOverlayLinesBackgroundColor()!
+        )
     }
 
     required init?(coder: NSCoder) {

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import DeveloperToolsSupport
 
 class MainFlow {
     private var window: UIWindow?
@@ -30,8 +29,8 @@ class MainFlow {
             navigationController.pushViewController(searchMediaViewController, animated: true)
         }
 
-        searchMediaViewModel.onEditImageButtonTap = { image in
-            let cropViewController = CropMediaViewController(croppingStyle: .default, image: image)
+        searchMediaViewModel.onImageEdit = { image in
+            let cropViewController = CropMediaViewController(croppingStyle: .custom, image: image)
             navigationController.pushViewController(cropViewController, animated: true)
         }
 
