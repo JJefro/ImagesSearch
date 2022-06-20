@@ -13,7 +13,8 @@ class SelectedMediaView: UIView {
         case onShareButtonTap(UIImage?)
         case onDownloadButtonTap(UIImage?)
         case onLicenseButtonTap
-        case onZoomButtonTap(UIImage?)
+        case onZoomButtonTap(UIImage)
+        case onCropButtonTap(UIImage)
     }
 
     var onStateChanges: ((State) -> Void)?
@@ -32,7 +33,18 @@ class SelectedMediaView: UIView {
     }
     
     private let zoomButton = UIButton().apply {
-        $0.setImage(R.image.plusMagnifyingglass()?.withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.setImage(
+            R.image.plusMagnifyingglass()?.withRenderingMode(.alwaysTemplate),
+            for: .normal)
+        $0.tintColor = R.color.shareButtonTintColor()
+        $0.backgroundColor = R.color.shareButtonBG()
+        $0.layer.cornerRadius = 3
+    }
+
+    private let cropButton = UIButton().apply {
+        $0.setImage(
+            R.image.cropIcon()?.withRenderingMode(.alwaysTemplate),
+            for: .normal)
         $0.tintColor = R.color.shareButtonTintColor()
         $0.backgroundColor = R.color.shareButtonBG()
         $0.layer.cornerRadius = 3
@@ -100,6 +112,12 @@ class SelectedMediaView: UIView {
         }
     }
 
+    private var selectedImage: UIImage? {
+        didSet {
+            mediaImageView.image = selectedImage
+        }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addElements()
@@ -135,7 +153,13 @@ private extension SelectedMediaView {
     }
 
     @objc func zoomButtonTapped(_ sender: UIButton) {
-        onStateChanges?(.onZoomButtonTap(mediaImageView.image))
+        guard let image = selectedImage else { return }
+        onStateChanges?(.onZoomButtonTap(image))
+    }
+
+    @objc func cropButtonTapped(_ sender: UIButton) {
+        guard let image = selectedImage else { return }
+        onStateChanges?(.onCropButtonTap(image))
     }
 
     func updateMedia() {
@@ -146,7 +170,7 @@ private extension SelectedMediaView {
             placeholderImage: placeHolderImage.sd_tintedImage(with: R.color.textColor()!)) { [weak self] (image, _, _, _) in
                 guard let self = self else { return }
                 if let image = image {
-                    self.mediaImageView.image = image
+                    self.selectedImage = image
                     self.loadingView.isHidden = true
                 }
             }
@@ -174,6 +198,7 @@ private extension SelectedMediaView {
         downloadButton.addTarget(self, action: #selector(downloadButtonTapped(_:)), for: .touchUpInside)
         licenseButton.addTarget(self, action: #selector(licenseButtonTapped(_:)), for: .touchUpInside)
         zoomButton.addTarget(self, action: #selector(zoomButtonTapped(_:)), for: .touchUpInside)
+        cropButton.addTarget(self, action: #selector(cropButtonTapped(_:)), for: .touchUpInside)
     }
 }
 
@@ -188,6 +213,7 @@ private extension SelectedMediaView {
         addContentView()
         addMediaImageView()
         addZoomButton()
+        addCropButton()
 
         contentView.addSubview(contentVerticalStack)
         contentVerticalStack.snp.makeConstraints {
@@ -235,6 +261,15 @@ private extension SelectedMediaView {
         contentView.addSubview(zoomButton)
         zoomButton.snp.makeConstraints {
             $0.trailing.bottom.equalTo(mediaImageView).inset(16)
+            $0.size.equalTo(32)
+        }
+    }
+
+    func addCropButton() {
+        contentView.addSubview(cropButton)
+        cropButton.snp.makeConstraints {
+            $0.trailing.equalTo(mediaImageView).inset(16)
+            $0.bottom.equalTo(zoomButton.snp.top).inset(-16)
             $0.size.equalTo(32)
         }
     }
