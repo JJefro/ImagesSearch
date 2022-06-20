@@ -17,12 +17,20 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     }
 
     private let imageManager = PHImageManager.default()
-    private let requestImageOption = PHImageRequestOptions().apply {
+    private let highQualityImageOption = PHImageRequestOptions().apply {
+        $0.version = .original
         $0.deliveryMode = .highQualityFormat
     }
-    private var currentImage: UIImage? {
+    private let fastFormatImageOption = PHImageRequestOptions().apply {
+        $0.deliveryMode = .fastFormat
+    }
+    private var currentAsset: PHAsset? {
         didSet {
-            photoImageView.image = currentImage
+            getImageFromAsset(
+                asset: currentAsset,
+                with: fastFormatImageOption) { [weak self] image in
+                    self?.photoImageView.image = image
+                }
         }
     }
 
@@ -38,7 +46,7 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     }
 
     func setupCell(asset: PHAsset) {
-        getImageFromAsset(asset: asset)
+        currentAsset = asset
     }
 }
 
@@ -46,8 +54,12 @@ class PhotosCollectionViewCell: UICollectionViewCell {
 private extension PhotosCollectionViewCell {
 
     @objc func cellTapped(_ sender: UITapGestureRecognizer) {
-        guard let image = currentImage else { return }
-        onZoomButtonTap?(image)
+        getImageFromAsset(
+            asset: currentAsset,
+            with: highQualityImageOption) { [weak self] image in
+                guard let image = image else { return }
+                self?.onZoomButtonTap?(image)
+            }
     }
 
     func addTapGestureRecognizer(view: UIView) {
@@ -56,14 +68,17 @@ private extension PhotosCollectionViewCell {
         view.addGestureRecognizer(tap)
     }
 
-    func getImageFromAsset(asset: PHAsset) {
+    func getImageFromAsset(asset: PHAsset?,
+                           with options: PHImageRequestOptions,
+                           completion: @escaping (UIImage?) -> Void) {
+        guard let asset = asset else { return }
         imageManager.requestImage(
             for: asset,
             targetSize: PHImageManagerMaximumSize,
             contentMode: .default,
-            options: requestImageOption
-        ) { [weak self] image, _  in
-            self?.currentImage = image
+            options: options
+        ) { image, _  in
+            completion(image)
         }
     }
 }

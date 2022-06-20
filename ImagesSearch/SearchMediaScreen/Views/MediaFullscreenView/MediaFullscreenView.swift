@@ -14,14 +14,14 @@ class MediaFullscreenView: UIView {
 
     var onReturnButtonTap: (() -> Void)?
     var onEditButtonTap: ((UIImage) -> Void)?
-    var onHideNavigationBar: ((Bool) -> Void)?
+    var onNavigationBarHiding: ((Bool) -> Void)?
 
-    private var isHiddenTopNavigationBar = false {
+    private var isHiddenNavigationBar = false {
         didSet {
             UIView.transition(with: self, duration: 0.1, options: [.transitionCrossDissolve]) { [weak self] in
                 guard let self = self else { return }
-                self.fullscreenNavigationView.isHidden = self.isHiddenTopNavigationBar
-                self.onHideNavigationBar?(self.isHiddenTopNavigationBar)
+                self.fullscreenNavigationView.isHidden = self.isHiddenNavigationBar
+                self.onNavigationBarHiding?(self.isHiddenNavigationBar)
             }
         }
     }
@@ -79,11 +79,11 @@ private extension MediaFullscreenView {
         }
 
         zoomableImageView.onSingleTap = { [weak self] in
-            self?.isHiddenTopNavigationBar.toggle()
+            self?.isHiddenNavigationBar.toggle()
         }
 
         zoomableImageView.onScrollViewDidZoom = { [weak self] isZooming in
-            self?.isHiddenTopNavigationBar = isZooming
+            self?.isHiddenNavigationBar = isZooming
         }
 
         fullscreenNavigationView.onReturnButtonTap = { [weak self] in

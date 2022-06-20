@@ -92,7 +92,10 @@ private extension SearchMediaViewController {
                 self.contentView.setupSearchTextfieldText(text: self.viewModel.mediaData?.text)
                 self.contentView.setTotalMediaContentLabel(text: data.totalMediaString)
                 self.contentView.setupTagsCollectionView(tags: data.tags)
-                self.contentView.setupMediaCollectionsView(mediaContents: data.mediaContents)
+                self.contentView.setupMediaCollectionsView(
+                    mediaContents: data.mediaContents
+                )
+                self.contentView.totalMediaCount = data.mediaContents.count
             case .onUpdateMediaContent(let mediaContents):
                 self.contentView.setupMediaCollectionsView(mediaContents: mediaContents)
             case .onErrorOccured(let error):
@@ -128,14 +131,15 @@ private extension SearchMediaViewController {
                 guard let text = text else { return }
                 self.viewModel.mediaData?.text = text
             case let .onUpdateSettingsValue(category, quality, mediaSource):
-                if let category = category {
-                    self.viewModel.mediaData?.selectedCategory = category
-                }
-                if let quality = quality {
-                    self.viewModel.updateMedia(quality: quality)
-                }
                 if let mediaSource = mediaSource {
                     self.viewModel.updateMedia(source: mediaSource)
+                } else {
+                    if let category = category {
+                        self.viewModel.mediaData?.selectedCategory = category
+                    }
+                    if let quality = quality {
+                        self.viewModel.updateMedia(quality: quality)
+                    }
                 }
             case let .onDownloadButtonTap(image):
                 guard let image = image else {
@@ -147,8 +151,8 @@ private extension SearchMediaViewController {
                 self.saveToPhotos(image: image)
             case .onLicenseButtonTap:
                 self.showPixabayLicense()
-            case let .onEditImageButtonTap(image):
-                self.viewModel.onEditImageButtonTap?(image)
+            case let .onImageEdit(image):
+                self.viewModel.onImageEdit?(image)
             case let .onMediaFullscreenNavigationBarHiding(isHidden):
                 self._prefersStatusBarHidden = isHidden
             case .onMediaFullscreenViewHiding:

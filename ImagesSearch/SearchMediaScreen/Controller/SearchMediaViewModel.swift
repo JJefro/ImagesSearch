@@ -11,7 +11,7 @@ import Photos
 protocol SearchMediaViewModelProtocol {
     var mediaData: (text: String, selectedCategory: MediaCategory)? { get set }
     var onStateChanges: ((SearchMediaViewModel.State) -> Void)? { get set }
-    var onEditImageButtonTap: ((UIImage) -> Void)? { get set }
+    var onImageEdit: ((UIImage) -> Void)? { get set }
     
     func searchMedia()
     func filterMediaBy(tag: Tag)
@@ -35,7 +35,7 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     }
     
     var onStateChanges: ((State) -> Void)?
-    var onEditImageButtonTap: ((UIImage) -> Void)?
+    var onImageEdit: ((UIImage) -> Void)?
     var mediaData: (text: String, selectedCategory: MediaCategory)? {
         didSet {
             currentMediaSource = .remote

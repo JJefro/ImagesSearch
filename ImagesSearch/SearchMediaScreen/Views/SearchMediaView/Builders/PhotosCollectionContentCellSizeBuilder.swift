@@ -10,14 +10,14 @@ import UIKit
 class PhotosCollectionContentCellSizeBuilder: CellSizeBuilderProtocol {
 
     let rows: [DeviceOrientation: CGFloat] = [
-        .phonePortrait: 4,
-        .phoneLandscape: 1,
-        .pad: 4
+        .phonePortrait: 10,
+        .phoneLandscape: 3,
+        .pad: 10
     ]
     let columns: [DeviceOrientation: CGFloat] = [
-        .phonePortrait: 2,
-        .phoneLandscape: 2,
-        .pad: 4
+        .phonePortrait: 5,
+        .phoneLandscape: 5,
+        .pad: 10
     ]
 
     func calculateSize(for collectionView: UICollectionView, traitCollection: UITraitCollection) -> CGSize {

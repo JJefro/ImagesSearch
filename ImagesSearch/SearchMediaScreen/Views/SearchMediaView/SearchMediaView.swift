@@ -10,6 +10,7 @@ import Photos
 
 protocol SearchMediaViewProtocol: UIView {
     var onStateChanges: ((SearchMediaView.State) -> Void)? { get set }
+    var totalMediaCount: Int { get set }
 
     func setTotalMediaContentLabel(text: String?)
     func setLoadingView(isLoading: Bool)
@@ -31,7 +32,7 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
         case onLicenseButtonTap
         case onTagTap(Tag)
         case onUpdateSettingsValue(MediaCategory?, MediaQuality?, MediaSource?)
-        case onEditImageButtonTap(UIImage)
+        case onImageEdit(UIImage)
         case onMediaFullscreenNavigationBarHiding(Bool)
         case onMediaFullscreenViewHiding
     }
@@ -60,7 +61,8 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
     private let mediaCollectionView = MediaCollectionsView(
         builder: MediaCollectionContentCellSizeBuilder()
     )
-    private let photosCollectionView = PhotosCollectionView(builder: PhotosCollectionContentCellSizeBuilder()).apply {
+    private let photosCollectionView = PhotosCollectionView(
+        builder: PhotosCollectionContentCellSizeBuilder()).apply {
         $0.isHidden = true
     }
     private var settingsView = SettingsView()
@@ -77,6 +79,8 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
             changeCurrentCollectionView()
         }
     }
+
+    var totalMediaCount = 0
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -107,6 +111,7 @@ extension SearchMediaView {
     func setupMediaCollectionsView(mediaContents: [MediaContentModel]) {
         mediaCollectionView.mediaContents = mediaContents
         currentCollectionView = .mediaCollectionView
+        scrollToInitialValue()
     }
 
     func setupPhotosCollectionView(result: PHFetchResult<PHAsset>) {
@@ -138,7 +143,7 @@ private extension SearchMediaView {
         if !detailsView.isHidden {
             showDetailsView(isShown: false)
         }
-        if currentCollectionView == .photoCollectionView {
+        if currentCollectionView == .photoCollectionView || mediaCollectionView.mediaContents.count < totalMediaCount {
             onStateChanges?(.onPixabayButtonTap)
         }
         scrollToInitialValue()
@@ -160,8 +165,6 @@ private extension SearchMediaView {
         UIView.transition(with: self, duration: 0.2, options: [.transitionCrossDissolve]) { [weak self] in
             guard let self = self else { return }
             self.detailsView.isHidden = !isShown
-            self.totalMediaLabel.isHidden = isShown
-            self.tagsCollectionView.isHidden = isShown
         }
     }
 
@@ -269,6 +272,8 @@ private extension SearchMediaView {
             case let .onZoomButtonTap(image):
                 self.showMediaFullscreenView(isShown: true)
                 self.mediaFullscreenView.setupImage(image: image)
+            case let .onCropButtonTap(image):
+                self.onStateChanges?(.onImageEdit(image))
             }
         }
     }
@@ -279,9 +284,9 @@ private extension SearchMediaView {
             self?.showMediaFullscreenView(isShown: false)
         }
         mediaFullscreenView.onEditButtonTap = { [weak self] image in
-            self?.onStateChanges?(.onEditImageButtonTap(image))
+            self?.onStateChanges?(.onImageEdit(image))
         }
-        mediaFullscreenView.onHideNavigationBar = { [weak self] isHidden in
+        mediaFullscreenView.onNavigationBarHiding = { [weak self] isHidden in
             self?.onStateChanges?(.onMediaFullscreenNavigationBarHiding(isHidden))
         }
     }
@@ -353,7 +358,7 @@ private extension SearchMediaView {
     func addPhotosCollectionView() {
         addSubview(photosCollectionView)
         photosCollectionView.snp.makeConstraints {
-            $0.top.equalTo(topNavigationView.snp.bottom).offset(16)
+            $0.top.equalTo(topNavigationView.snp.bottom)
             $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
             $0.bottom.equalToSuperview()
         }
@@ -370,7 +375,7 @@ private extension SearchMediaView {
     func addDetailsView() {
         addSubview(detailsView)
         detailsView.snp.makeConstraints {
-            $0.top.equalTo(topNavigationView.snp.bottom).inset(-12)
+            $0.top.equalTo(topNavigationView.snp.bottom)
             $0.leading.trailing.equalTo(safeAreaLayoutGuide)
             $0.bottom.equalToSuperview()
         }

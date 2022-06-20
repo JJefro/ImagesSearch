@@ -11,6 +11,7 @@ protocol SettingsViewModelProtocol {
     var currentMediaQuality: MediaQuality? { get }
     var currentMediaCategory: MediaCategory? { get }
     var currentMediaSource: MediaSource? { get }
+    
     func updateWithSettings(value: String)
     func removeAllSettingsValues() 
 }

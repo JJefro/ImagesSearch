@@ -78,7 +78,12 @@ extension SettingsTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: SettingsTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         cell.setupCell(data: settingsObjects[indexPath.section])
-        cell.onUpdateSettingsValue = onUpdateSettingsValue
+        cell.onUpdateSettingsValue = { [weak self] value in
+            guard let self = self else { return }
+            self.onUpdateSettingsValue?(value)
+            self.isCellInOpenState = false
+            self.updateCellsSize(animated: true)
+        }
         return cell
     }
 }
