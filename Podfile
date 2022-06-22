@@ -11,7 +11,7 @@ pod 'R.swift'
 pod 'SnapKit', '~> 5.0.0'
 pod 'SDWebImage', '~> 5.0'
 pod 'NVActivityIndicatorView'
-pod 'TOCropViewController', :git => 'https://github.com/JJefro/TOCropViewController'
+pod 'TOCropViewController', :git => 'https://github.com/JJefro/TOCropViewController', :branch => 'customCroppingStyle'
 pod 'netfox', :configurations => ['Debug']
 
 end

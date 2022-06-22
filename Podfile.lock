@@ -18,7 +18,7 @@ DEPENDENCIES:
   - R.swift
   - SDWebImage (~> 5.0)
   - SnapKit (~> 5.0.0)
-  - TOCropViewController (from `https://github.com/JJefro/TOCropViewController`)
+  - TOCropViewController (from `https://github.com/JJefro/TOCropViewController`, branch `customCroppingStyle`)
 
 SPEC REPOS:
   trunk:
@@ -31,11 +31,12 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   TOCropViewController:
+    :branch: customCroppingStyle
     :git: https://github.com/JJefro/TOCropViewController
 
 CHECKOUT OPTIONS:
   TOCropViewController:
-    :commit: 4c982f8214e3043884dd8ff85de6960456e18f51
+    :commit: 2577b98d4d5f574b79025ae926da0fa32dc10863
     :git: https://github.com/JJefro/TOCropViewController
 
 SPEC CHECKSUMS:
@@ -47,6 +48,6 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
 
-PODFILE CHECKSUM: 4c53f9aef64d4cf2f29f8288584ec40d7d873e25
+PODFILE CHECKSUM: a28cbdae49b2d4e17a13871b80327a737e5d5178
 
 COCOAPODS: 1.11.2
