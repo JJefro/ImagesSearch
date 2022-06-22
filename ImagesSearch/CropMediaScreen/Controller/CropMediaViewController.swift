@@ -10,13 +10,19 @@ import TOCropViewController
 
 class CropMediaViewController: TOCropViewController {
 
-    init(croppingStyle style: TOCropViewCroppingStyle, image: UIImage) {
-        super.init(
-            croppingStyle: style,
-            image: image,
-            backgroundColor: R.color.searchMediaViewBG()!,
-            overlayViewLinesColor: R.color.gridOverlayLinesBackgroundColor()!
-        )
+    override init(croppingStyle style: TOCropViewCroppingStyle, image: UIImage) {
+        switch style {
+        case .default, .circular:
+            super.init(croppingStyle: style, image: image)
+        case .custom:
+            super.init(
+                image: image,
+                toolbarButtonsBackgroundColor: R.color.gridOverlayLinesBackgroundColor()!,
+                cropViewBackgroundColor: R.color.searchMediaViewBG()!
+            )
+        @unknown default:
+            fatalError("croppingStyle has not been implemented")
+        }
     }
 
     required init?(coder: NSCoder) {

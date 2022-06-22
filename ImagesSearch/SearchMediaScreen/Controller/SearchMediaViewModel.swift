@@ -116,9 +116,12 @@ class SearchMediaViewModel: SearchMediaViewModelProtocol {
     }
     
     func showCurrentPixabayEntity() {
-        guard let entity = pixabayEntity else { return }
-        currentMediaSource = .remote
-        onStateChanges?(.onUpdateMediaData(entity))
+        if let entity = pixabayEntity {
+            currentMediaSource = .remote
+            onStateChanges?(.onUpdateMediaData(entity))
+        } else {
+            searchMedia()
+        }
     }
     
     func updateMedia(quality: MediaQuality) {

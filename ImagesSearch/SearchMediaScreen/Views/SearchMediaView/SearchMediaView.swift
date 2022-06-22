@@ -143,7 +143,7 @@ private extension SearchMediaView {
         if !detailsView.isHidden {
             showDetailsView(isShown: false)
         }
-        if currentCollectionView == .photoCollectionView || mediaCollectionView.mediaContents.count < totalMediaCount {
+        if currentCollectionView == .photoCollectionView || mediaCollectionView.mediaContents.count < totalMediaCount || mediaCollectionView.mediaContents.isEmpty {
             onStateChanges?(.onPixabayButtonTap)
         }
         scrollToInitialValue()
