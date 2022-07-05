@@ -10,6 +10,8 @@ import TOCropViewController
 
 class CropMediaViewController: TOCropViewController {
 
+    var onDeinitTriggering: (() -> Void)?
+
     override init(croppingStyle style: TOCropViewCroppingStyle, image: UIImage) {
         switch style {
         case .default, .circular:
@@ -31,19 +33,35 @@ class CropMediaViewController: TOCropViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
-    }
-}
-
-private extension CropMediaViewController {
-    func bind() {
         delegate = self
+    }
+
+    deinit {
+        onDeinitTriggering?()
+    }
+
+    func setup(contentView: UIView) {
+        contentView.addSubview(view)
+        view.frame = contentView.bounds
+    }
+
+    private func removeViewFromSubview() {
+        willMove(toParent: nil)
+        view.removeFromSuperview()
+        removeFromParent()
     }
 }
 
 extension CropMediaViewController: TOCropViewControllerDelegate {
     func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
-        saveToPhotos(image: image)
-        navigationController?.popViewController(animated: true)
+        saveToPhotos(image: image, completion: { [weak self] in
+            self?.removeViewFromSubview()
+        })
+    }
+
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        if cancelled {
+            removeViewFromSubview()
+        }
     }
 }

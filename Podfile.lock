@@ -36,7 +36,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   TOCropViewController:
-    :commit: 2577b98d4d5f574b79025ae926da0fa32dc10863
+    :commit: d952a5ea3c0099ff2a1eb0fa975cd69f0f150efb
     :git: https://github.com/JJefro/TOCropViewController
 
 SPEC CHECKSUMS:

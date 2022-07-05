@@ -148,11 +148,11 @@ private extension SearchMediaViewController {
                         message: R.string.localizable.errorAlert_imageSavingFailed_title())
                     return
                 }
-                self.saveToPhotos(image: image)
+                self.saveToPhotos(image: image, completion: {})
             case .onLicenseButtonTap:
                 self.showPixabayLicense()
-            case let .onImageEdit(image):
-                self.viewModel.onImageEdit?(image)
+            case let .onImageEdit(cropMediaView, image):
+                self.viewModel.onImageEdit?(cropMediaView, image)
             case let .onMediaFullscreenNavigationBarHiding(isHidden):
                 self._prefersStatusBarHidden = isHidden
             case .onMediaFullscreenViewHiding:

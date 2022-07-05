@@ -37,7 +37,7 @@ extension UIViewController {
         self.present(alert, animated: true)
     }
 
-    func saveToPhotos(image: UIImage) {
+    func saveToPhotos(image: UIImage, completion: @escaping() -> Void?) {
         guard let appName = Bundle.main.appName else { return }
         let library = PHPhotoLibrary.shared()
         library.save(image: image, albumName: appName) { [weak self] success, error in
@@ -51,7 +51,9 @@ extension UIViewController {
                         title: R.string.localizable.errorAlert_title(),
                         message: error?.localizedDescription ?? R.string.localizable.errorAlert_imageSavingFailed_title()
                     )
+
                 }
+                completion()
             }
         }
     }

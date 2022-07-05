@@ -32,7 +32,7 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
         case onLicenseButtonTap
         case onTagTap(Tag)
         case onUpdateSettingsValue(MediaCategory?, MediaQuality?, MediaSource?)
-        case onImageEdit(UIImage)
+        case onImageEdit(UIView, UIImage)
         case onMediaFullscreenNavigationBarHiding(Bool)
         case onMediaFullscreenViewHiding
     }
@@ -67,6 +67,9 @@ class SearchMediaView: UIView, SearchMediaViewProtocol {
     }
     private var settingsView = SettingsView()
     private let loadingView = LoadingView()
+    private let cropMediaView = UIView().apply {
+        $0.isHidden = true
+    }
     private let detailsView = DetailsView().apply {
         $0.isHidden = true
     }
@@ -109,12 +112,14 @@ extension SearchMediaView {
     }
 
     func setupMediaCollectionsView(mediaContents: [MediaContentModel]) {
+        cropMediaView.isHidden = true
         mediaCollectionView.mediaContents = mediaContents
         currentCollectionView = .mediaCollectionView
         scrollToInitialValue()
     }
 
     func setupPhotosCollectionView(result: PHFetchResult<PHAsset>) {
+        cropMediaView.isHidden = true
         photosCollectionView.setupPhotos(result: result)
         currentCollectionView = .photoCollectionView
     }
@@ -140,6 +145,7 @@ extension SearchMediaView {
 // MARK: - Private Methods
 private extension SearchMediaView {
     @objc func pixabayButtonTapped(_ sender: UIButton) {
+        cropMediaView.isHidden = true
         if !detailsView.isHidden {
             showDetailsView(isShown: false)
         }
@@ -150,6 +156,7 @@ private extension SearchMediaView {
     }
 
     @objc func settingsButtonTapped(_ sender: UIButton) {
+        cropMediaView.isHidden = true
         settingsView.isShowSettingsView.toggle()
     }
 
@@ -273,7 +280,7 @@ private extension SearchMediaView {
                 self.showMediaFullscreenView(isShown: true)
                 self.mediaFullscreenView.setupImage(image: image)
             case let .onCropButtonTap(image):
-                self.onStateChanges?(.onImageEdit(image))
+                self.onStateChanges?(.onImageEdit(self.cropMediaView, image))
             }
         }
     }
@@ -284,7 +291,9 @@ private extension SearchMediaView {
             self?.showMediaFullscreenView(isShown: false)
         }
         mediaFullscreenView.onEditButtonTap = { [weak self] image in
-            self?.onStateChanges?(.onImageEdit(image))
+            guard let self = self else { return }
+            self.onStateChanges?(.onImageEdit(self.cropMediaView, image))
+            self.mediaFullscreenView.isHidden.toggle()
         }
         mediaFullscreenView.onNavigationBarHiding = { [weak self] isHidden in
             self?.onStateChanges?(.onMediaFullscreenNavigationBarHiding(isHidden))
@@ -305,6 +314,7 @@ private extension SearchMediaView {
         addLoadingView()
         addSettingsView()
         addZoomableImageView()
+        addCropMediaView()
     }
 
     func configure() {
@@ -392,6 +402,14 @@ private extension SearchMediaView {
         addSubview(mediaFullscreenView)
         mediaFullscreenView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+    }
+
+    func addCropMediaView() {
+        addSubview(cropMediaView)
+        cropMediaView.snp.makeConstraints {
+            $0.top.equalTo(topNavigationView.snp.bottom)
+            $0.trailing.leading.bottom.equalToSuperview()
         }
     }
 }

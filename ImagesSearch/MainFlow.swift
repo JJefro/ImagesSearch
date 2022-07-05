@@ -29,9 +29,16 @@ class MainFlow {
             navigationController.pushViewController(searchMediaViewController, animated: true)
         }
 
-        searchMediaViewModel.onImageEdit = { image in
-            let cropViewController = CropMediaViewController(croppingStyle: .custom, image: image)
-            navigationController.pushViewController(cropViewController, animated: true)
+        searchMediaViewModel.onImageEdit = { cropMediaView, image in
+            cropMediaView.isHidden.toggle()
+            let cropMediaViewController = CropMediaViewController(croppingStyle: .custom, image: image)
+            
+            searchMediaViewController.addChild(cropMediaViewController)
+            cropMediaViewController.setup(contentView: cropMediaView)
+            cropMediaViewController.didMove(toParent: searchMediaViewController)
+
+            cropMediaViewController.onDeinitTriggering = { cropMediaView.isHidden.toggle()
+            }
         }
 
         window?.rootViewController = navigationController
