@@ -36,7 +36,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   TOCropViewController:
-    :commit: d952a5ea3c0099ff2a1eb0fa975cd69f0f150efb
+    :commit: 391be062bfccff627e1bf1b88fe815997a9da249
     :git: https://github.com/JJefro/TOCropViewController
 
 SPEC CHECKSUMS:
@@ -48,6 +48,6 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
 
-PODFILE CHECKSUM: a28cbdae49b2d4e17a13871b80327a737e5d5178
+PODFILE CHECKSUM: 482fd124e3e11d58036ea56f9c71d458e5fddc30
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
